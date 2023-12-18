@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15.5-bookworm
+    container_name: oph66-db
+    environment:
+      POSTGRES_PASSWORD: '123456'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    networks:
+      - oph66
+  
+  redis:
+    image: redis:7.2.3-bookworm
+    container_name: oph66-cache
+    command:
+      - redis-server
+      - --requirepass 123456
+    ports:
+      - 6379:6379
+    networks:
+      - oph66
+
+
+networks:
+  oph66: {}
