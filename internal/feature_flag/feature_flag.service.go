@@ -15,16 +15,16 @@ type Service interface {
 	GetFlag(ctx context.Context, key string) (bool, *apperror.AppError)
 }
 
-func NewService(db *gorm.DB, redis *redis.Client, logger *zap.Logger) Service {
+func NewService(repo Repository, redis *redis.Client, logger *zap.Logger) Service {
 	return &serviceImpl{
-		db,
+		repo,
 		redis,
 		logger,
 	}
 }
 
 type serviceImpl struct {
-	db     *gorm.DB
+	repo   Repository
 	redis  *redis.Client
 	logger *zap.Logger
 }
@@ -33,7 +33,7 @@ func (h *serviceImpl) GetFlag(ctx context.Context, key string) (bool, *apperror.
 	res, err := h.redis.Get(ctx, key).Result()
 	if err == redis.Nil {
 		var res FeatureFlag
-		if err := h.db.First(&res).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+		if err := h.repo.FindOneByKey(&res, key); errors.Is(err, gorm.ErrRecordNotFound) {
 			return false, apperror.InvalidFeatureFlagKey
 		} else if err != nil {
 			h.logger.Error("unable to query feature flag value from database", zap.String("key", key))

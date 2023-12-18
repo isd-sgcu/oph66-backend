@@ -38,6 +38,7 @@ func Init() (Container, error) {
 		database.New, cache.New,
 		featureflag.NewHandler,
 		featureflag.NewService,
+		featureflag.NewRepository,
 		logger.InitLogger,
 	)
 

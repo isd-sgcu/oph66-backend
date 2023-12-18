@@ -28,12 +28,13 @@ func Init() (Container, error) {
 	if err != nil {
 		return Container{}, err
 	}
+	repository := featureflag.NewRepository(db)
 	client, err := cache.New(config)
 	if err != nil {
 		return Container{}, err
 	}
 	zapLogger := logger.InitLogger(config)
-	service := featureflag.NewService(db, client, zapLogger)
+	service := featureflag.NewService(repository, client, zapLogger)
 	featureflagHandler := featureflag.NewHandler(service)
 	container := newContainer(handler, featureflagHandler, config, zapLogger)
 	return container, nil
