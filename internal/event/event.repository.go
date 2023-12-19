@@ -18,5 +18,5 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 func (r *repositoryImpl) GetAllEvents(results *[]Event) error {
-	return r.db.Find(results).Error
+	return r.db.Model(&Event{}).Preload("Faculty").Find(results).Error
 }
