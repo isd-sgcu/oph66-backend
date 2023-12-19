@@ -4,10 +4,10 @@ fmt:
 wire:
 	go run github.com/google/wire/cmd/wire@latest ./...
 
-up:
-	docker-compose up -dm
+mig:
+	./migrate.sh
 
-run:
+start:
 	. ./export-env.sh ; go run cmd/main.go
 
 dev:
