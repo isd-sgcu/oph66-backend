@@ -10,6 +10,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/logger"
@@ -19,7 +20,6 @@ import (
 // Injectors from wire.go:
 
 func Init() (Container, error) {
-	handler := healthcheck.NewHandler()
 	config, err := cfgldr.LoadConfig()
 	if err != nil {
 		return Container{}, err
@@ -28,29 +28,35 @@ func Init() (Container, error) {
 	if err != nil {
 		return Container{}, err
 	}
-	repository := featureflag.NewRepository(db)
+	repository := event.NewRepository(db)
 	client, err := cache.New(config)
 	if err != nil {
 		return Container{}, err
 	}
 	zapLogger := logger.InitLogger(config)
-	service := featureflag.NewService(repository, client, zapLogger)
-	featureflagHandler := featureflag.NewHandler(service)
-	container := newContainer(handler, featureflagHandler, config, zapLogger)
+	service := event.NewService(repository, client, zapLogger)
+	handler := event.NewHandler(service)
+	healthcheckHandler := healthcheck.NewHandler()
+	featureflagRepository := featureflag.NewRepository(db)
+	featureflagService := featureflag.NewService(featureflagRepository, client, zapLogger)
+	featureflagHandler := featureflag.NewHandler(featureflagService)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, config, zapLogger)
 	return container, nil
 }
 
 // wire.go:
 
 type Container struct {
+	EventHandler       event.Handler
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 }
 
-func newContainer(hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
 	return Container{
+		eventHandler,
 		hcHandler,
 		featureflagHandler,
 		config, logger2,
