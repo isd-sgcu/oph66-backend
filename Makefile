@@ -6,3 +6,6 @@ wire:
 
 up:
 	docker-compose up -dm
+
+run:
+	. ./export-env.sh ; go run cmd/main.go
