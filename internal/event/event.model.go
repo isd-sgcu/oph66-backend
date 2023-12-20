@@ -17,7 +17,7 @@ type Event struct {
 	StartTime           time.Time       `json:"start_time"`
 	LocationEn          string          `json:"location_en"`
 	LocationTh          string          `json:"location_th"`
-	Description         string          `json:"description"`
+	Description         string          `json:"description,omitempty"`
 }
 
 func (m Event) TableName() string {
