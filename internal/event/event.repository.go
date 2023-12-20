@@ -5,7 +5,8 @@ import (
 )
 
 type Repository interface {
-	GetAllEvents(result *[]Event) error
+	GetAllEvents(results *[]Event) error
+	GetEventById(result *Event, eventId string) error
 }
 
 type repositoryImpl struct {
@@ -17,6 +18,11 @@ func NewRepository(db *gorm.DB) Repository {
 		db,
 	}
 }
+
 func (r *repositoryImpl) GetAllEvents(results *[]Event) error {
 	return r.db.Model(&Event{}).Omit("description").Preload("Faculty").Find(results).Error
+}
+
+func (r *repositoryImpl) GetEventById(result *Event, eventId string) error {
+	return r.db.Model(&Event{}).Preload("Faculty").First(result, "id = ?", eventId).Error
 }

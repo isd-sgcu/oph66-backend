@@ -16,4 +16,5 @@ func (a *AppError) Error() string {
 var (
 	InvalidFeatureFlagKey = &AppError{"invalid-feature-flag-key", http.StatusNotFound}
 	InternalError         = &AppError{"internal-server-error", http.StatusInternalServerError}
+	InvalidEventId        = &AppError{"invalid-event-id", http.StatusNotFound}
 )

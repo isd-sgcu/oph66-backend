@@ -11,6 +11,7 @@ import (
 
 type Handler interface {
 	GetAllEvents(c *gin.Context)
+	GetEventById(c *gin.Context)
 }
 
 func NewHandler(service Service) Handler {
@@ -37,4 +38,22 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 	}
 
 	c.String(http.StatusOK, string(eventsJson))
+}
+
+func (h *handlerImpl) GetEventById(c *gin.Context) {
+	eventId := c.Param("eventId")
+
+	event, err := h.service.GetEventById(c.Request.Context(), eventId)
+	if err != nil {
+		utils.ReturnError(c, err)
+		return
+	}
+
+	eventJson, jsonerr := json.Marshal(event)
+	if jsonerr != nil {
+		utils.ReturnError(c, apperror.InternalError)
+		return
+	}
+
+	c.String(http.StatusOK, string(eventJson))
 }
