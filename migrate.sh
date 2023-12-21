@@ -11,6 +11,7 @@ docker run \
 				CREATE TABLE feature_flags(key VARCHAR(50) PRIMARY KEY, value BOOLEAN NOT NULL, cache_duration INT NOT NULL);
 				INSERT INTO feature_flags(key, value, cache_duration) VALUES ('livestream', TRUE, 10);
 				
+				DROP TABLE IF EXISTS schedules;
 				DROP TABLE IF EXISTS events;
 				DROP TABLE IF EXISTS faculties;
 
@@ -30,46 +31,79 @@ docker run \
 					department VARCHAR(128) NOT NULL,
 					require_registration BOOLEAN NOT NULL,
 					max_capacity INTEGER,
-					start_time TIMESTAMP WITH TIME ZONE NOT NULL,
 					location_en VARCHAR(128) NOT NULL,
 					location_th VARCHAR(128) NOT NULL,
 					description VARCHAR(128)
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, start_time, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
 					'first-event',
 					'First Event',
 					21,
 					'ภาควิชาคอมพิวเตอร์',
 					TRUE,
 					'250',
-					'2023-12-19 10:00:00+00',
 					'Engineering Building 3',
 					'ตึก 3',
 					'The first event'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, start_time, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
 					'second-event',
 					'Second Event',
 					23,
 					'ภาควิชาเคมี',
 					TRUE,
 					'250',
-					'2023-12-19 10:00:00+00',
 					'Mahamakut Building',
 					'ตึกมหามกุฎ',
 					'The second event'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, start_time, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
 					'third-event',
 					'Third Event',
 					34,
 					'ส่วนกลาง',
 					FALSE,
 					NULL,
-					'2023-12-19 10:00:00+00',
 					'Deebdavaravati Building',
 					'ตึกเทพทวารวดี',
 					'The third event'
+				);
+
+				CREATE TABLE schedules (
+					event_id VARCHAR(128) REFERENCES events(id),
+					starts_at TIMESTAMP WITH TIME ZONE NOT NULL,
+					ends_at TIMESTAMP WITH TIME ZONE NOT NULL,
+					PRIMARY KEY (event_id, starts_at, ends_at)
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'first-event',
+					'2024-01-20 03:00:00+00',
+					'2024-01-20 10:00:00+00'
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'first-event',
+					'2024-01-21 03:00:00+00',
+					'2024-01-21 10:00:00+00'
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'second-event',
+					'2024-01-20 02:00:00+00',
+					'2024-01-20 09:00:00+00'
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'second-event',
+					'2024-01-21 02:00:00+00',
+					'2024-01-21 09:00:00+00'
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'third-event',
+					'2024-01-20 02:00:00+00',
+					'2024-01-20 09:00:00+00'
+				);
+				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+					'third-event',
+					'2024-01-21 02:00:00+00',
+					'2024-01-21 09:00:00+00'
 				);
         
 			\" | psql postgres://postgres:123456@host.docker.internal:5432/postgres
