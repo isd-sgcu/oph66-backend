@@ -14,8 +14,7 @@ type Event struct {
 	RequireRegistration bool                `json:"require_registration"`
 	MaxCapacity         int                 `json:"max_capacity"`
 	Schedules           []schedule.Schedule `json:"schedules" gorm:"foreignKey:event_id"`
-	LocationEn          string              `json:"location_en"`
-	LocationTh          string              `json:"location_th"`
+	Location            string              `json:"location"`
 	Description         string              `json:"description,omitempty"`
 }
 

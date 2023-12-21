@@ -31,41 +31,37 @@ docker run \
 					department VARCHAR(128) NOT NULL,
 					require_registration BOOLEAN NOT NULL,
 					max_capacity INTEGER,
-					location_en VARCHAR(128) NOT NULL,
-					location_th VARCHAR(128) NOT NULL,
+					location VARCHAR(256) NOT NULL,
 					description VARCHAR(128)
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
 					'first-event',
 					'First Event',
 					21,
 					'ภาควิชาคอมพิวเตอร์',
 					TRUE,
 					'250',
-					'Engineering Building 3',
 					'ตึก 3',
 					'The first event'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
 					'second-event',
 					'Second Event',
 					23,
 					'ภาควิชาเคมี',
 					TRUE,
 					'250',
-					'Mahamakut Building',
-					'ตึกมหามกุฎ',
+					'ตึกมหามกุฎ / Mahamakut Building',
 					'The second event'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location_en, location_th, description) VALUES (
+				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
 					'third-event',
 					'Third Event',
 					34,
 					'ส่วนกลาง',
 					FALSE,
 					NULL,
-					'Deebdavaravati Building',
-					'ตึกเทพทวารวดี',
+					'ตึกเทพทวารวดี / Deebdavaravati Building',
 					'The third event'
 				);
 
