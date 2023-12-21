@@ -40,6 +40,7 @@ func Init() (Container, error) {
 		event.NewHandler,
 		event.NewService,
 		event.NewRepository,
+		event.NewCache,
 		healthcheck.NewHandler,
 		database.New, cache.New,
 		featureflag.NewHandler,

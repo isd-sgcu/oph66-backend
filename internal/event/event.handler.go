@@ -16,18 +16,20 @@ type Handler interface {
 	GetEventById(c *gin.Context)
 }
 
-func NewHandler(service Service) Handler {
+func NewHandler(service Service, cache Cache) Handler {
 	return &handlerImpl{
 		service,
+		cache,
 	}
 }
 
 type handlerImpl struct {
 	service Service
+	cache   Cache
 }
 
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
-	hit, result, apperr := h.service.GetEventCache(context.Background(), "get_all_events")
+	hit, result, apperr := h.cache.Get(context.Background(), "get_all_events")
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -48,7 +50,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		return
 	}
 
-	apperr = h.service.SetEventCache(context.Background(), "get_all_events", string(eventsJson), time.Hour*6)
+	apperr = h.cache.Set(context.Background(), "get_all_events", string(eventsJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -60,7 +62,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 
-	hit, result, apperr := h.service.GetEventCache(context.Background(), eventId)
+	hit, result, apperr := h.cache.Get(context.Background(), eventId)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -81,7 +83,7 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		return
 	}
 
-	apperr = h.service.SetEventCache(context.Background(), eventId, string(eventJson), time.Hour*6)
+	apperr = h.cache.Set(context.Background(), eventId, string(eventJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
