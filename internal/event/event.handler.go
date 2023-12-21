@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/utils"
+	"go.uber.org/zap"
 )
 
 type Handler interface {
@@ -16,16 +17,18 @@ type Handler interface {
 	GetEventById(c *gin.Context)
 }
 
-func NewHandler(service Service, cache Cache) Handler {
+func NewHandler(service Service, cache Cache, logger *zap.Logger) Handler {
 	return &handlerImpl{
 		service,
 		cache,
+		logger,
 	}
 }
 
 type handlerImpl struct {
 	service Service
 	cache   Cache
+	logger  *zap.Logger
 }
 
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
@@ -46,6 +49,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 
 	eventsJson, err := json.Marshal(events)
 	if err != nil {
+		h.logger.Error("could not parse json", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
@@ -79,6 +83,7 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 
 	eventJson, err := json.Marshal(event)
 	if err != nil {
+		h.logger.Error("could not parse json", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}

@@ -30,6 +30,7 @@ func (s *serviceImpl) GetAllEvents(ctx context.Context) ([]Event, *apperror.AppE
 	results := []Event{}
 	err := s.repo.GetAllEvents(&results)
 	if err != nil {
+		s.logger.Error("could not retrieve events from database", zap.Error(err))
 		return []Event{}, apperror.InternalError
 	}
 
@@ -42,6 +43,7 @@ func (s *serviceImpl) GetEventById(ctx context.Context, eventId string) (Event, 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return Event{}, apperror.InvalidEventId
 	} else if err != nil {
+		s.logger.Error("could not retrieve event from database", zap.String("eventId", eventId), zap.Error(err))
 		return Event{}, apperror.InternalError
 	}
 

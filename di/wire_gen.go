@@ -35,8 +35,8 @@ func Init() (Container, error) {
 	if err != nil {
 		return Container{}, err
 	}
-	eventCache := event.NewCache(client)
-	handler := event.NewHandler(service, eventCache)
+	eventCache := event.NewCache(client, zapLogger)
+	handler := event.NewHandler(service, eventCache, zapLogger)
 	healthcheckHandler := healthcheck.NewHandler()
 	featureflagRepository := featureflag.NewRepository(db)
 	featureflagService := featureflag.NewService(featureflagRepository, client, zapLogger)
