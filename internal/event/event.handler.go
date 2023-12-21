@@ -81,7 +81,7 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		return
 	}
 
-	apperr = h.service.SetEventCache(context.Background(), eventId, string(eventJson), time.Hour)
+	apperr = h.service.SetEventCache(context.Background(), eventId, string(eventJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
