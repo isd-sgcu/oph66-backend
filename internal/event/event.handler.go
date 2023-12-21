@@ -1,8 +1,10 @@
 package event
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
@@ -25,15 +27,30 @@ type handlerImpl struct {
 }
 
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
-	events, err := h.service.GetAllEvents(c.Request.Context())
-	if err != nil {
-		utils.ReturnError(c, err)
+	hit, result, apperr := h.service.GetEventCache(context.Background(), "get_all_events")
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		return
+	} else if hit {
+		c.String(http.StatusOK, result)
 		return
 	}
 
-	eventsJson, jsonerr := json.Marshal(events)
-	if jsonerr != nil {
+	events, apperr := h.service.GetAllEvents(c.Request.Context())
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		return
+	}
+
+	eventsJson, err := json.Marshal(events)
+	if err != nil {
 		utils.ReturnError(c, apperror.InternalError)
+		return
+	}
+
+	apperr = h.service.SetEventCache(context.Background(), "get_all_events", string(eventsJson), time.Hour*6)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
 		return
 	}
 
@@ -43,15 +60,30 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 
-	event, err := h.service.GetEventById(c.Request.Context(), eventId)
-	if err != nil {
-		utils.ReturnError(c, err)
+	hit, result, apperr := h.service.GetEventCache(context.Background(), eventId)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		return
+	} else if hit {
+		c.String(http.StatusOK, result)
 		return
 	}
 
-	eventJson, jsonerr := json.Marshal(event)
-	if jsonerr != nil {
+	event, apperr := h.service.GetEventById(c.Request.Context(), eventId)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		return
+	}
+
+	eventJson, err := json.Marshal(event)
+	if err != nil {
 		utils.ReturnError(c, apperror.InternalError)
+		return
+	}
+
+	apperr = h.service.SetEventCache(context.Background(), eventId, string(eventJson), time.Hour)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
 		return
 	}
 
