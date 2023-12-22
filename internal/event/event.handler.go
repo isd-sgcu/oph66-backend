@@ -37,6 +37,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		utils.ReturnError(c, apperr)
 		return
 	} else if hit {
+		c.Header("Content-Type", "application/json; charset=utf-8")
 		c.String(http.StatusOK, result)
 		return
 	}
@@ -60,6 +61,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		return
 	}
 
+	c.Header("Content-Type", "application/json; charset=utf-8")
 	c.String(http.StatusOK, string(eventsJson))
 }
 
@@ -71,6 +73,7 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		utils.ReturnError(c, apperr)
 		return
 	} else if hit {
+		c.Header("Content-Type", "application/json; charset=utf-8")
 		c.String(http.StatusOK, result)
 		return
 	}
@@ -94,5 +97,6 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		return
 	}
 
+	c.Header("Content-Type", "application/json; charset=utf-8")
 	c.String(http.StatusOK, string(eventJson))
 }
