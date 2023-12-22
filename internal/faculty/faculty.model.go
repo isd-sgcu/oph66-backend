@@ -1,9 +1,10 @@
 package faculty
 
+import "github.com/isd-sgcu/oph66-backend/internal/bilingual_field"
+
 type Faculty struct {
-	Code   string `gorm:"primaryKey" json:"code"`
-	NameEn string `json:"name_en"`
-	NameTh string `json:"name_th"`
+	Code string                    `json:"code" gorm:"primaryKey"`
+	Name bilingual_field.Bilingual `json:"name" gorm:"embedded;embeddedPrefix:name_"`
 }
 
 func (m Faculty) TableName() string {
