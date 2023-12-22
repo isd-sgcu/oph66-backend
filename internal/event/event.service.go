@@ -40,6 +40,7 @@ func (s *serviceImpl) GetEventById(eventId string) (Event, *apperror.AppError) {
 	result := Event{}
 	err := s.repo.GetEventById(&result, eventId)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
+		s.logger.Error("could not retrieve event with the specified event id", zap.String("eventId", eventId), zap.Error(err))
 		return Event{}, apperror.InvalidEventId
 	} else if err != nil {
 		s.logger.Error("could not retrieve event from database", zap.String("eventId", eventId), zap.Error(err))
