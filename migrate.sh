@@ -26,43 +26,59 @@ docker run \
 
         CREATE TABLE events (
 					id VARCHAR(128) PRIMARY KEY,
-					name VARCHAR NOT NULL,
+					name_en VARCHAR(128) NOT NULL,
+					name_th VARCHAR(128) NOT NULL,
 					faculty_code SMALLINT NOT NULL REFERENCES faculties(code),
-					department VARCHAR(128) NOT NULL,
+					department_en VARCHAR(128) NOT NULL,
+					department_th VARCHAR(128) NOT NULL,
 					require_registration BOOLEAN NOT NULL,
 					max_capacity INTEGER,
-					location VARCHAR(256) NOT NULL,
-					description VARCHAR(128)
+					location_en VARCHAR(128) NOT NULL,
+					location_th VARCHAR(128) NOT NULL,
+					description_en VARCHAR(2048),
+					description_th VARCHAR(2048)
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
+				INSERT INTO events (id, name_en, name_th, faculty_code, department_en, department_th, require_registration, max_capacity, location_en, location_th, description_en, description_th) VALUES (
 					'first-event',
 					'First Event',
+					'อีเวนท์แรก',
 					21,
+					'Computer Engineering',
 					'ภาควิชาคอมพิวเตอร์',
 					TRUE,
 					'250',
+					'Engineering Building 3',
 					'ตึก 3',
-					'The first event'
+					'The first event',
+					'รายละเอียดอีเวนท์แรก'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
+				INSERT INTO events (id, name_en, name_th, faculty_code, department_en, department_th, require_registration, max_capacity, location_en, location_th, description_en, description_th) VALUES (
 					'second-event',
 					'Second Event',
+					'อีเวนท์สอง',
 					23,
+					'Chemistry',
 					'ภาควิชาเคมี',
 					TRUE,
-					'250',
-					'ตึกมหามกุฎ / Mahamakut Building',
-					'The second event'
+					'150',
+					'Mahamakut Building',
+					'ตึกมหามกุฎ',
+					'The second event',
+					'รายละเอียดอีเวนท์ที่สอง'
 				);
-				INSERT INTO events (id, name, faculty_code, department, require_registration, max_capacity, location, description) VALUES (
+				INSERT INTO events (id, name_en, name_th, faculty_code, department_en, department_th, require_registration, max_capacity, location_en, location_th, description_en, description_th) VALUES (
 					'third-event',
 					'Third Event',
+					'อีเวนท์สาม',
 					34,
+					'Faculty',
 					'ส่วนกลาง',
 					FALSE,
 					NULL,
-					'ตึกเทพทวารวดี / Deebdavaravati Building',
-					'The third event'
+					'Debdavaravati Building',
+					'ตึกเทพทวารวดี',
+					'The third event',
+					'รายละเอียดอีเวนท์ที่สาม'
 				);
 
 				CREATE TABLE schedules (
