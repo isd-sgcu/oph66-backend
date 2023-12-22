@@ -3,6 +3,7 @@ package event
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -37,12 +38,12 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		utils.ReturnError(c, apperr)
 		return
 	} else if hit {
-		c.Header("Content-Type", "application/json; charset=utf-8")
+		setHeader(c)
 		c.String(http.StatusOK, result)
 		return
 	}
 
-	events, apperr := h.service.GetAllEvents(c.Request.Context())
+	events, apperr := h.service.GetAllEvents()
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -50,7 +51,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 
 	eventsJson, err := json.Marshal(events)
 	if err != nil {
-		h.logger.Error("could not parse json", zap.Error(err))
+		h.logger.Error("could not serialize into json format", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
@@ -61,24 +62,24 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json; charset=utf-8")
+	setHeader(c)
 	c.String(http.StatusOK, string(eventsJson))
 }
 
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 
-	hit, result, apperr := h.cache.Get(context.Background(), eventId)
+	hit, result, apperr := h.cache.Get(context.Background(), fmt.Sprintf("get_event_by_id-%v", eventId))
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	} else if hit {
-		c.Header("Content-Type", "application/json; charset=utf-8")
+		setHeader(c)
 		c.String(http.StatusOK, result)
 		return
 	}
 
-	event, apperr := h.service.GetEventById(c.Request.Context(), eventId)
+	event, apperr := h.service.GetEventById(eventId)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -86,17 +87,22 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 
 	eventJson, err := json.Marshal(event)
 	if err != nil {
-		h.logger.Error("could not parse json", zap.Error(err))
+		h.logger.Error("could not serialize into json format", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
 
-	apperr = h.cache.Set(context.Background(), eventId, string(eventJson), time.Hour*6)
+	apperr = h.cache.Set(context.Background(), fmt.Sprintf("get_event_by_id-%v", eventId), string(eventJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}
 
-	c.Header("Content-Type", "application/json; charset=utf-8")
+	setHeader(c)
 	c.String(http.StatusOK, string(eventJson))
+}
+
+func setHeader(c *gin.Context) {
+	c.Header("Content-Type", "application/json; charset=utf-8")
+	c.Header("Cache-Control", "public, max-age=3600")
 }

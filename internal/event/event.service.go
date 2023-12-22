@@ -1,7 +1,6 @@
 package event
 
 import (
-	"context"
 	"errors"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
@@ -10,8 +9,8 @@ import (
 )
 
 type Service interface {
-	GetAllEvents(ctx context.Context) ([]Event, *apperror.AppError)
-	GetEventById(ctx context.Context, eventId string) (Event, *apperror.AppError)
+	GetAllEvents() ([]Event, *apperror.AppError)
+	GetEventById(eventId string) (Event, *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger) Service {
@@ -26,7 +25,7 @@ type serviceImpl struct {
 	logger *zap.Logger
 }
 
-func (s *serviceImpl) GetAllEvents(ctx context.Context) ([]Event, *apperror.AppError) {
+func (s *serviceImpl) GetAllEvents() ([]Event, *apperror.AppError) {
 	results := []Event{}
 	err := s.repo.GetAllEvents(&results)
 	if err != nil {
@@ -37,7 +36,7 @@ func (s *serviceImpl) GetAllEvents(ctx context.Context) ([]Event, *apperror.AppE
 	return results, nil
 }
 
-func (s *serviceImpl) GetEventById(ctx context.Context, eventId string) (Event, *apperror.AppError) {
+func (s *serviceImpl) GetEventById(eventId string) (Event, *apperror.AppError) {
 	result := Event{}
 	err := s.repo.GetEventById(&result, eventId)
 	if errors.Is(err, gorm.ErrRecordNotFound) {

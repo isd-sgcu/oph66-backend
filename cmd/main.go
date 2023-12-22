@@ -25,8 +25,7 @@ func main() {
 	r.GET("/events", container.EventHandler.GetAllEvents)
 	r.GET("/events/:eventId", container.EventHandler.GetEventById)
 
-	// change this back to :PORT later
-	if err := r.Run(fmt.Sprintf("localhost:%v", container.Config.AppConfig.Port)); err != nil {
+	if err := r.Run(fmt.Sprintf(":%v", container.Config.AppConfig.Port)); err != nil {
 		container.Logger.Fatal("unable to start server")
 	}
 }
