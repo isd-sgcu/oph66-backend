@@ -16,17 +16,13 @@ docker compose up -d
 Migration is need to still be made manually because migration method is 
 currently to be determined. Feel free to give any suggestion :)
 ```sh
-docker run \
+docker exec \
     -it \
-    --rm \
-    --add-host host.docker.internal:host-gateway \
-    postgres:15.5-bookworm \
-    sh -c "
-        echo \"
-            CREATE TABLE feature_flags(key VARCHAR(50) PRIMARY KEY, value BOOLEAN NOT NULL, cache_duration INT NOT NULL);
-            INSERT INTO feature_flags(key, value, cache_duration) VALUES ('livestream', TRUE, 10);
-        \" | psql postgres://postgres:123456@host.docker.internal:5432/postgres
-    "
+    oph66-db \
+    psql -U postgres -c $'
+        CREATE TABLE feature_flags(key VARCHAR(50) PRIMARY KEY, enabled BOOLEAN NOT NULL, cache_duration INT NOT NULL, extra_info JSONB NOT NULL);
+        INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES (\'livestream\', TRUE, 10, \'{\"url\": \"https://www.youtube.com/watch?v=0tOXxuLcaog\"}\');
+    '    
 ```
 
 ### Using wire

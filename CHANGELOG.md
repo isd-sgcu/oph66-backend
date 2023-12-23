@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 - Init
+- Event detail feature (#2)
+- [**breaking**] Add `extra_info` on feature_flag
 
 ### Miscellaneous Tasks
 

@@ -21,7 +21,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/_hc", container.HcHandler.HealthCheck)
-	r.GET("/featureflag/live", container.FeatureflagHandler.LivestreamEnabled)
+	r.GET("/live", container.FeatureflagHandler.GetLivestreamInfo)
 	r.GET("/events", container.EventHandler.GetAllEvents)
 	r.GET("/events/:eventId", container.EventHandler.GetEventById)
 
