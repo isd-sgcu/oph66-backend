@@ -51,8 +51,8 @@ docker run \
 					'ตึก 3',
 					'The first event',
 					'รายละเอียดอีเวนท์แรก'
-				);
-				INSERT INTO events (id, name_en, name_th, faculty_code, department_en, department_th, require_registration, max_capacity, location_en, location_th, description_en, description_th) VALUES (
+				),
+				(
 					'second-event',
 					'Second Event',
 					'อีเวนท์สอง',
@@ -65,8 +65,8 @@ docker run \
 					'ตึกมหามกุฎ',
 					'The second event',
 					'รายละเอียดอีเวนท์ที่สอง'
-				);
-				INSERT INTO events (id, name_en, name_th, faculty_code, department_en, department_th, require_registration, max_capacity, location_en, location_th, description_en, description_th) VALUES (
+				),
+				(
 					'third-event',
 					'Third Event',
 					'อีเวนท์สาม',
@@ -91,28 +91,28 @@ docker run \
 					'first-event',
 					'2024-01-20 03:00:00+00',
 					'2024-01-20 10:00:00+00'
-				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				),
+				(
 					'first-event',
 					'2024-01-21 03:00:00+00',
 					'2024-01-21 10:00:00+00'
-				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				),
+				(
 					'second-event',
 					'2024-01-20 02:00:00+00',
 					'2024-01-20 09:00:00+00'
-				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				),
+				(
 					'second-event',
 					'2024-01-21 02:00:00+00',
 					'2024-01-21 09:00:00+00'
-				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				),
+				(
 					'third-event',
 					'2024-01-20 02:00:00+00',
 					'2024-01-20 09:00:00+00'
-				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				),
+				(
 					'third-event',
 					'2024-01-21 02:00:00+00',
 					'2024-01-21 09:00:00+00'
