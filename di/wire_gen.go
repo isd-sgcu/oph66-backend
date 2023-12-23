@@ -39,8 +39,9 @@ func Init() (Container, error) {
 	handler := event.NewHandler(service, eventCache, zapLogger)
 	healthcheckHandler := healthcheck.NewHandler()
 	featureflagRepository := featureflag.NewRepository(db)
-	featureflagService := featureflag.NewService(featureflagRepository, client, zapLogger)
-	featureflagHandler := featureflag.NewHandler(featureflagService)
+	featureflagService := featureflag.NewService(featureflagRepository, zapLogger)
+	featureflagCache := featureflag.NewCache(client, zapLogger)
+	featureflagHandler := featureflag.NewHandler(featureflagService, featureflagCache)
 	container := newContainer(handler, healthcheckHandler, featureflagHandler, config, zapLogger)
 	return container, nil
 }
