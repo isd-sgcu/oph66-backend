@@ -30,8 +30,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - DB_URL=postgres://postgres:123456@[LAN-ADDRESS]:5432/postgres
-      - REDIS_ADDR=[LAN-ADDRESS]
+      - DB_URL=postgres://postgres:123456@oph66-db:5432/postgres
+      - REDIS_ADDR=oph66-cache
       - REDIS_PORT=6379
       - REDIS_PASSWORD=123456
       - APP_PORT=3000
