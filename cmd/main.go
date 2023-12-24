@@ -12,7 +12,6 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("unable to init di: %v", err))
 	}
-
 	container.Logger.Info("init container successfully")
 
 	if container.Config.AppConfig.Env == "development" {
@@ -22,6 +21,10 @@ func main() {
 
 	r.GET("/_hc", container.HcHandler.HealthCheck)
 	r.GET("/featureflag/live", container.FeatureflagHandler.LivestreamEnabled)
+	r.POST("/register", container.RegisterHandler.CreateUser)
+	r.GET("/register/:id", container.RegisterHandler.GetUserById)
+	r.GET("/login", container.LoginHandler.GoogleLogin)
+	r.GET("/login/callback", container.LoginHandler.GoogleCallback)
 
 	if err := r.Run(fmt.Sprintf(":%v", container.Config.AppConfig.Port)); err != nil {
 		container.Logger.Fatal("unable to start server")

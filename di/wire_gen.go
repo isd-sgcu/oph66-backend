@@ -12,6 +12,8 @@ import (
 	"github.com/isd-sgcu/oph66-backend/database"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
+	"github.com/isd-sgcu/oph66-backend/internal/login"
+	"github.com/isd-sgcu/oph66-backend/internal/register"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -36,7 +38,13 @@ func Init() (Container, error) {
 	zapLogger := logger.InitLogger(config)
 	service := featureflag.NewService(repository, client, zapLogger)
 	featureflagHandler := featureflag.NewHandler(service)
-	container := newContainer(handler, featureflagHandler, config, zapLogger)
+	registerRepository := register.NewRepository(db)
+	registerService := register.NewService(registerRepository)
+	registerHandler := register.NewHandler(registerService)
+	loginRepository := login.NewRepository(db)
+	loginService := login.NewService(loginRepository)
+	loginHandler := login.NewHandler(loginService)
+	container := newContainer(handler, featureflagHandler, registerHandler, loginHandler, config, zapLogger)
 	return container, nil
 }
 
@@ -45,14 +53,18 @@ func Init() (Container, error) {
 type Container struct {
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
+	RegisterHandler    register.Handler
+	LoginHandler       login.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 }
 
-func newContainer(hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
+func newContainer(hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, RegisterHandler register.Handler, LoginHandler login.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
 	return Container{
 		hcHandler,
 		featureflagHandler,
+		RegisterHandler,
+		LoginHandler,
 		config, logger2,
 	}
 }
