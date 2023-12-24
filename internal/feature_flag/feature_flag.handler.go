@@ -26,6 +26,17 @@ type handlerImpl struct {
 	cache Cache
 }
 
+// GetLivestreamInfo godoc
+// @summary Get livestream flag
+// @description	Get livestream flag
+// @id GetLivestreamInfo
+// @produce json
+// @tags FeatureFlag
+// @Security Bearer
+// @router /live [get]
+// @success 200 {object} featureflag.response
+// @Failure 500 {object} featureflag.errorResponse
+// @Failure 404 {object} featureflag.invalidResponse
 func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 	cacheKey := "livestream"
 

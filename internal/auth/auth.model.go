@@ -10,9 +10,6 @@ type User struct {
 	FirstName           string              `json:"first_name"`
 	LastName            string              `json:"last_name"`
 	Email               string              `gorm:"index"                    json:"email"`
-	School              string              `json:"school"`
-	BirthDate           string              `json:"birth_date"`
-	Address             string              `json:"address"`
 	FromAbroad          string              `json:"from_abroad"`
 	Allergy             string              `json:"allergy"`
 	MedicalCondition    string              `json:"medical_condition"`
