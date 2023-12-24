@@ -10,6 +10,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/login"
@@ -21,7 +22,6 @@ import (
 // Injectors from wire.go:
 
 func Init() (Container, error) {
-	handler := healthcheck.NewHandler()
 	config, err := cfgldr.LoadConfig()
 	if err != nil {
 		return Container{}, err
@@ -30,27 +30,34 @@ func Init() (Container, error) {
 	if err != nil {
 		return Container{}, err
 	}
-	repository := featureflag.NewRepository(db)
+	repository := event.NewRepository(db)
+	zapLogger := logger.InitLogger(config)
+	service := event.NewService(repository, zapLogger)
 	client, err := cache.New(config)
 	if err != nil {
 		return Container{}, err
 	}
-	zapLogger := logger.InitLogger(config)
-	service := featureflag.NewService(repository, client, zapLogger)
-	featureflagHandler := featureflag.NewHandler(service)
+	eventCache := event.NewCache(client, zapLogger)
+	handler := event.NewHandler(service, eventCache, zapLogger)
+	healthcheckHandler := healthcheck.NewHandler()
+	featureflagRepository := featureflag.NewRepository(db)
+	featureflagService := featureflag.NewService(featureflagRepository, zapLogger)
+	featureflagCache := featureflag.NewCache(client, zapLogger)
+	featureflagHandler := featureflag.NewHandler(featureflagService, featureflagCache)
 	registerRepository := register.NewRepository(db)
 	registerService := register.NewService(registerRepository)
 	registerHandler := register.NewHandler(registerService)
 	loginRepository := login.NewRepository(db)
 	loginService := login.NewService(loginRepository)
 	loginHandler := login.NewHandler(loginService)
-	container := newContainer(handler, featureflagHandler, registerHandler, loginHandler, config, zapLogger)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, registerHandler, loginHandler, config, zapLogger)
 	return container, nil
 }
 
 // wire.go:
 
 type Container struct {
+	EventHandler       event.Handler
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
 	RegisterHandler    register.Handler
@@ -59,8 +66,9 @@ type Container struct {
 	Logger             *zap.Logger
 }
 
-func newContainer(hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, RegisterHandler register.Handler, LoginHandler login.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, RegisterHandler register.Handler, LoginHandler login.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
 	return Container{
+		eventHandler,
 		hcHandler,
 		featureflagHandler,
 		RegisterHandler,
