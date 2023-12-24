@@ -10,11 +10,10 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	"github.com/isd-sgcu/oph66-backend/internal/auth"
 	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
-	"github.com/isd-sgcu/oph66-backend/internal/login"
-	"github.com/isd-sgcu/oph66-backend/internal/register"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -44,13 +43,10 @@ func Init() (Container, error) {
 	featureflagService := featureflag.NewService(featureflagRepository, zapLogger)
 	featureflagCache := featureflag.NewCache(client, zapLogger)
 	featureflagHandler := featureflag.NewHandler(featureflagService, featureflagCache)
-	registerRepository := register.NewRepository(db)
-	registerService := register.NewService(registerRepository)
-	registerHandler := register.NewHandler(registerService)
-	loginRepository := login.NewRepository(db)
-	loginService := login.NewService(loginRepository)
-	loginHandler := login.NewHandler(loginService)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, registerHandler, loginHandler, config, zapLogger)
+	authRepository := auth.NewRepository(db)
+	authService := auth.NewService(authRepository, zapLogger)
+	authHandler := auth.NewHandler(authService, config, zapLogger)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger)
 	return container, nil
 }
 
@@ -60,19 +56,17 @@ type Container struct {
 	EventHandler       event.Handler
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
-	RegisterHandler    register.Handler
-	LoginHandler       login.Handler
+	AuthHandler        auth.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, RegisterHandler register.Handler, LoginHandler login.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
 		featureflagHandler,
-		RegisterHandler,
-		LoginHandler,
+		authHandler,
 		config, logger2,
 	}
 }

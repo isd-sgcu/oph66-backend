@@ -1,8 +1,4 @@
-package register
-
-import (
-	"github.com/lib/pq"
-)
+package auth
 
 type User struct {
 	ID                  uint                  `gorm:"primaryKey;autoIncrement" json:"-"`
@@ -20,12 +16,8 @@ type User struct {
 	NewsSource          string                `json:"news_source"`
 	Status              string                `json:"status"`
 	Grade               string                `json:"grade"`
-	DesiredRounds       pq.Int64Array         `gorm:"type:int[]"`
+	DesiredRounds       []DesiredRounds       `gorm:"foreignKey:UserID"` // One-to-many relationship
 	InterestedFaculties []InterestedFaculties `gorm:"foreignKey:UserID"` // One-to-many relationship
-}
-
-func (u *User) TableName() string {
-	return "users"
 }
 
 type InterestedFaculties struct {
@@ -34,4 +26,22 @@ type InterestedFaculties struct {
 	Department string `json:"department"`
 	Section    string `json:"section"`
 	UserID     uint   `gorm:"index"` // Foreign key
+}
+
+type DesiredRounds struct {
+	ID         uint   `gorm:"primaryKey;autoIncrement" json:"id"`
+	Round      string `json:"round"`
+	UserID     uint   `gorm:"index"` // Foreign key
+}
+
+func (u *User) TableName() string {
+	return "users"
+}
+
+func (d *DesiredRounds) TableName() string {
+	return "desired_rounds"
+}
+
+func (i *InterestedFaculties) TableName() string {
+	return "interested_faculties"
 }

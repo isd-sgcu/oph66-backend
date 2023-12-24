@@ -8,6 +8,7 @@ type Config struct {
 	DatabaseConfig DatabaseConfig
 	AppConfig      AppConfig
 	RedisConfig    RedisConfig
+	OAuth2Config   OAuth2Config
 }
 
 type DatabaseConfig struct {
@@ -23,6 +24,14 @@ type RedisConfig struct {
 	Addr     string `mapstructure:"ADDR"`
 	Port     string `mapstructure:"PORT"`
 	Password string `mapstructure:"PASSWORD"`
+}
+
+type OAuth2Config struct {
+	RedirectURL  string   `mapstructure:"REDIRECT_URL"`
+	ClientID     string   `mapstructure:"CLIENT_ID"`
+	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
+	Scopes       []string `mapstructure:"SCOPES"`
+	Endpoint     string   `mapstructure:"ENDPOINT"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -53,9 +62,19 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	oauth2CfgLdr := viper.New()
+	oauth2CfgLdr.SetEnvPrefix("OAUTH2")
+	oauth2CfgLdr.AutomaticEnv()
+	oauth2CfgLdr.AllowEmptyEnv(false)
+	oauth2Config := OAuth2Config{}
+	if err := oauth2CfgLdr.Unmarshal(&oauth2Config); err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		DatabaseConfig: dbConfig,
 		AppConfig:      appConfig,
 		RedisConfig:    redisConfig,
+		OAuth2Config:   oauth2Config,
 	}, nil
 }

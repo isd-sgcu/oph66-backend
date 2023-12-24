@@ -117,6 +117,13 @@ docker run \
 					'2024-01-21 02:00:00+00',
 					'2024-01-21 09:00:00+00'
 				);
+
+	CREATE TABLE desired_rounds (
+    id SERIAL PRIMARY KEY,
+    round VARCHAR(128) NOT NULL,
+    user_id BIGINT REFERENCES users(id)
+);
+
         
 			\" | psql postgres://postgres:123456@host.docker.internal:5432/postgres
 		"

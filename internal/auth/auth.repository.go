@@ -1,13 +1,14 @@
-package register
+package auth
 
 import (
 	"gorm.io/gorm"
 )
 
 type Repository interface {
-	Create(user *User) error
-	GetById(id uint) (*User, error)
+	Create(result *User) error
+	GetByEmail(email string) (*User, error)
 	GetInterestedFacultiesByUserId(id uint) ([]InterestedFaculties, error)
+	GetDesiredRoundsByUserId(id uint) ([]DesiredRounds, error)
 }
 
 type repositoryImpl struct {
@@ -23,9 +24,9 @@ func (r *repositoryImpl) Create(user *User) error {
 	return r.db.Create(user).Error
 }
 
-func (r *repositoryImpl) GetById(id uint) (*User, error) {
+func (r *repositoryImpl) GetByEmail(email string) (*User, error) {
 	var user User
-	if err := r.db.First(&user, id).Error; err != nil {
+	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -37,4 +38,12 @@ func (r *repositoryImpl) GetInterestedFacultiesByUserId(id uint) ([]InterestedFa
 		return nil, err
 	}
 	return interestedFaculties, nil
+}
+
+func (r *repositoryImpl) GetDesiredRoundsByUserId(id uint) ([]DesiredRounds, error) {
+	var desiredRounds []DesiredRounds
+	if err := r.db.Where("user_id = ?", id).Find(&desiredRounds).Error; err != nil {
+		return nil, err
+	}
+	return desiredRounds, nil
 }

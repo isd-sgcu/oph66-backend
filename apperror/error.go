@@ -18,4 +18,7 @@ var (
 	InternalError         = &AppError{"internal-server-error", http.StatusInternalServerError}
 	BadRequest            = &AppError{"bad-request", http.StatusBadRequest}
 	InvalidEventId        = &AppError{"invalid-event-id", http.StatusNotFound}
+	InvalidToken          = &AppError{"invalid-token", http.StatusUnauthorized}
+	InvalidEmail          = &AppError{"invalid-email", http.StatusNotFound}
+	DuplicateEmail        = &AppError{"duplicate-email", http.StatusConflict}
 )
