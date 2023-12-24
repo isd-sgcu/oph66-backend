@@ -10,9 +10,6 @@ type User struct {
 	FirstName           string                `json:"first_name"`
 	LastName            string                `json:"last_name"`
 	Email               string                `json:"email"`
-	Password            string                `json:"password"`
-	HashedPassword      string                `json:"hashed_password"`
-	Salt                string                `json:"salt"`
 	School              string                `json:"school"`
 	BirthDate           string                `json:"birth_date"`
 	Address             string                `json:"address"`
