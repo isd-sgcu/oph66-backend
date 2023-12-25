@@ -36,5 +36,5 @@ jobs:
         with:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ github.ref_type == 'tag' && github.ref_name ||  github.sha }}
-          cache-from: type=registry,ref=${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
+          cache-from: type=gha,ref=${{ github.repository }}:buildcache
+          cache-to: type=gha,ref=${{ github.repository }}:buildcache,mode=max
