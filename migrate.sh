@@ -14,15 +14,19 @@ docker run \
 				DROP TABLE IF EXISTS schedules;
 				DROP TABLE IF EXISTS events;
 				DROP TABLE IF EXISTS faculties;
+				DROP TYPE IF EXISTS schedule_period;
+
+				CREATE TYPE schedule_period AS ENUM ('20-morning', '20-afternoon', '21-morning', '21-afternoon');
 
 				CREATE TABLE faculties (
 					code SMALLINT PRIMARY KEY,
 					name_en VARCHAR(128) NOT NULL,
 					name_th VARCHAR(128) NOT NULL
 				);
-				INSERT INTO faculties (code, name_en, name_th) VALUES (21, 'Faculty of Engineering', 'คณะวิศวกรรมศาสตร์');
-				INSERT INTO faculties (code, name_en, name_th) VALUES (23, 'Faculty of Science', 'คณะวิทยาศาสตร์');
-				INSERT INTO faculties (code, name_en, name_th) VALUES (34, 'Faculty of Law', 'คณะนิติศาสตร์');
+				INSERT INTO faculties (code, name_en, name_th) VALUES
+				(21, 'Faculty of Engineering', 'คณะวิศวกรรมศาสตร์'),
+				(23, 'Faculty of Science', 'คณะวิทยาศาสตร์'),
+				(34, 'Faculty of Law', 'คณะนิติศาสตร์');
 
         CREATE TABLE events (
 					id VARCHAR(128) PRIMARY KEY,
@@ -85,37 +89,56 @@ docker run \
 					event_id VARCHAR(128) REFERENCES events(id),
 					starts_at TIMESTAMP WITH TIME ZONE NOT NULL,
 					ends_at TIMESTAMP WITH TIME ZONE NOT NULL,
+					period schedule_period NOT NULL,
 					PRIMARY KEY (event_id, starts_at, ends_at)
 				);
-				INSERT INTO schedules (event_id, starts_at, ends_at) VALUES (
+				INSERT INTO schedules (event_id, starts_at, ends_at, period) VALUES (
 					'first-event',
 					'2024-01-20 03:00:00+00',
-					'2024-01-20 10:00:00+00'
+					'2024-01-20 05:00:00+00',
+					'20-morning'
 				),
 				(
 					'first-event',
+					'2024-01-21 06:00:00+00',
+					'2024-01-21 08:00:00+00',
+					'21-afternoon'
+				),
+				(
+					'second-event',
+					'2024-01-20 06:00:00+00',
+					'2024-01-20 08:00:00+00',
+					'20-afternoon'
+				),
+				(
+					'second-event',
 					'2024-01-21 03:00:00+00',
-					'2024-01-21 10:00:00+00'
-				),
-				(
-					'second-event',
-					'2024-01-20 02:00:00+00',
-					'2024-01-20 09:00:00+00'
-				),
-				(
-					'second-event',
-					'2024-01-21 02:00:00+00',
-					'2024-01-21 09:00:00+00'
+					'2024-01-21 05:00:00+00',
+					'21-morning'
 				),
 				(
 					'third-event',
 					'2024-01-20 02:00:00+00',
-					'2024-01-20 09:00:00+00'
+					'2024-01-20 05:00:00+00',
+					'20-morning'
+				),
+				(
+					'third-event',
+					'2024-01-20 06:00:00+00',
+					'2024-01-20 09:00:00+00',
+					'20-afternoon'
 				),
 				(
 					'third-event',
 					'2024-01-21 02:00:00+00',
-					'2024-01-21 09:00:00+00'
+					'2024-01-21 05:00:00+00',
+					'21-morning'
+				),
+				(
+					'third-event',
+					'2024-01-21 06:00:00+00',
+					'2024-01-21 09:00:00+00',
+					'21-afternoon'
 				);
         
 			\" | psql postgres://postgres:123456@host.docker.internal:5432/postgres
