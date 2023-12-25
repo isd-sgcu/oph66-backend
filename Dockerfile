@@ -10,9 +10,7 @@ COPY . .
 
 RUN go run github.com/google/wire/cmd/wire@latest ./...
 
-RUN CGO_ENABLED=0
-RUN GOOS=linux
-RUN go build cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build cmd/main.go
 
 # ==================== runner ====================
 FROM alpine:latest as runner
