@@ -2,11 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.1.0] - 2023-12-25
 
 ### ⛰️  Features
 
-- Init
 - Event detail feature (#2)
 - [**breaking**] Add `extra_info` on feature_flag (#3)
 
@@ -18,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### 🎨 Styling
 
 - Style cliff and changelog.md (#8)
+- Changelog order (#9)
 
 ### ⚙️ Miscellaneous Tasks
 
