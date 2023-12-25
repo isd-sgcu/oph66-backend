@@ -8,10 +8,10 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	auth "github.com/isd-sgcu/oph66-backend/internal/auth"
 	event "github.com/isd-sgcu/oph66-backend/internal/event"
 	featureflag "github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
-	auth "github.com/isd-sgcu/oph66-backend/internal/auth"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )

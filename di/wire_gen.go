@@ -44,8 +44,8 @@ func Init() (Container, error) {
 	featureflagCache := featureflag.NewCache(client, zapLogger)
 	featureflagHandler := featureflag.NewHandler(featureflagService, featureflagCache)
 	authRepository := auth.NewRepository(db)
-	authService := auth.NewService(authRepository, zapLogger)
-	authHandler := auth.NewHandler(authService, config, zapLogger)
+	authService := auth.NewService(authRepository, zapLogger, config)
+	authHandler := auth.NewHandler(authService, zapLogger)
 	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger)
 	return container, nil
 }

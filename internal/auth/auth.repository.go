@@ -5,10 +5,9 @@ import (
 )
 
 type Repository interface {
-	Create(result *User) error
-	GetByEmail(email string) (*User, error)
-	GetInterestedFacultiesByUserId(id uint) ([]InterestedFaculties, error)
-	GetDesiredRoundsByUserId(id uint) ([]DesiredRounds, error)
+	CreateUser(user *User) (*User, error)
+	UpdateUser(id uint, user *User) (*User, error)
+	GetUserByEmail(email string) (*User, error)
 }
 
 type repositoryImpl struct {
@@ -20,30 +19,67 @@ func NewRepository(db *gorm.DB) Repository {
 		db,
 	}
 }
-func (r *repositoryImpl) Create(user *User) error {
-	return r.db.Create(user).Error
-}
 
-func (r *repositoryImpl) GetByEmail(email string) (*User, error) {
-	var user User
-	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
+func (r *repositoryImpl) CreateUser(user *User) (*User, error) {
+	if err := r.db.Create(user).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return user, nil
 }
 
-func (r *repositoryImpl) GetInterestedFacultiesByUserId(id uint) ([]InterestedFaculties, error) {
-	var interestedFaculties []InterestedFaculties
-	if err := r.db.Where("user_id = ?", id).Find(&interestedFaculties).Error; err != nil {
+func (r *repositoryImpl) UpdateUser(id uint, user *User) (*User, error) {
+    tx := r.db.Begin()
+
+    var existingUser User
+    if err := tx.Where("id = ?", id).Preload("InterestedFaculties").Preload("DesiredRounds").First(&existingUser).Error; err != nil {
+        tx.Rollback()
+        return nil, err
+    }
+
+	if err := tx.Where("user_id = ?", id).Delete(&InterestedFaculties{}).Error; err != nil {
+		tx.Rollback()
 		return nil, err
 	}
-	return interestedFaculties, nil
+
+	if err := tx.Where("user_id = ?", id).Delete(&DesiredRounds{}).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+    existingUser.FirstName = user.FirstName
+    existingUser.LastName = user.LastName
+	existingUser.Email = user.Email
+	existingUser.School = user.School
+	existingUser.BirthDate = user.BirthDate
+	existingUser.Address = user.Address
+	existingUser.FromAbroad = user.FromAbroad
+	existingUser.Allergy = user.Allergy
+	existingUser.MedicalCondition = user.MedicalCondition
+	existingUser.JoinCUReason = user.JoinCUReason
+	existingUser.NewsSource = user.NewsSource
+	existingUser.Status = user.Status
+	existingUser.Grade = user.Grade
+
+    existingUser.InterestedFaculties = user.InterestedFaculties
+    existingUser.DesiredRounds = user.DesiredRounds
+
+    if err := tx.Save(&existingUser).Error; err != nil {
+        tx.Rollback()
+        return nil, err
+    }
+
+    if err := tx.Commit().Error; err != nil {
+        return nil, err
+    }
+
+    return &existingUser, nil
 }
 
-func (r *repositoryImpl) GetDesiredRoundsByUserId(id uint) ([]DesiredRounds, error) {
-	var desiredRounds []DesiredRounds
-	if err := r.db.Where("user_id = ?", id).Find(&desiredRounds).Error; err != nil {
-		return nil, err
-	}
-	return desiredRounds, nil
+func (r *repositoryImpl) GetUserByEmail(email string) (*User, error) {
+	var user *User
+    if err := r.db.Where("email = ?", email).Preload("InterestedFaculties").Preload("DesiredRounds").First(&user).Error; err != nil {
+        return nil, err
+    }
+
+    return user, nil
 }

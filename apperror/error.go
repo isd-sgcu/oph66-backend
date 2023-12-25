@@ -21,4 +21,5 @@ var (
 	InvalidToken          = &AppError{"invalid-token", http.StatusUnauthorized}
 	InvalidEmail          = &AppError{"invalid-email", http.StatusNotFound}
 	DuplicateEmail        = &AppError{"duplicate-email", http.StatusConflict}
+	Unauthorized          = &AppError{"unauthorized", http.StatusUnauthorized}
 )

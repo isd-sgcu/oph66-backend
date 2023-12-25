@@ -24,7 +24,7 @@ docker run \
 				INSERT INTO faculties (code, name_en, name_th) VALUES (23, 'Faculty of Science', 'คณะวิทยาศาสตร์');
 				INSERT INTO faculties (code, name_en, name_th) VALUES (34, 'Faculty of Law', 'คณะนิติศาสตร์');
 
-        CREATE TABLE events (
+        		CREATE TABLE events (
 					id VARCHAR(128) PRIMARY KEY,
 					name_en VARCHAR(128) NOT NULL,
 					name_th VARCHAR(128) NOT NULL,
@@ -118,12 +118,5 @@ docker run \
 					'2024-01-21 09:00:00+00'
 				);
 
-	CREATE TABLE desired_rounds (
-    id SERIAL PRIMARY KEY,
-    round VARCHAR(128) NOT NULL,
-    user_id BIGINT REFERENCES users(id)
-);
-
-        
 			\" | psql postgres://postgres:123456@host.docker.internal:5432/postgres
 		"

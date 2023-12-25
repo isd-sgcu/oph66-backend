@@ -1,16 +1,11 @@
 package auth
 
 import (
-	"context"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isd-sgcu/oph66-backend/cfgldr"
-	"github.com/dgrijalva/jwt-go"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/utils"
 	"go.uber.org/zap"
 )
 
@@ -22,141 +17,70 @@ type Handler interface {
 }
 
 type handlerImpl struct {
-	svc Service
-	cfg *cfgldr.Config
+	svc    Service
 	logger *zap.Logger
 }
 
-func NewHandler(svc Service, cfg *cfgldr.Config, logger *zap.Logger) Handler {
+func NewHandler(svc Service, logger *zap.Logger) Handler {
 	return &handlerImpl{
-		svc: svc,
-		cfg: cfg,
-		logger: logger,
+		svc,
+		logger,
 	}
 }
 
 func (h *handlerImpl) GoogleLogin(c *gin.Context) {
-	oauthConfig := h.initializeOAuthConfig()
-
-	url := oauthConfig.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	url, apperr := h.svc.GoogleLogin()
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		return
+	}
 	c.Redirect(http.StatusTemporaryRedirect, url)
+	c.JSON(http.StatusOK, gin.H{"message": "GoogleLogin successful"})
 }
 
 func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 	code := c.Query("code")
-	oauthConfig := h.initializeOAuthConfig()
-
-	token, err := oauthConfig.Exchange(context.Background(), code)
-	if err != nil {
-		h.logger.Error("Failed to exchange code for token", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to exchange code for token"})
+	token , apperr := h.svc.GoogleCallback(code)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
 		return
 	}
-
-	idToken := token.Extra("id_token")
-	if idToken == nil {
-		h.logger.Error("ID token not found")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "ID token not found"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"access_token": token.AccessToken,
-		"id_token":     idToken.(string), 
-	})
-}
-
-func (h *handlerImpl) initializeOAuthConfig() *oauth2.Config {
-	return &oauth2.Config{
-		ClientID:     h.cfg.OAuth2Config.ClientID,
-		ClientSecret: h.cfg.OAuth2Config.ClientSecret,
-		RedirectURL:  h.cfg.OAuth2Config.RedirectURL,
-		Scopes: h.cfg.OAuth2Config.Scopes,
-		Endpoint: google.Endpoint,
-	}
+	c.JSON(http.StatusOK, gin.H{"message": "GoogleCallback successful", "token": token})
 }
 
 func (h *handlerImpl) Register(c *gin.Context) {
-	var user User
+	var data RegisterDTO
 
-	if err := c.ShouldBindJSON(&user); err != nil {
-		h.logger.Error("Failed to bind JSON", zap.Error(err))
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind JSON"})
 		return
 	}
 
-	if err := h.svc.CreateUser(&user); err != nil {
-		h.logger.Error("Failed to create user", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+	user, apperr := h.svc.Register(&data)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Registration failed"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully", "user": user, "id": user.ID})
+	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully", "user": user})
 }
+
 
 func (h *handlerImpl) GetProfile(c *gin.Context) {
-    authHeader := c.GetHeader("Authorization")
-    if authHeader == "" {
-        h.logger.Error("Authorization header is missing")
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
-        return
-    }
-
-    email, err := h.extractEmailFromJWTToken(authHeader)
-    if err != nil {
-        h.logger.Error("Invalid token", zap.Error(err))
-        c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()}) // Return specific error message
-        return
-    }
-
-    user, err := h.svc.GetUserByEmail(email)
-	if err != nil {
-		h.logger.Error("Failed to get user", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		utils.ReturnError(c, apperror.Unauthorized)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
 		return
 	}
 
-	DesiredRounds, err := h.svc.GetDesiredRoundsByUserId(user.ID)
-	if err != nil {
-		h.logger.Error("Failed to get desired rounds", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get desired rounds"})
+	user, apperr := h.svc.GetUserFromJWTToken(authHeader) 
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user from JWT token"})
 		return
 	}
-
-	InterestedFaculties, err := h.svc.GetInterestedFacultiesByUserId(user.ID)
-	if err != nil {
-		h.logger.Error("Failed to get interested faculties", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get interested faculties"})
-		return
-	}
-	
-
-	user.DesiredRounds = DesiredRounds
-	user.InterestedFaculties = InterestedFaculties
 
 	c.JSON(http.StatusOK, gin.H{"user": user, "id": user.ID})
-}
-
-func (h *handlerImpl) extractEmailFromJWTToken(tokenString string) (string, *apperror.AppError) {
-	tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
-
-	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
-	if err != nil {
-		h.logger.Error("could not parse token", zap.Error(err))
-		return "", apperror.InvalidToken
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		h.logger.Error("invalid token claims")
-		return "", apperror.InvalidToken
-	}
-
-	email, ok := claims["email"].(string)
-	if !ok || email == "" {
-		h.logger.Error("email not found in token claims")
-		return "", apperror.InvalidToken
-	}
-
-	return email, nil
 }
