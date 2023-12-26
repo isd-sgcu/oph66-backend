@@ -59,3 +59,7 @@ func LoadConfig() (*Config, error) {
 		RedisConfig:    redisConfig,
 	}, nil
 }
+
+func (ac *AppConfig) IsDevelopment() bool {
+	return ac.Env == "development"
+}

@@ -1,8 +1,9 @@
 -- Create "feature_flags" table
 CREATE TABLE "feature_flags" (
     "key" character varying(50) NOT NULL,
-    "value" boolean NOT NULL,
+    "enabled" boolean NOT NULL,
     "cache_duration" integer NOT NULL,
+    "extra_info" JSONB NOT NULL,
     PRIMARY KEY ("key")
 );
 -- Create "users" table
@@ -69,10 +70,13 @@ CREATE TABLE "interested_faculties" (
 -- Create index "idx_interested_faculties_user_id" to table: "interested_faculties"
 CREATE INDEX "idx_interested_faculties_user_id" ON "interested_faculties" ("user_id");
 -- Create "schedules" table
+CREATE TYPE "schedule_period" AS ENUM ('20-morning', '20-afternoon', '21-morning', '21-afternoon');
+
 CREATE TABLE "schedules" (
     "event_id" character varying(128) NOT NULL,
     "starts_at" timestamptz NOT NULL,
     "ends_at" timestamptz NOT NULL,
+    "period" schedule_period NOT NULL,
     PRIMARY KEY ("event_id", "starts_at", "ends_at"),
     CONSTRAINT "schedules_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "events" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
