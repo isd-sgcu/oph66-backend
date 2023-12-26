@@ -8,15 +8,15 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
-	"google.golang.org/api/idtoken"
 	"golang.org/x/oauth2/google"
+	"google.golang.org/api/idtoken"
 )
 
 type Service interface {
-	GoogleLogin() (string, *apperror.AppError)
-	GoogleCallback(code string) (string, *apperror.AppError)
-	Register (data *RegisterDTO) (*User, *apperror.AppError)
-	GetUserFromJWTToken(tokenString string) (*User, *apperror.AppError)
+	GoogleLogin() (url string)
+	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
+	Register(ctx context.Context, data *RegisterDTO, tokenString string) (user *User, appErr *apperror.AppError)
+	GetUserFromJWTToken(ctx context.Context, tokenString string) (user *User, appErr *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -42,99 +42,108 @@ type serviceImpl struct {
 	oauthConfig *oauth2.Config
 }
 
-func (s *serviceImpl) GoogleLogin() (string, *apperror.AppError) {
-	url := s.oauthConfig.AuthCodeURL("state")
-	if url == "" {
-		s.logger.Error("Failed to get AuthCodeURL")
-		return "", apperror.InternalError
-	}
-	return url , nil
+func (s *serviceImpl) GoogleLogin() (url string) {
+	url = s.oauthConfig.AuthCodeURL("state")
+	return url
 }
 
-func (s *serviceImpl) GoogleCallback(code string) (string, *apperror.AppError) {
-	token, err := s.oauthConfig.Exchange(context.Background(), code)
+func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError) {
+	token, err := s.oauthConfig.Exchange(ctx, code)
 	if err != nil {
 		s.logger.Error("Failed to exchange code for token", zap.Error(err))
 		return "", apperror.InternalError
 	}
 
-	idToken := token.Extra("id_token")
-	if idToken == nil {
+	rawIdToken := token.Extra("id_token")
+	if rawIdToken == nil {
 		s.logger.Error("ID token not found")
 		return "", apperror.InternalError
 	}
 
-
-	return idToken.(string), nil
+	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(data *RegisterDTO) (*User, *apperror.AppError) {
-	user, err := s.repo.GetUserByEmail(data.Email)
-	dataUser := ConvertRegisterDTOToUser(data)
+func (s *serviceImpl) Register(ctx context.Context, data *RegisterDTO, tokenString string) (user *User, appErr *apperror.AppError) {
+	email, appErr := getEmailFromToken(ctx, s.logger, tokenString, s.cfg.OAuth2Config.ClientID)
+	if appErr != nil {
+		return nil, appErr
+	}
+
+	user, err := s.repo.GetUserByEmail(&User{}, email)
+
+	dataUser := ConvertRegisterDTOToUser(data, email)
 
 	if err == nil {
-		user, err := s.repo.UpdateUser(user.ID, dataUser)
+		user, err = s.repo.UpdateUser(user.ID, dataUser)
 		if err != nil {
 			s.logger.Error("Failed to update user", zap.Error(err))
 			return nil, apperror.InternalError
 		}
-		return user, nil
 	} else {
-		user, err := s.repo.CreateUser(dataUser)
+		user, err = s.repo.CreateUser(dataUser)
 		if err != nil {
 			s.logger.Error("Failed to create user", zap.Error(err))
 			return nil, apperror.InternalError
 		}
-		return user, nil
+	}
+
+	return user, nil
 }
-}
 
-func (s *serviceImpl) GetUserFromJWTToken(tokenString string) (*User, *apperror.AppError) {
-	if !strings.HasPrefix(tokenString, "Bearer ") {
-		return nil, apperror.InvalidToken
+func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString string) (user *User, appErr *apperror.AppError) {
+	email, appErr := getEmailFromToken(ctx, s.logger, tokenString, s.cfg.OAuth2Config.ClientID)
+	if appErr != nil {
+		return nil, appErr
 	}
 
-	tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
-
-	token, err := idtoken.Validate(context.Background(), tokenString, s.cfg.OAuth2Config.ClientID)
+	user, err := s.repo.GetUserByEmail(user, email)
 	if err != nil {
-		s.logger.Error("Failed to validate token", zap.Error(err))
-		return nil, apperror.InvalidToken
-	}
-
-	email, ok := token.Claims["email"].(string)
-	if !ok || email == "" {
-		s.logger.Error("Email not found in token claims")
-		return nil, apperror.InvalidToken
-	}
-
-	user, err := s.repo.GetUserByEmail(email)
-	if err != nil {
-		s.logger.Error("Could not retrieve user from database", zap.Error(err))
+		s.logger.Error("Failed to get user by email", zap.Error(err))
 		return nil, apperror.InternalError
 	}
 
 	return user, nil
 }
 
+func getEmailFromToken(ctx context.Context, logger *zap.Logger, tokenString string, ClientID string) (email string, appErr *apperror.AppError) {
+	if !strings.HasPrefix(tokenString, "Bearer ") {
+		return "", apperror.InvalidToken
+	}
 
-func ConvertRegisterDTOToUser(dto *RegisterDTO) *User {
+	tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
+
+	token, err := idtoken.Validate(ctx, tokenString, ClientID)
+	if err != nil {
+		logger.Error("Failed to validate token", zap.Error(err))
+		return "", apperror.InvalidToken
+	}
+
+	email, ok := token.Claims["email"].(string)
+	if !ok || email == "" {
+		logger.Error("Email not found in token claims")
+		return "", apperror.InvalidToken
+	}
+
+	return email, nil
+}
+
+func ConvertRegisterDTOToUser(dto *RegisterDTO, email string) *User {
 	return &User{
-		Gender:            dto.Gender,
-		FirstName:         dto.FirstName,
-		LastName:          dto.LastName,
-		Email:             dto.Email,
-		School:            dto.School,
-		BirthDate:         dto.BirthDate,
-		Address:           dto.Address,
-		FromAbroad:        dto.FromAbroad,
-		Allergy:           dto.Allergy,
-		MedicalCondition:  dto.MedicalCondition,
-		JoinCUReason:      dto.JoinCUReason,
-		NewsSource:        dto.NewsSource,
-		Status:            dto.Status,
-		Grade:             dto.Grade,
-		DesiredRounds:     dto.DesiredRounds,
+		Gender:              dto.Gender,
+		FirstName:           dto.FirstName,
+		LastName:            dto.LastName,
+		Email:               email,
+		School:              dto.School,
+		BirthDate:           dto.BirthDate,
+		Address:             dto.Address,
+		FromAbroad:          dto.FromAbroad,
+		Allergy:             dto.Allergy,
+		MedicalCondition:    dto.MedicalCondition,
+		JoinCUReason:        dto.JoinCUReason,
+		NewsSource:          dto.NewsSource,
+		Status:              dto.Status,
+		Grade:               dto.Grade,
+		DesiredRounds:       dto.DesiredRounds,
 		InterestedFaculties: dto.InterestedFaculties,
 	}
 }

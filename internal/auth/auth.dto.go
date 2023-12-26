@@ -4,7 +4,6 @@ type RegisterDTO struct {
 	Gender              string                `json:"gender"`
 	FirstName           string                `json:"first_name"`
 	LastName            string                `json:"last_name"`
-	Email               string                `json:"email"`
 	School              string                `json:"school"`
 	BirthDate           string                `json:"birth_date"`
 	Address             string                `json:"address"`
@@ -15,6 +14,6 @@ type RegisterDTO struct {
 	NewsSource          string                `json:"news_source"`
 	Status              string                `json:"status"`
 	Grade               string                `json:"grade"`
-	DesiredRounds       []DesiredRounds       `gorm:"foreignKey:UserID"` // One-to-many relationship
-	InterestedFaculties []InterestedFaculties `gorm:"foreignKey:UserID"` // One-to-many relationship
+	DesiredRounds       []DesiredRound        `json:"desired_rounds"`
+	InterestedFaculties []InterestedFaculty   `json:"interested_faculties"`
 }
