@@ -45,13 +45,13 @@ type DesiredRound struct {
 }
 
 type department struct {
-	Code    string `gorm:"primaryKey"      json:"code"`
-	Name    string `json:"name"`
+	Code string `gorm:"primaryKey"      json:"code"`
+	Name string `json:"name"`
 }
 
 type section struct {
-	Code       string `gorm:"primaryKey"      json:"code"`
-	Name       string `json:"name"`
+	Code string `gorm:"primaryKey"      json:"code"`
+	Name string `json:"name"`
 }
 
 type round struct {
