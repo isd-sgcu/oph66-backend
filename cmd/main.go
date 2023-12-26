@@ -15,7 +15,7 @@ func main() {
 
 	container.Logger.Info("init container successfully")
 
-	if container.Config.AppConfig.Env == "development" {
+	if !container.Config.AppConfig.IsDevelopment() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.Default()
