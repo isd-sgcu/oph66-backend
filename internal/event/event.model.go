@@ -7,16 +7,16 @@ import (
 )
 
 type Event struct {
-	Id                  string                     `json:"id" gorm:"primaryKey"`
-	Name                bilingual_field.Bilingual  `json:"name" gorm:"embedded;embeddedPrefix:name_"`
-	FacultyCode         int                        `json:"-" gorm:"references:Code"`
+	Id                  string                     `gorm:"primaryKey"                           json:"id"`
+	Name                bilingual_field.Bilingual  `gorm:"embedded;embeddedPrefix:name_"        json:"name"`
+	FacultyCode         int                        `gorm:"references:Code"                      json:"-"`
 	Faculty             faculty.Faculty            `json:"faculty"`
-	Department          bilingual_field.Bilingual  `json:"department" gorm:"embedded;embeddedPrefix:department_"`
+	Department          bilingual_field.Bilingual  `gorm:"embedded;embeddedPrefix:department_"  json:"department"`
 	RequireRegistration bool                       `json:"require_registration"`
 	MaxCapacity         int                        `json:"max_capacity"`
-	Schedules           []schedule.Schedule        `json:"schedules" gorm:"foreignKey:event_id"`
-	Location            bilingual_field.Bilingual  `json:"location" gorm:"embedded;embeddedPrefix:location_"`
-	Description         *bilingual_field.Bilingual `json:"description,omitempty" gorm:"embedded;embeddedPrefix:description_"`
+	Schedules           []schedule.Schedule        `gorm:"foreignKey:event_id"                  json:"schedules"`
+	Location            bilingual_field.Bilingual  `gorm:"embedded;embeddedPrefix:location_"    json:"location"`
+	Description         *bilingual_field.Bilingual `gorm:"embedded;embeddedPrefix:description_" json:"description,omitempty"`
 }
 
 func (m Event) TableName() string {
