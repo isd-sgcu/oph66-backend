@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2023-12-26
+
+### ⛰️  Features
+
+- Add event schedule (#10)
+- DB migration (#12)
+
+### ⚙️ Miscellaneous Tasks
+
+- Update ci rule, database key, migration, makefile
+- Bump `golangci-lint` version (#14)
+
 ## [0.1.0] - 2023-12-25
 
 ### ⛰️  Features
