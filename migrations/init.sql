@@ -1,7 +1,7 @@
 -- Create "feature_flags" table
 CREATE TABLE "feature_flags" (
     "key" character varying(50) NOT NULL,
-    "value" boolean NOT NULL,
+    "enabled" boolean NOT NULL,
     "cache_duration" integer NOT NULL,
     PRIMARY KEY ("key")
 );
