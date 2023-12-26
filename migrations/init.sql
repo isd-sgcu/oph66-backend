@@ -51,17 +51,13 @@ CREATE TABLE "faculties" (
 CREATE TABLE "departments" (
     "code" smallint NOT NULL,
     "name" character varying(128) NOT NULL,
-    "faculty_code" smallint NOT NULL,
-    PRIMARY KEY ("code"),
-    CONSTRAINT "departments_faculty_code_fkey" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
+    PRIMARY KEY ("code")
 );
 -- Create "sections" table
 CREATE TABLE "sections" (
     "code" smallint NOT NULL,
     "name" character varying(128) NOT NULL,
-    "department_code" smallint NOT NULL,
-    PRIMARY KEY ("code"),
-    CONSTRAINT "sections_department_code_fkey" FOREIGN KEY ("department_code") REFERENCES "departments" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
+    PRIMARY KEY ("code")
 );
 -- Create "events" table
 CREATE TABLE "events" (
@@ -94,8 +90,12 @@ CREATE TABLE "interested_faculties" (
 -- Create index "idx_interested_faculties_user_id" to table: "interested_faculties"
 CREATE INDEX "idx_interested_faculties_user_id" ON "interested_faculties" ("user_id");
 -- Create "schedules" table
-CREATE TYPE "schedule_period" AS ENUM ('20-morning', '20-afternoon', '21-morning', '21-afternoon');
-
+CREATE TYPE "schedule_period" AS ENUM (
+    '20-morning',
+    '20-afternoon',
+    '21-morning',
+    '21-afternoon'
+);
 CREATE TABLE "schedules" (
     "event_id" character varying(128) NOT NULL,
     "starts_at" timestamptz NOT NULL,
