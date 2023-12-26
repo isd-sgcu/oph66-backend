@@ -21,15 +21,17 @@ type Container struct {
 	FeatureflagHandler featureflag.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
+	CorsHandler        cfgldr.CorsHandler
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger *zap.Logger) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
 		featureflagHandler,
 		config,
 		logger,
+		corsHandler,
 	}
 }
 
@@ -37,6 +39,7 @@ func Init() (Container, error) {
 	wire.Build(
 		newContainer,
 		cfgldr.LoadConfig,
+		cfgldr.MakeCorsConfig,
 		event.NewHandler,
 		event.NewService,
 		event.NewRepository,
