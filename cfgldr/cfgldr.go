@@ -8,6 +8,7 @@ type Config struct {
 	DatabaseConfig DatabaseConfig
 	AppConfig      AppConfig
 	RedisConfig    RedisConfig
+	CorsConfig     CorsConfig
 }
 
 type DatabaseConfig struct {
@@ -23,6 +24,10 @@ type RedisConfig struct {
 	Addr     string `mapstructure:"ADDR"`
 	Port     string `mapstructure:"PORT"`
 	Password string `mapstructure:"PASSWORD"`
+}
+
+type CorsConfig struct {
+	AllowOrigins string `mapstructure:"ORIGINS"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -53,10 +58,20 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	corsConfigLdr := viper.New()
+	corsConfigLdr.SetEnvPrefix("CORS")
+	corsConfigLdr.AutomaticEnv()
+	dbCfgLdr.AllowEmptyEnv(false)
+	corsConfig := CorsConfig{}
+	if err := corsConfigLdr.Unmarshal(&corsConfig); err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		DatabaseConfig: dbConfig,
 		AppConfig:      appConfig,
 		RedisConfig:    redisConfig,
+		CorsConfig:     corsConfig,
 	}, nil
 }
 

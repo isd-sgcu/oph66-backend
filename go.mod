@@ -3,6 +3,7 @@ module github.com/isd-sgcu/oph66-backend
 go 1.21.5
 
 require (
+	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/wire v0.5.0
 	github.com/redis/go-redis/v9 v9.3.0
