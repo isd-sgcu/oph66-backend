@@ -8,7 +8,7 @@ import (
 func InitLogger(cfg *cfgldr.Config) *zap.Logger {
 	var logger *zap.Logger
 
-	if cfg.AppConfig.Env == "development" {
+	if cfg.AppConfig.IsDevelopment() {
 		logger = zap.Must(zap.NewDevelopment())
 	} else {
 		logger = zap.Must(zap.NewProduction())

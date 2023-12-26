@@ -1,0 +1,12 @@
+run:
+  # Default: 1m
+  timeout: 5m
+
+linters:
+  fast: true
+  enable:
+    - gofmt
+    - nonamedreturns
+    - perfsprint
+    - tagalign
+    - gci

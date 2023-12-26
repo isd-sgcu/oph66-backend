@@ -78,3 +78,7 @@ func LoadConfig() (*Config, error) {
 		OAuth2Config:   oauth2Config,
 	}, nil
 }
+
+func (ac *AppConfig) IsDevelopment() bool {
+	return ac.Env == "development"
+}

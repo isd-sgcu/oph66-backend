@@ -6,6 +6,8 @@ services:
     container_name: oph66-db
     environment:
       POSTGRES_PASSWORD: "123456"
+    ports:
+      - 5432:5432
     volumes:
       - ./data/db:/var/lib/postgresql/data
     networks:
@@ -17,21 +19,8 @@ services:
     command:
       - redis-server
       - --requirepass 123456
-    networks:
-      - oph66
-
-  backend:
-    container_name: oph66-backend
-    build: .
     ports:
-      - 3000:3000
-    environment:
-      - DB_URL=postgres://postgres:123456@oph66-db:5432/postgres
-      - REDIS_ADDR=oph66-cache
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=123456
-      - APP_PORT=3000
-      - APP_ENV=development
+      - 6379:6379
     networks:
       - oph66
 
