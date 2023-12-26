@@ -65,7 +65,6 @@ func (h *handlerImpl) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully", "user": user})
 }
 
-
 func (h *handlerImpl) GetProfile(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
@@ -73,7 +72,7 @@ func (h *handlerImpl) GetProfile(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
 	}
 
-	user, apperr := h.svc.GetUserFromJWTToken(c, authHeader) 
+	user, apperr := h.svc.GetUserFromJWTToken(c, authHeader)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user from JWT token"})

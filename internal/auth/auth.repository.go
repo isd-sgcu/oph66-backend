@@ -48,6 +48,6 @@ func (r *repositoryImpl) GetUserByEmail(user *User, email string) (*User, error)
 	if err := r.db.Where("email = ?", email).Preload("DesiredRounds").Preload("InterestedFaculties").First(&user).Error; err != nil {
 		return nil, err
 	}
-	
+
 	return user, nil
 }
