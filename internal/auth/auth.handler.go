@@ -40,43 +40,52 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 		utils.ReturnError(c, apperr)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "GoogleCallback successful", "token": token})
+	response := GoogleCallbackResponse{
+		Token: token,
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *handlerImpl) Register(c *gin.Context) {
-	var data RegisterDTO
+	var data RegisterRequestDTO
+	var user User
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
-	}
-
-	if err := c.ShouldBindJSON(&data); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to bind JSON"})
 		return
 	}
 
-	user, apperr := h.svc.Register(c, &data, authHeader)
-	if apperr != nil {
-		utils.ReturnError(c, apperr)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Registration failed"})
+	if err := c.ShouldBindJSON(&data); err != nil {
+		utils.ReturnError(c, apperror.BadRequest)
+		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully", "user": user})
+	apperr := h.svc.Register(c, &data, authHeader, &user)
+	if apperr != nil {
+		utils.ReturnError(c, apperr)
+	}
+	response := RegisterResponse{
+		User: &user,
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *handlerImpl) GetProfile(c *gin.Context) {
+	var user User
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
 	}
 
-	user, apperr := h.svc.GetUserFromJWTToken(c, authHeader)
+	apperr := h.svc.GetUserFromJWTToken(c, authHeader, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user from JWT token"})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"user": user, "id": user.ID})
+	response := GetProfileResponse{
+		User: &user,
+	}
+
+	c.JSON(http.StatusOK, response)
 }

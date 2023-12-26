@@ -25,14 +25,20 @@ CREATE TABLE "users" (
     "grade" text NULL,
     PRIMARY KEY ("id")
 );
--- Create "desired_round" table
-CREATE TABLE "desired_round" (
+-- Create "desired_rounds" table
+CREATE TABLE "desired_rounds" (
     "id" serial NOT NULL,
     "order" integer NOT NULL,
-    "round" character varying(128) NOT NULL,
     "user_id" bigint NULL,
+    "round_code" smallint NULL,
     PRIMARY KEY ("id"),
     CONSTRAINT "desired_round_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+-- Create "rounds" table
+CREATE TABLE "rounds" (
+    "code" smallint NOT NULL,
+    "name" character varying(128) NOT NULL,
+    PRIMARY KEY ("code")
 );
 -- Create "faculties" table
 CREATE TABLE "faculties" (
@@ -40,6 +46,22 @@ CREATE TABLE "faculties" (
     "name_en" character varying(128) NOT NULL,
     "name_th" character varying(128) NOT NULL,
     PRIMARY KEY ("code")
+);
+-- Create "departments" table
+CREATE TABLE "departments" (
+    "code" smallint NOT NULL,
+    "name" character varying(128) NOT NULL,
+    "faculty_code" smallint NOT NULL,
+    PRIMARY KEY ("code"),
+    CONSTRAINT "departments_faculty_code_fkey" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+-- Create "sections" table
+CREATE TABLE "sections" (
+    "code" smallint NOT NULL,
+    "name" character varying(128) NOT NULL,
+    "department_code" smallint NOT NULL,
+    PRIMARY KEY ("code"),
+    CONSTRAINT "sections_department_code_fkey" FOREIGN KEY ("department_code") REFERENCES "departments" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 -- Create "events" table
 CREATE TABLE "events" (
@@ -58,19 +80,19 @@ CREATE TABLE "events" (
     PRIMARY KEY ("id"),
     CONSTRAINT "events_faculty_code_fkey" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
--- Create "interested_faculty" table
-CREATE TABLE "interested_faculty" (
+-- Create "interested_faculties" table
+CREATE TABLE "interested_faculties" (
     "id" bigserial NOT NULL,
     "order" integer NOT NULL,
-    "faculty" text NULL,
-    "department" text NULL,
-    "section" text NULL,
     "user_id" bigint NULL,
+    "faculty_code" smallint NOT NULL,
+    "department_code" smallint NOT NULL,
+    "section_code" smallint NOT NULL,
     PRIMARY KEY ("id"),
-    CONSTRAINT "fk_users_interested_faculty" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
+    CONSTRAINT "fk_users_interested_faculties" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
--- Create index "idx_interested_faculty_user_id" to table: "interested_faculty"
-CREATE INDEX "idx_interested_faculty_user_id" ON "interested_faculty" ("user_id");
+-- Create index "idx_interested_faculties_user_id" to table: "interested_faculties"
+CREATE INDEX "idx_interested_faculties_user_id" ON "interested_faculties" ("user_id");
 -- Create "schedules" table
 CREATE TYPE "schedule_period" AS ENUM ('20-morning', '20-afternoon', '21-morning', '21-afternoon');
 

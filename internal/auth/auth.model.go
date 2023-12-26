@@ -1,5 +1,9 @@
 package auth
 
+import (
+	"github.com/isd-sgcu/oph66-backend/internal/faculty"
+)
+
 type User struct {
 	ID                  uint                `gorm:"primaryKey;autoIncrement" json:"id"`
 	Gender              string              `json:"gender"`
@@ -21,19 +25,40 @@ type User struct {
 }
 
 type InterestedFaculty struct {
-	ID         uint   `gorm:"primaryKey;autoIncrement" json:"id"`
-	Order      uint   `json:"order"`
-	Faculty    string `json:"faculty"`
-	Department string `json:"department"`
-	Section    string `json:"section"`
-	UserID     uint   `gorm:"index"`
+	ID             uint            `gorm:"primaryKey;autoIncrement"                  json:"id"`
+	Order          uint            `json:"order"`
+	Faculty        faculty.Faculty `gorm:"foreignKey:FacultyCode;references:Code"    json:"faculty"`
+	Department     department      `gorm:"foreignKey:DepartmentCode;references:Code" json:"department"`
+	Section        section         `gorm:"foreignKey:SectionCode;references:Code"    json:"section"`
+	FacultyCode    string          `json:"-"`
+	DepartmentCode string          `json:"-"`
+	SectionCode    string          `json:"-"`
+	UserID         uint            `gorm:"index"`
 }
 
 type DesiredRound struct {
-	ID     uint   `gorm:"primaryKey;autoIncrement" json:"id"`
-	Order  uint   `json:"order"`
-	Round  string `json:"round"`
-	UserID uint   `gorm:"index"`
+	ID        uint   `gorm:"primaryKey;autoIncrement"             json:"id"`
+	Order     uint   `json:"order"`
+	Round     round  `gorm:"foreignKey:RoundCode;references:Code" json:"round"`
+	UserID    uint   `gorm:"index"`
+	RoundCode string `json:"-"`
+}
+
+type department struct {
+	Code    string `gorm:"primaryKey"      json:"code"`
+	Name    string `json:"name"`
+	Faculty string `gorm:"foreignKey:Code" json:"faculty"`
+}
+
+type section struct {
+	Code       string `gorm:"primaryKey"      json:"code"`
+	Name       string `json:"name"`
+	Department string `gorm:"foreignKey:Code" json:"department"`
+}
+
+type round struct {
+	Code string `gorm:"primaryKey" json:"code"`
+	Name string `json:"name"`
 }
 
 func (u *User) TableName() string {
@@ -41,9 +66,9 @@ func (u *User) TableName() string {
 }
 
 func (d *DesiredRound) TableName() string {
-	return "desired_round"
+	return "desired_rounds"
 }
 
 func (i *InterestedFaculty) TableName() string {
-	return "interested_faculty"
+	return "interested_faculties"
 }

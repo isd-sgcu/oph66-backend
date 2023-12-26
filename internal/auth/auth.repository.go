@@ -5,9 +5,9 @@ import (
 )
 
 type Repository interface {
-	CreateUser(user *User) (*User, error)
-	UpdateUser(id uint, user *User) (*User, error)
-	GetUserByEmail(user *User, email string) (*User, error)
+	CreateUser(user *User) error
+	UpdateUser(user *User) error
+	GetUserByEmail(user *User, email string) error
 }
 
 type repositoryImpl struct {
@@ -20,34 +20,22 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repositoryImpl) CreateUser(user *User) (*User, error) {
-	if err := r.db.Create(&user).Error; err != nil {
-		return nil, err
-	}
-	return user, nil
+func (r *repositoryImpl) CreateUser(user *User) error {
+	return r.db.Create(&user).Error
 }
 
-func (r *repositoryImpl) UpdateUser(id uint, user *User) (*User, error) {
-	user.ID = id
+func (r *repositoryImpl) UpdateUser(user *User) error {
 	if err := r.db.Model(&user).Association("DesiredRounds").Replace(&user.DesiredRounds); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := r.db.Model(&user).Association("InterestedFaculties").Replace(&user.InterestedFaculties); err != nil {
-		return nil, err
+		return err
 	}
 
-	if err := r.db.Model(&user).Where("id = ?", id).Updates(&user).Error; err != nil {
-		return nil, err
-	}
-
-	return user, nil
+	return r.db.Model(&user).Where("id = ?", user.ID).Updates(&user).Error
 }
 
-func (r *repositoryImpl) GetUserByEmail(user *User, email string) (*User, error) {
-	if err := r.db.Where("email = ?", email).Preload("DesiredRounds").Preload("InterestedFaculties").First(&user).Error; err != nil {
-		return nil, err
-	}
-
-	return user, nil
+func (r *repositoryImpl) GetUserByEmail(user *User, email string) error {
+	return r.db.Preload("DesiredRounds").Preload("DesiredRounds.Round").Preload("InterestedFaculties").Preload("InterestedFaculties.Faculty").Preload("InterestedFaculties.Department").Preload("InterestedFaculties.Section").Where("email = ?", email).First(&user).Error
 }

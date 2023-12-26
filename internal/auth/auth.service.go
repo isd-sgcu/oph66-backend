@@ -15,8 +15,8 @@ import (
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(ctx context.Context, data *RegisterDTO, tokenString string) (user *User, appErr *apperror.AppError)
-	GetUserFromJWTToken(ctx context.Context, tokenString string) (user *User, appErr *apperror.AppError)
+	Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *User) (appErr *apperror.AppError)
+	GetUserFromJWTToken(ctx context.Context, tokenString string, user *User) (appErr *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -63,49 +63,48 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(ctx context.Context, data *RegisterDTO, tokenString string) (user *User, appErr *apperror.AppError) {
-	email, appErr := getEmailFromToken(ctx, s.logger, tokenString, s.cfg.OAuth2Config.ClientID)
+func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *User) (appErr *apperror.AppError) {
+	email, appErr := getEmailFromToken(ctx, tokenString, s.cfg.OAuth2Config.ClientID)
 	if appErr != nil {
-		return nil, appErr
+		return appErr
 	}
 
-	user, err := s.repo.GetUserByEmail(&User{}, email)
-
-	dataUser := ConvertRegisterDTOToUser(data, email)
+	err := s.repo.GetUserByEmail(user, email)
+	ConvertRegisterRequestDTOToUser(data, email, user.ID, user)
 
 	if err == nil {
-		user, err = s.repo.UpdateUser(user.ID, dataUser)
+		err = s.repo.UpdateUser(user)
 		if err != nil {
 			s.logger.Error("Failed to update user", zap.Error(err))
-			return nil, apperror.InternalError
+			return apperror.InternalError
 		}
 	} else {
-		user, err = s.repo.CreateUser(dataUser)
+		err = s.repo.CreateUser(user)
 		if err != nil {
 			s.logger.Error("Failed to create user", zap.Error(err))
-			return nil, apperror.InternalError
+			return apperror.InternalError
 		}
 	}
 
-	return user, nil
+	return nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString string) (user *User, appErr *apperror.AppError) {
-	email, appErr := getEmailFromToken(ctx, s.logger, tokenString, s.cfg.OAuth2Config.ClientID)
+func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString string, user *User) (appErr *apperror.AppError) {
+	email, appErr := getEmailFromToken(ctx, tokenString, s.cfg.OAuth2Config.ClientID)
 	if appErr != nil {
-		return nil, appErr
+		return appErr
 	}
 
-	user, err := s.repo.GetUserByEmail(user, email)
+	err := s.repo.GetUserByEmail(user, email)
 	if err != nil {
 		s.logger.Error("Failed to get user by email", zap.Error(err))
-		return nil, apperror.InternalError
+		return apperror.InternalError
 	}
 
-	return user, nil
+	return nil
 }
 
-func getEmailFromToken(ctx context.Context, logger *zap.Logger, tokenString string, ClientID string) (email string, appErr *apperror.AppError) {
+func getEmailFromToken(ctx context.Context, tokenString string, ClientID string) (email string, appErr *apperror.AppError) {
 	if !strings.HasPrefix(tokenString, "Bearer ") {
 		return "", apperror.InvalidToken
 	}
@@ -114,36 +113,54 @@ func getEmailFromToken(ctx context.Context, logger *zap.Logger, tokenString stri
 
 	token, err := idtoken.Validate(ctx, tokenString, ClientID)
 	if err != nil {
-		logger.Error("Failed to validate token", zap.Error(err))
 		return "", apperror.InvalidToken
 	}
 
 	email, ok := token.Claims["email"].(string)
 	if !ok || email == "" {
-		logger.Error("Email not found in token claims")
 		return "", apperror.InvalidToken
 	}
 
 	return email, nil
 }
 
-func ConvertRegisterDTOToUser(dto *RegisterDTO, email string) *User {
-	return &User{
-		Gender:              dto.Gender,
-		FirstName:           dto.FirstName,
-		LastName:            dto.LastName,
-		Email:               email,
-		School:              dto.School,
-		BirthDate:           dto.BirthDate,
-		Address:             dto.Address,
-		FromAbroad:          dto.FromAbroad,
-		Allergy:             dto.Allergy,
-		MedicalCondition:    dto.MedicalCondition,
-		JoinCUReason:        dto.JoinCUReason,
-		NewsSource:          dto.NewsSource,
-		Status:              dto.Status,
-		Grade:               dto.Grade,
-		DesiredRounds:       dto.DesiredRounds,
-		InterestedFaculties: dto.InterestedFaculties,
+func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string, id uint, user *User) {
+	user.ID = id
+	user.Gender = dto.Gender
+	user.FirstName = dto.FirstName
+	user.LastName = dto.LastName
+	user.Email = email
+	user.School = dto.School
+	user.BirthDate = dto.BirthDate
+	user.Address = dto.Address
+	user.FromAbroad = dto.FromAbroad
+	user.Allergy = dto.Allergy
+	user.MedicalCondition = dto.MedicalCondition
+	user.JoinCUReason = dto.JoinCUReason
+	user.NewsSource = dto.NewsSource
+	user.Status = dto.Status
+	user.Grade = dto.Grade
+	user.DesiredRounds = make([]DesiredRound, len(dto.DesiredRounds))
+	user.InterestedFaculties = make([]InterestedFaculty, len(dto.InterestedFaculties))
+	for i, desiredRound := range dto.DesiredRounds {
+		user.DesiredRounds[i] = ConvertDesiredInfoToDesiredRound(&desiredRound, user)
 	}
+	for i, interestedFaculty := range dto.InterestedFaculties {
+		user.InterestedFaculties[i] = ConvertFacultyInfoToInterestedFaculty(&interestedFaculty, user)
+	}
+}
+
+func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *User) (desiredRound DesiredRound) {
+	desiredRound.Order = dto.Order
+	desiredRound.RoundCode = dto.Code
+	return desiredRound
+}
+
+func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *User) (interestedFaculty InterestedFaculty) {
+	interestedFaculty.Order = dto.Order
+	interestedFaculty.FacultyCode = dto.FacultyCode
+	interestedFaculty.DepartmentCode = dto.DepartmentCode
+	interestedFaculty.SectionCode = dto.SectionCode
+	interestedFaculty.UserID = user.ID
+	return interestedFaculty
 }
