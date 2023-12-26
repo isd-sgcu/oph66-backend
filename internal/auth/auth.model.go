@@ -9,7 +9,7 @@ type User struct {
 	Gender              string              `json:"gender"`
 	FirstName           string              `json:"first_name"`
 	LastName            string              `json:"last_name"`
-	Email               string              `json:"email"`
+	Email               string              `gorm:"index"                    json:"email"`
 	School              string              `json:"school"`
 	BirthDate           string              `json:"birth_date"`
 	Address             string              `json:"address"`
@@ -28,8 +28,8 @@ type InterestedFaculty struct {
 	ID             uint            `gorm:"primaryKey;autoIncrement"                  json:"id"`
 	Order          uint            `json:"order"`
 	Faculty        faculty.Faculty `gorm:"foreignKey:FacultyCode;references:Code"    json:"faculty"`
-	Department     department      `gorm:"foreignKey:DepartmentCode;references:Code" json:"department"`
-	Section        section         `gorm:"foreignKey:SectionCode;references:Code"    json:"section"`
+	Department     Department      `gorm:"foreignKey:DepartmentCode;references:Code" json:"department"`
+	Section        Section         `gorm:"foreignKey:SectionCode;references:Code"    json:"section"`
 	FacultyCode    string          `json:"-"`
 	DepartmentCode string          `json:"-"`
 	SectionCode    string          `json:"-"`
@@ -39,22 +39,22 @@ type InterestedFaculty struct {
 type DesiredRound struct {
 	ID        uint   `gorm:"primaryKey;autoIncrement"             json:"id"`
 	Order     uint   `json:"order"`
-	Round     round  `gorm:"foreignKey:RoundCode;references:Code" json:"round"`
+	Round     Round  `gorm:"foreignKey:RoundCode;references:Code" json:"round"`
 	UserID    uint   `gorm:"index"`
 	RoundCode string `json:"-"`
 }
 
-type department struct {
+type Department struct {
 	Code string `gorm:"primaryKey" json:"code"`
 	Name string `json:"name"`
 }
 
-type section struct {
+type Section struct {
 	Code string `gorm:"primaryKey" json:"code"`
 	Name string `json:"name"`
 }
 
-type round struct {
+type Round struct {
 	Code string `gorm:"primaryKey" json:"code"`
 	Name string `json:"name"`
 }

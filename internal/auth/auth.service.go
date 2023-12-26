@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"strings"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
@@ -57,7 +56,7 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	rawIdToken := token.Extra("id_token")
 	if rawIdToken == nil {
 		s.logger.Error("ID token not found")
-		return "", apperror.InternalError
+		return "", apperror.ServiceUnavailable
 	}
 
 	return rawIdToken.(string), nil
@@ -70,20 +69,16 @@ func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, to
 	}
 
 	err := s.repo.GetUserByEmail(user, email)
-	ConvertRegisterRequestDTOToUser(data, email, user.ID, user)
-
-	if err == nil {
-		err = s.repo.UpdateUser(user)
-		if err != nil {
-			s.logger.Error("Failed to update user", zap.Error(err))
-			return apperror.InternalError
-		}
-	} else {
+	if err != nil {
+		user = ConvertRegisterRequestDTOToUser(data, email, 0)
 		err = s.repo.CreateUser(user)
 		if err != nil {
 			s.logger.Error("Failed to create user", zap.Error(err))
 			return apperror.InternalError
 		}
+	} else {
+		s.logger.Error("User already exists")
+		return apperror.DuplicateEmail
 	}
 
 	return nil
@@ -98,19 +93,13 @@ func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString strin
 	err := s.repo.GetUserByEmail(user, email)
 	if err != nil {
 		s.logger.Error("Failed to get user by email", zap.Error(err))
-		return apperror.InternalError
+		return apperror.UserNotFound
 	}
 
 	return nil
 }
 
 func getEmailFromToken(ctx context.Context, tokenString string, ClientID string) (email string, appErr *apperror.AppError) {
-	if !strings.HasPrefix(tokenString, "Bearer ") {
-		return "", apperror.InvalidToken
-	}
-
-	tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
-
 	token, err := idtoken.Validate(ctx, tokenString, ClientID)
 	if err != nil {
 		return "", apperror.InvalidToken
@@ -122,45 +111,4 @@ func getEmailFromToken(ctx context.Context, tokenString string, ClientID string)
 	}
 
 	return email, nil
-}
-
-func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string, id uint, user *User) {
-	user.ID = id
-	user.Gender = dto.Gender
-	user.FirstName = dto.FirstName
-	user.LastName = dto.LastName
-	user.Email = email
-	user.School = dto.School
-	user.BirthDate = dto.BirthDate
-	user.Address = dto.Address
-	user.FromAbroad = dto.FromAbroad
-	user.Allergy = dto.Allergy
-	user.MedicalCondition = dto.MedicalCondition
-	user.JoinCUReason = dto.JoinCUReason
-	user.NewsSource = dto.NewsSource
-	user.Status = dto.Status
-	user.Grade = dto.Grade
-	user.DesiredRounds = make([]DesiredRound, len(dto.DesiredRounds))
-	user.InterestedFaculties = make([]InterestedFaculty, len(dto.InterestedFaculties))
-	for i, desiredRound := range dto.DesiredRounds {
-		user.DesiredRounds[i] = ConvertDesiredInfoToDesiredRound(&desiredRound, user)
-	}
-	for i, interestedFaculty := range dto.InterestedFaculties {
-		user.InterestedFaculties[i] = ConvertFacultyInfoToInterestedFaculty(&interestedFaculty, user)
-	}
-}
-
-func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *User) (desiredRound DesiredRound) {
-	desiredRound.Order = dto.Order
-	desiredRound.RoundCode = dto.Code
-	return desiredRound
-}
-
-func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *User) (interestedFaculty InterestedFaculty) {
-	interestedFaculty.Order = dto.Order
-	interestedFaculty.FacultyCode = dto.FacultyCode
-	interestedFaculty.DepartmentCode = dto.DepartmentCode
-	interestedFaculty.SectionCode = dto.SectionCode
-	interestedFaculty.UserID = user.ID
-	return interestedFaculty
 }

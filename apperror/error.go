@@ -22,4 +22,6 @@ var (
 	InvalidEmail          = &AppError{"invalid-email", http.StatusNotFound}
 	DuplicateEmail        = &AppError{"duplicate-email", http.StatusConflict}
 	Unauthorized          = &AppError{"unauthorized", http.StatusUnauthorized}
+	ServiceUnavailable    = &AppError{"service-unavailable", http.StatusServiceUnavailable}
+	UserNotFound          = &AppError{"user-not-found", http.StatusNotFound}
 )

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
@@ -54,6 +55,11 @@ func (h *handlerImpl) Register(c *gin.Context) {
 		utils.ReturnError(c, apperror.Unauthorized)
 		return
 	}
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		utils.ReturnError(c, apperror.InvalidToken)
+		return
+	}
+	authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
@@ -76,11 +82,19 @@ func (h *handlerImpl) GetProfile(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
+		return
 	}
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		utils.ReturnError(c, apperror.InvalidToken)
+		return
+	}
+
+	authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
 
 	apperr := h.svc.GetUserFromJWTToken(c, authHeader, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
+		return
 	}
 
 	response := GetProfileResponse{
