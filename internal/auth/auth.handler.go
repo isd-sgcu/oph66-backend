@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"github.com/isd-sgcu/oph66-backend/utils"
 	"go.uber.org/zap"
 )
@@ -82,7 +83,7 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 // @Failure 498 {object} auth.RegisterInvalidToken
 func (h *handlerImpl) Register(c *gin.Context) {
 	var data RegisterRequestDTO
-	var user User
+	var user model.User
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
@@ -124,7 +125,7 @@ func (h *handlerImpl) Register(c *gin.Context) {
 // @Failure 401 {object} auth.GetProfileUnauthorized
 // @Failure 404 {object} auth.GetProfileUserNotFound
 func (h *handlerImpl) GetProfile(c *gin.Context) {
-	var user User
+	var user model.User
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		utils.ReturnError(c, apperror.Unauthorized)

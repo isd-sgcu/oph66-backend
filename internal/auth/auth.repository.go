@@ -1,12 +1,13 @@
 package auth
 
 import (
+	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"gorm.io/gorm"
 )
 
 type Repository interface {
-	CreateUser(user *User) error
-	GetUserByEmail(user *User, email string) error
+	CreateUser(user *model.User) error
+	GetUserByEmail(user *model.User, email string) error
 }
 
 type repositoryImpl struct {
@@ -19,10 +20,10 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repositoryImpl) CreateUser(user *User) error {
+func (r *repositoryImpl) CreateUser(user *model.User) error {
 	return r.db.Create(&user).Error
 }
 
-func (r *repositoryImpl) GetUserByEmail(user *User, email string) error {
+func (r *repositoryImpl) GetUserByEmail(user *model.User, email string) error {
 	return r.db.Preload("DesiredRounds").Preload("DesiredRounds.Round").Preload("InterestedFaculties").Preload("InterestedFaculties.Faculty").Preload("InterestedFaculties.Department").Preload("InterestedFaculties.Section").Where("email = ?", email).First(&user).Error
 }

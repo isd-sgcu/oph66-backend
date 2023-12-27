@@ -5,6 +5,7 @@ import (
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
+	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -14,8 +15,8 @@ import (
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *User) (appErr *apperror.AppError)
-	GetUserFromJWTToken(ctx context.Context, tokenString string, user *User) (appErr *apperror.AppError)
+	Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *model.User) *apperror.AppError
+	GetUserFromJWTToken(ctx context.Context, tokenString string, user *model.User) *apperror.AppError
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -62,7 +63,7 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, token string, user *User) (apperr *apperror.AppError) {
+func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, token string, user *model.User) *apperror.AppError {
 	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
 	if apperr != nil {
 		return apperr
@@ -83,7 +84,7 @@ func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, to
 	return nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, token string, user *User) (apperr *apperror.AppError) {
+func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, token string, user *model.User) *apperror.AppError {
 	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
 	if apperr != nil {
 		return apperr

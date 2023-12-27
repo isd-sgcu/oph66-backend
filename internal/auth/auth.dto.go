@@ -1,5 +1,7 @@
 package auth
 
+import "github.com/isd-sgcu/oph66-backend/internal/model"
+
 type RegisterRequestDTO struct {
 	Gender              string        `json:"gender"`
 	FirstName           string        `json:"first_name"`
@@ -35,11 +37,11 @@ type GoogleCallbackResponse struct {
 }
 
 type RegisterResponse struct {
-	User *User `json:"user"`
+	User *model.User `json:"user"`
 }
 
 type GetProfileResponse struct {
-	User *User `json:"user"`
+	User *model.User `json:"user"`
 }
 
 type MockUser struct {

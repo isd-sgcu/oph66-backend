@@ -1,12 +1,13 @@
 package event
 
 import (
+	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"gorm.io/gorm"
 )
 
 type Repository interface {
-	GetAllEvents(results *[]Event) error
-	GetEventById(result *Event, eventId string) error
+	GetAllEvents(results *[]model.Event) error
+	GetEventById(result *model.Event, eventId string) error
 }
 
 type repositoryImpl struct {
@@ -19,10 +20,10 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repositoryImpl) GetAllEvents(results *[]Event) error {
-	return r.db.Model(&Event{}).Omit("description_th, description_en").Preload("Schedules").Preload("Faculty").Find(results).Error
+func (r *repositoryImpl) GetAllEvents(results *[]model.Event) error {
+	return r.db.Model(&model.Event{}).Omit("description_th, description_en").Preload("Schedules").Preload("Faculty").Find(results).Error
 }
 
-func (r *repositoryImpl) GetEventById(result *Event, eventId string) error {
-	return r.db.Model(&Event{}).Preload("Schedules").Preload("Faculty").First(result, "id = ?", eventId).Error
+func (r *repositoryImpl) GetEventById(result *model.Event, eventId string) error {
+	return r.db.Model(&model.Event{}).Preload("Schedules").Preload("Faculty").First(result, "id = ?", eventId).Error
 }

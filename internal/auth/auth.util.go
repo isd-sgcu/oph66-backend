@@ -1,7 +1,9 @@
 package auth
 
-func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) (user *User) {
-	user = &User{}
+import "github.com/isd-sgcu/oph66-backend/internal/model"
+
+func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) *model.User {
+	user := &model.User{}
 	user.Gender = dto.Gender
 	user.FirstName = dto.FirstName
 	user.LastName = dto.LastName
@@ -16,8 +18,8 @@ func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) (use
 	user.NewsSource = dto.NewsSource
 	user.Status = dto.Status
 	user.Grade = dto.Grade
-	user.DesiredRounds = make([]DesiredRound, len(dto.DesiredRounds))
-	user.InterestedFaculties = make([]InterestedFaculty, len(dto.InterestedFaculties))
+	user.DesiredRounds = make([]model.DesiredRound, len(dto.DesiredRounds))
+	user.InterestedFaculties = make([]model.InterestedFaculty, len(dto.InterestedFaculties))
 
 	for i, desiredRound := range dto.DesiredRounds {
 		ConvertDesiredInfoToDesiredRound(&desiredRound, user, &user.DesiredRounds[i])
@@ -30,14 +32,11 @@ func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) (use
 	return user
 }
 
-func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *User, desiredRound *DesiredRound) {
+func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *model.User, desiredRound *model.DesiredRound) {
 	desiredRound.Order = dto.Order
 	desiredRound.RoundCode = dto.Code
 }
 
-func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *User, interestedFaculty *InterestedFaculty) {
+func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *model.User, interestedFaculty *model.InterestedFaculty) {
 	interestedFaculty.Order = dto.Order
-	interestedFaculty.FacultyCode = dto.FacultyCode
-	interestedFaculty.DepartmentCode = dto.DepartmentCode
-	interestedFaculty.SectionCode = dto.SectionCode
 }
