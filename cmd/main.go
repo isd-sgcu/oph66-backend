@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/di"
-	_ "github.com/isd-sgcu/oph66-backend/docs"
+	"github.com/isd-sgcu/oph66-backend/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -24,6 +24,8 @@ func main() {
 		panic(fmt.Sprintf("unable to init di: %v", err))
 	}
 	container.Logger.Info("init container successfully")
+
+	docs.SwaggerInfo.Host = container.Config.AppConfig.Host
 
 	if !container.Config.AppConfig.IsDevelopment() {
 		gin.SetMode(gin.ReleaseMode)

@@ -19,6 +19,7 @@ type DatabaseConfig struct {
 type AppConfig struct {
 	Port string `mapstructure:"PORT"`
 	Env  string `mapstructure:"ENV"`
+	Host string `mapstructure:"HOST"`
 }
 
 type RedisConfig struct {

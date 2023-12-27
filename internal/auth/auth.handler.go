@@ -68,7 +68,7 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 
 // Register godoc
 // @summary Register
-// @description Register new account with @chula email
+// @description Register new account with email
 // @id Register
 // @produce json
 // @tags auth
