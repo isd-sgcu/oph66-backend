@@ -32,7 +32,6 @@ type OAuth2Config struct {
 	ClientID     string   `mapstructure:"CLIENT_ID"`
 	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
 	Scopes       []string `mapstructure:"SCOPES"`
-	Endpoint     string   `mapstructure:"ENDPOINT"`
 }
 
 type CorsConfig struct {

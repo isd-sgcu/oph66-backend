@@ -69,6 +69,7 @@ func (h *handlerImpl) Register(c *gin.Context) {
 	apperr := h.svc.Register(c, &data, authHeader, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
+		return
 	}
 	response := RegisterResponse{
 		User: &user,

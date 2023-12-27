@@ -25,22 +25,20 @@ type User struct {
 }
 
 type InterestedFaculty struct {
-	ID             uint            `gorm:"primaryKey;autoIncrement"                  json:"id"`
-	Order          uint            `json:"order"`
+	Order          uint            `gorm:"primaryKey"                                json:"order"`
 	Faculty        faculty.Faculty `gorm:"foreignKey:FacultyCode;references:Code"    json:"faculty"`
 	Department     Department      `gorm:"foreignKey:DepartmentCode;references:Code" json:"department"`
 	Section        Section         `gorm:"foreignKey:SectionCode;references:Code"    json:"section"`
 	FacultyCode    string          `json:"-"`
 	DepartmentCode string          `json:"-"`
 	SectionCode    string          `json:"-"`
-	UserID         uint            `gorm:"index"`
+	UserID         uint            `gorm:"primaryKey;index"                          json:"-"`
 }
 
 type DesiredRound struct {
-	ID        uint   `gorm:"primaryKey;autoIncrement"             json:"id"`
-	Order     uint   `json:"order"`
+	Order     uint   `gorm:"primaryKey"                           json:"order"`
 	Round     Round  `gorm:"foreignKey:RoundCode;references:Code" json:"round"`
-	UserID    uint   `gorm:"index"`
+	UserID    uint   `gorm:"primaryKey;index"                     json:"-"`
 	RoundCode string `json:"-"`
 }
 

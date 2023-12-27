@@ -1,11 +1,7 @@
 package auth
 
-func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string, id uint) (user *User) {
-	if id != 0 {
-		user = &User{ID: id}
-	} else {
-		user = &User{}
-	}
+func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) (user *User) {
+	user = &User{}
 	user.Gender = dto.Gender
 	user.FirstName = dto.FirstName
 	user.LastName = dto.LastName
@@ -34,16 +30,14 @@ func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string, id u
 	return user
 }
 
-func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *User, desiredRound *DesiredRound) error {
+func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *User, desiredRound *DesiredRound) {
 	desiredRound.Order = dto.Order
 	desiredRound.RoundCode = dto.Code
-	return nil
 }
 
-func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *User, interestedFaculty *InterestedFaculty) error {
+func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfo, user *User, interestedFaculty *InterestedFaculty) {
 	interestedFaculty.Order = dto.Order
 	interestedFaculty.FacultyCode = dto.FacultyCode
 	interestedFaculty.DepartmentCode = dto.DepartmentCode
 	interestedFaculty.SectionCode = dto.SectionCode
-	return nil
 }

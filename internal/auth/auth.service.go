@@ -62,15 +62,15 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *User) (appErr *apperror.AppError) {
-	email, appErr := getEmailFromToken(ctx, tokenString, s.cfg.OAuth2Config.ClientID)
-	if appErr != nil {
-		return appErr
+func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, token string, user *User) (apperr *apperror.AppError) {
+	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
+	if apperr != nil {
+		return apperr
 	}
 
 	err := s.repo.GetUserByEmail(user, email)
 	if err != nil {
-		user = ConvertRegisterRequestDTOToUser(data, email, 0)
+		user = ConvertRegisterRequestDTOToUser(data, email)
 		err = s.repo.CreateUser(user)
 		if err != nil {
 			s.logger.Error("Failed to create user", zap.Error(err))
@@ -84,10 +84,10 @@ func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, to
 	return nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString string, user *User) (appErr *apperror.AppError) {
-	email, appErr := getEmailFromToken(ctx, tokenString, s.cfg.OAuth2Config.ClientID)
-	if appErr != nil {
-		return appErr
+func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, token string, user *User) (apperr *apperror.AppError) {
+	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
+	if apperr != nil {
+		return apperr
 	}
 
 	err := s.repo.GetUserByEmail(user, email)
@@ -99,8 +99,8 @@ func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, tokenString strin
 	return nil
 }
 
-func getEmailFromToken(ctx context.Context, tokenString string, ClientID string) (email string, appErr *apperror.AppError) {
-	token, err := idtoken.Validate(ctx, tokenString, ClientID)
+func getEmailFromToken(ctx context.Context, tokenString string, clientID string) (email string, appErr *apperror.AppError) {
+	token, err := idtoken.Validate(ctx, tokenString, clientID)
 	if err != nil {
 		return "", apperror.InvalidToken
 	}
