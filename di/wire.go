@@ -12,6 +12,8 @@ import (
 	event "github.com/isd-sgcu/oph66-backend/internal/event"
 	featureflag "github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
+	"github.com/isd-sgcu/oph66-backend/internal/middleware"
+	"github.com/isd-sgcu/oph66-backend/internal/router"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -24,9 +26,19 @@ type Container struct {
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
+	Router             *router.Router
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
+func newContainer(
+	eventHandler event.Handler,
+	hcHandler healthcheck.Handler,
+	featureflagHandler featureflag.Handler,
+	authHandler auth.Handler,
+	config *cfgldr.Config,
+	logger *zap.Logger,
+	corsHandler cfgldr.CorsHandler,
+	router *router.Router,
+) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
@@ -35,6 +47,7 @@ func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, fea
 		config,
 		logger,
 		corsHandler,
+		router,
 	}
 }
 
@@ -58,6 +71,8 @@ func Init() (Container, error) {
 		auth.NewService,
 		auth.NewRepository,
 		logger.InitLogger,
+		router.NewRouter,
+		middleware.NewAuthMiddleware,
 	)
 
 	return Container{}, nil
