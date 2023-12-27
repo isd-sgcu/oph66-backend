@@ -19,6 +19,8 @@ func main() {
 	}
 	r := gin.Default()
 
+	r.Use(gin.HandlerFunc(container.CorsHandler))
+
 	r.GET("/_hc", container.HcHandler.HealthCheck)
 	r.GET("/live", container.FeatureflagHandler.GetLivestreamInfo)
 	r.GET("/events", container.EventHandler.GetAllEvents)

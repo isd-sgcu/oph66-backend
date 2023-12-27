@@ -9,6 +9,7 @@ type Config struct {
 	AppConfig      AppConfig
 	RedisConfig    RedisConfig
 	OAuth2Config   OAuth2Config
+	CorsConfig     CorsConfig
 }
 
 type DatabaseConfig struct {
@@ -32,6 +33,10 @@ type OAuth2Config struct {
 	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
 	Scopes       []string `mapstructure:"SCOPES"`
 	Endpoint     string   `mapstructure:"ENDPOINT"`
+}
+
+type CorsConfig struct {
+	AllowOrigins string `mapstructure:"ORIGINS"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -71,11 +76,21 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	corsConfigLdr := viper.New()
+	corsConfigLdr.SetEnvPrefix("CORS")
+	corsConfigLdr.AutomaticEnv()
+	dbCfgLdr.AllowEmptyEnv(false)
+	corsConfig := CorsConfig{}
+	if err := corsConfigLdr.Unmarshal(&corsConfig); err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		DatabaseConfig: dbConfig,
 		AppConfig:      appConfig,
 		RedisConfig:    redisConfig,
 		OAuth2Config:   oauth2Config,
+		CorsConfig:     corsConfig,
 	}, nil
 }
 

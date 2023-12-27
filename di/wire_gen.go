@@ -46,7 +46,8 @@ func Init() (Container, error) {
 	authRepository := auth.NewRepository(db)
 	authService := auth.NewService(authRepository, zapLogger, config)
 	authHandler := auth.NewHandler(authService, zapLogger)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger)
+	corsHandler := cfgldr.MakeCorsConfig(config)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger, corsHandler)
 	return container, nil
 }
 
@@ -59,14 +60,15 @@ type Container struct {
 	AuthHandler        auth.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
+	CorsHandler        cfgldr.CorsHandler
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger2 *zap.Logger) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger2 *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
 		featureflagHandler,
 		authHandler,
-		config, logger2,
+		config, logger2, corsHandler,
 	}
 }
