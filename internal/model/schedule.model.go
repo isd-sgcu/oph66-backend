@@ -12,11 +12,13 @@ const (
 )
 
 type Schedule struct {
-	ID       int            `gorm:"primaryKey"`
-	EventId  int            `json:"-"`
-	StartsAt time.Time      `json:"ends_at"`
-	EndsAt   time.Time      `json:"starts_at"`
-	Period   SchedulePeriod `json:"-"`
+	ID              int            `gorm:"primaryKey"`
+	Event           Event          `gorm:"foreignKey:EventId"`
+	EventId         int            `json:"-"`
+	CurrentAttendee int            `gorm:""`
+	StartsAt        time.Time      `json:"ends_at"`
+	EndsAt          time.Time      `json:"starts_at"`
+	Period          SchedulePeriod `json:"-"`
 }
 
 func (m Schedule) TableName() string {
