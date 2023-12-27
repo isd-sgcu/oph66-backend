@@ -1,4 +1,4 @@
-package featureflag
+package model
 
 import "github.com/isd-sgcu/oph66-backend/database"
 

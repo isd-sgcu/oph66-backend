@@ -1,4 +1,4 @@
-package bilingual_field
+package model
 
 type Bilingual struct {
 	En string `json:"en"`

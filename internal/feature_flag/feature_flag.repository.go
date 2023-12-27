@@ -1,9 +1,12 @@
 package featureflag
 
-import "gorm.io/gorm"
+import (
+	"github.com/isd-sgcu/oph66-backend/internal/model"
+	"gorm.io/gorm"
+)
 
 type Repository interface {
-	FindOneByKey(result *FeatureFlag, key string) error
+	FindOneByKey(result *model.FeatureFlag, key string) error
 }
 
 func NewRepository(db *gorm.DB) Repository {
@@ -18,6 +21,6 @@ type repositoryImpl struct {
 	db *gorm.DB
 }
 
-func (r *repositoryImpl) FindOneByKey(result *FeatureFlag, key string) error {
+func (r *repositoryImpl) FindOneByKey(result *model.FeatureFlag, key string) error {
 	return r.db.Model(result).First(result, "key = ?", key).Error
 }

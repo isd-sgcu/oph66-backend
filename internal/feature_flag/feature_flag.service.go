@@ -5,12 +5,13 @@ import (
 	"errors"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
 type Service interface {
-	GetFlag(ctx context.Context, key string) (*FeatureFlag, *apperror.AppError)
+	GetFlag(ctx context.Context, key string) (*model.FeatureFlag, *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger) Service {
@@ -27,8 +28,8 @@ type serviceImpl struct {
 	logger *zap.Logger
 }
 
-func (h *serviceImpl) GetFlag(ctx context.Context, key string) (*FeatureFlag, *apperror.AppError) {
-	var res FeatureFlag
+func (h *serviceImpl) GetFlag(ctx context.Context, key string) (*model.FeatureFlag, *apperror.AppError) {
+	var res model.FeatureFlag
 	if err := h.repo.FindOneByKey(&res, key); errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, apperror.InvalidFeatureFlagKey
 	} else if err != nil {
