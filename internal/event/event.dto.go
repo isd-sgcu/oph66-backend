@@ -5,64 +5,64 @@ import "time"
 type EventAll []Event
 
 type EventInvalidResponse struct {
-	Instance string `json:"instance" example:"/events/:eventId"`
-	Title    string `json:"title" example:"invalid-event-id"`
+	Instance string `example:"/events/:eventId" json:"instance"`
+	Title    string `example:"invalid-event-id" json:"title"`
 }
 
 type EventErrorResponse struct {
-	Instance string `json:"instance" example:"/events/:eventId"`
-	Title    string `json:"title" example:"internal-server-error"`
+	Instance string `example:"/events/:eventId"      json:"instance"`
+	Title    string `example:"internal-server-error" json:"title"`
 }
 
 type EventAllErrorResponse struct {
-	Instance string `json:"instance" example:"/events"`
-	Title    string `json:"title" example:"internal-server-error"`
+	Instance string `example:"/events"               json:"instance"`
+	Title    string `example:"internal-server-error" json:"title"`
 }
 
 type EventDTO struct {
-	Id                  string               `json:"id" example:"first-event"`
+	Id                  string               `example:"first-event"        json:"id"`
 	Name                NameEventBilingual   `json:"name"`
 	FacultyCode         int                  `json:"-"`
 	Faculty             Faculty              `json:"faculty"`
 	Department          DepartmentBilingual  `json:"department"`
-	RequireRegistration bool                 `json:"require_registration" example:"true"`
-	MaxCapacity         int                  `json:"max_capacity" example:"100"`
+	RequireRegistration bool                 `example:"true"               json:"require_registration"`
+	MaxCapacity         int                  `example:"100"                json:"max_capacity"`
 	Schedules           []Schedule           `json:"schedules"`
 	Location            LocationBilingual    `json:"location"`
 	Description         DescriptionBilingual `json:"description,omitempty"`
 }
 
 type NameEventBilingual struct {
-	En string `json:"en" example:"First Event"`
-	Th string `json:"th" example:"อีเวนท์แรก"`
+	En string `example:"First Event"                    json:"en"`
+	Th string `example:"อีเวนท์แรก"                     json:"th"`
 }
 
 type DepartmentBilingual struct {
-	En string `json:"en" example:"Computer Engineering"`
-	Th string `json:"th" example:"ภาควิชาคอมพิวเตอร์"`
+	En string `example:"Computer Engineering"                                   json:"en"`
+	Th string `example:"ภาควิชาคอมพิวเตอร์"                                     json:"th"`
 }
 
 type Faculty struct {
-	Code string               `json:"code" example:"21"`
+	Code string               `example:"21" json:"code"`
 	Name NameFacultyBilingual `json:"name"`
 }
 
 type NameFacultyBilingual struct {
-	En string `json:"en" example:"Faculty of Engineering"`
-	Th string `json:"th" example:"คณะวิศวกรรมศาสตร์"`
+	En string `example:"Faculty of Engineering"                              json:"en"`
+	Th string `example:"คณะวิศวกรรมศาสตร์"                                   json:"th"`
 }
 
 type LocationBilingual struct {
-	En string `json:"en" example:"SIT Building"`
-	Th string `json:"th" example:"อาคาร SIT"`
+	En string `example:"SIT Building"        json:"en"`
+	Th string `example:"อาคาร SIT"           json:"th"`
 }
 
 type DescriptionBilingual struct {
-	En string `json:"en" example:"This is the first event."`
-	Th string `json:"th" example:"รายละเอียดอีเวนท์แรก"`
+	En string `example:"This is the first event."                                     json:"en"`
+	Th string `example:"รายละเอียดอีเวนท์แรก"                                         json:"th"`
 }
 
 type Schedule struct {
-	StartsAt time.Time `json:"ends_at" example:"2021-08-01T00:00:00+07:00"`
-	EndsAt   time.Time `json:"starts_at" example:"2021-08-01T00:00:00+07:00"`
+	StartsAt time.Time `example:"2021-08-01T00:00:00+07:00" json:"ends_at"`
+	EndsAt   time.Time `example:"2021-08-01T00:00:00+07:00" json:"starts_at"`
 }

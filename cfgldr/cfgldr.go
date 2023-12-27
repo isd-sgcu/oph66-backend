@@ -10,8 +10,6 @@ type Config struct {
 	RedisConfig    RedisConfig
 	OAuth2Config   OAuth2Config
 	CorsConfig     CorsConfig
-	OAuth2Config   OAuth2Config
-	CorsConfig     CorsConfig
 }
 
 type DatabaseConfig struct {
@@ -34,19 +32,6 @@ type OAuth2Config struct {
 	ClientID     string   `mapstructure:"CLIENT_ID"`
 	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
 	Scopes       []string `mapstructure:"SCOPES"`
-}
-
-type CorsConfig struct {
-	AllowOrigins string `mapstructure:"ORIGINS"`
-}
-
-type OAuth2Config struct {
-	RedirectURL  string   `mapstructure:"REDIRECT_URL"`
-	ClientID     string   `mapstructure:"CLIENT_ID"`
-	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
-	Scopes       []string `mapstructure:"SCOPES"`
-	AllowOrigins string   `mapstructure:"ORIGINS"`
-	Endpoint     string   `mapstructure:"ENDPOINT"`
 }
 
 type CorsConfig struct {
@@ -99,30 +84,10 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	oauth2CfgLdr := viper.New()
-	oauth2CfgLdr.SetEnvPrefix("OAUTH2")
-	oauth2CfgLdr.AutomaticEnv()
-	oauth2CfgLdr.AllowEmptyEnv(false)
-	oauth2Config := OAuth2Config{}
-	if err := oauth2CfgLdr.Unmarshal(&oauth2Config); err != nil {
-		return nil, err
-	}
-
-	corsConfigLdr := viper.New()
-	corsConfigLdr.SetEnvPrefix("CORS")
-	corsConfigLdr.AutomaticEnv()
-	dbCfgLdr.AllowEmptyEnv(false)
-	corsConfig := CorsConfig{}
-	if err := corsConfigLdr.Unmarshal(&corsConfig); err != nil {
-		return nil, err
-	}
-
 	return &Config{
 		DatabaseConfig: dbConfig,
 		AppConfig:      appConfig,
 		RedisConfig:    redisConfig,
-		OAuth2Config:   oauth2Config,
-		CorsConfig:     corsConfig,
 		OAuth2Config:   oauth2Config,
 		CorsConfig:     corsConfig,
 	}, nil

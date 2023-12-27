@@ -61,45 +61,45 @@ type RegisterDTO struct {
 }
 
 type MockUser struct {
-	Gender              string                  `json:"gender" example:"male"`
-	FirstName           string                  `json:"first_name" example:"John"`
-	LastName            string                  `json:"last_name" example:"Doe"`
-	School              string                  `json:"school" example:"CU"`
-	BirthDate           string                  `json:"birth_date" example:"1990-01-01"`
-	Address             string                  `json:"address" example:"Bangkok"`
-	FromAbroad          string                  `json:"from_abroad" example:"no"`
-	Allergy             string                  `json:"allergy" example:"None"`
-	MedicalCondition    string                  `json:"medical_condition" example:"None"`
-	JoinCUReason        string                  `json:"join_cu_reason" example:"Interested in the programs offered"`
-	NewsSource          string                  `json:"news_source" example:"Facebook"`
-	Status              string                  `json:"status" example:"student"`
-	Grade               string                  `json:"grade" example:"undergraduate"`
+	Gender              string                  `example:"male"                               json:"gender"`
+	FirstName           string                  `example:"John"                               json:"first_name"`
+	LastName            string                  `example:"Doe"                                json:"last_name"`
+	School              string                  `example:"CU"                                 json:"school"`
+	BirthDate           string                  `example:"1990-01-01"                         json:"birth_date"`
+	Address             string                  `example:"Bangkok"                            json:"address"`
+	FromAbroad          string                  `example:"no"                                 json:"from_abroad"`
+	Allergy             string                  `example:"None"                               json:"allergy"`
+	MedicalCondition    string                  `example:"None"                               json:"medical_condition"`
+	JoinCUReason        string                  `example:"Interested in the programs offered" json:"join_cu_reason"`
+	NewsSource          string                  `example:"Facebook"                           json:"news_source"`
+	Status              string                  `example:"student"                            json:"status"`
+	Grade               string                  `example:"undergraduate"                      json:"grade"`
 	DesiredRounds       []MockDesiredRound      `json:"desired_rounds"`
 	InterestedFaculties []MockInterestedFaculty `json:"interested_faculties"`
 }
 
 type MockDesiredRound struct {
-	Order uint   `json:"order" example:"1"`
-	Code  string `json:"code" example:"1"`
+	Order uint   `example:"1" json:"order"`
+	Code  string `example:"1" json:"code"`
 }
 
 type MockInterestedFaculty struct {
-	Order uint   `json:"order" example:"1"`
-	Code  string `json:"code" example:"1"`
+	Order uint   `example:"1" json:"order"`
+	Code  string `example:"1" json:"code"`
 }
 
 type CallbackResponse struct {
-	Token string `json:"token" example:"gbxnZjiHVzb_4mDQTQNiJdrZFOCactWXkZvZOxS2_qZsy7vAQY7uA2RFIHe2JABoEjhT0Y3KlOJuOEvE2YJMLrJDagwhpAITGex"`
+	Token string `example:"gbxnZjiHVzb_4mDQTQNiJdrZFOCactWXkZvZOxS2_qZsy7vAQY7uA2RFIHe2JABoEjhT0Y3KlOJuOEvE2YJMLrJDagwhpAITGex" json:"token"`
 }
 
 type CallbackErrorResponse struct {
-	Instance string `json:"instance" example:"/auth/callback"`
-	Title    string `json:"title" example:"internal-server-error"`
+	Instance string `example:"/auth/callback"        json:"instance"`
+	Title    string `example:"internal-server-error" json:"title"`
 }
 
 type CallbackInvalidResponse struct {
-	Instance string `json:"instance" example:"/auth/callback"`
-	Title    string `json:"title" example:"bad-request"`
+	Instance string `example:"/auth/callback" json:"instance"`
+	Title    string `example:"bad-request"    json:"title"`
 }
 
 type MockRegisterResponse struct {
@@ -107,23 +107,23 @@ type MockRegisterResponse struct {
 }
 
 type RegisterErrorResponse struct {
-	Instance string `json:"instance" example:"/auth/register"`
-	Title    string `json:"title" example:"internal-server-error"`
+	Instance string `example:"/auth/register"        json:"instance"`
+	Title    string `example:"internal-server-error" json:"title"`
 }
 
 type RegisterInvalidResponse struct {
-	Instance string `json:"instance" example:"/auth/register"`
-	Title    string `json:"title" example:"bad-request"`
+	Instance string `example:"/auth/register" json:"instance"`
+	Title    string `example:"bad-request"    json:"title"`
 }
 
 type RegisterUnauthorized struct {
-	Instance string `json:"instance" example:"/auth/register"`
-	Title    string `json:"title" example:"unauthorized"`
+	Instance string `example:"/auth/register" json:"instance"`
+	Title    string `example:"unauthorized"   json:"title"`
 }
 
 type RegisterInvalidToken struct {
-	Instance string `json:"instance" example:"/auth/register"`
-	Title    string `json:"title" example:"invalid-token"`
+	Instance string `example:"/auth/register" json:"instance"`
+	Title    string `example:"invalid-token"  json:"title"`
 }
 
 type MockGetProfileResponse struct {
@@ -131,16 +131,16 @@ type MockGetProfileResponse struct {
 }
 
 type GetProfileErrorResponse struct {
-	Instance string `json:"instance" example:"/auth/me"`
-	Title    string `json:"title" example:"internal-server-error"`
+	Instance string `example:"/auth/me"              json:"instance"`
+	Title    string `example:"internal-server-error" json:"title"`
 }
 
 type GetProfileUnauthorized struct {
-	Instance string `json:"instance" example:"/auth/me"`
-	Title    string `json:"title" example:"unauthorized"`
+	Instance string `example:"/auth/me"     json:"instance"`
+	Title    string `example:"unauthorized" json:"title"`
 }
 
 type GetProfileUserNotFound struct {
-	Instance string `json:"instance" example:"/auth/me"`
-	Title    string `json:"title" example:"user-not-found"`
+	Instance string `example:"/auth/me"       json:"instance"`
+	Title    string `example:"user-not-found" json:"title"`
 }
