@@ -77,7 +77,6 @@ func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, to
 			return apperror.InternalError
 		}
 	} else {
-		s.logger.Error("User already exists")
 		return apperror.DuplicateEmail
 	}
 
@@ -92,7 +91,6 @@ func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, token string, use
 
 	err := s.repo.GetUserByEmail(user, email)
 	if err != nil {
-		s.logger.Error("Failed to get user by email", zap.Error(err))
 		return apperror.UserNotFound
 	}
 

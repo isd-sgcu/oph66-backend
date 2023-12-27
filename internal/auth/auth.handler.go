@@ -59,14 +59,14 @@ func (h *handlerImpl) Register(c *gin.Context) {
 		utils.ReturnError(c, apperror.InvalidToken)
 		return
 	}
-	authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
+	token := strings.Replace(authHeader, "Bearer ", "", 1)
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	apperr := h.svc.Register(c, &data, authHeader, &user)
+	apperr := h.svc.Register(c, &data, token, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -90,9 +90,9 @@ func (h *handlerImpl) GetProfile(c *gin.Context) {
 		return
 	}
 
-	authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
+	token := strings.Replace(authHeader, "Bearer ", "", 1)
 
-	apperr := h.svc.GetUserFromJWTToken(c, authHeader, &user)
+	apperr := h.svc.GetUserFromJWTToken(c, token, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
