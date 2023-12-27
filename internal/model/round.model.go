@@ -1,8 +1,7 @@
 package model
 
 type Round struct {
-	Code string `gorm:"primaryKey" json:"code"`
-	Name string `json:"name"`
+	RoundNo int `gorm:"primaryKey"`
 }
 
 func (r Round) TableName() string {

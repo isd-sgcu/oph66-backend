@@ -3,9 +3,10 @@ package model
 type Event struct {
 	Id                  string     `gorm:"primaryKey"                           json:"id"`
 	Name                Bilingual  `gorm:"embedded;embeddedPrefix:name_"        json:"name"`
-	FacultyCode         int        `gorm:"references:Code"                      json:"-"`
-	Faculty             Faculty    `json:"faculty"`
-	Department          Bilingual  `gorm:"embedded;embeddedPrefix:department_"  json:"department"`
+	FacultyCode         string     `gorm:"references:Code"                      json:"-"`
+	Faculty             Faculty    `gorm:"foreignKey:FacultyCode"               json:"faculty"`
+	Department          Department `gorm:"foreignKey:DepartmentCode"            json:"department"`
+	DepartmentCode      string     `gorm:"references:Code"`
 	RequireRegistration bool       `json:"require_registration"`
 	MaxCapacity         int        `json:"max_capacity"`
 	Schedules           []Schedule `gorm:"foreignKey:event_id"                  json:"schedules"`

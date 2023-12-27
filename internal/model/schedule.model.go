@@ -12,7 +12,8 @@ const (
 )
 
 type Schedule struct {
-	EventId  string         `json:"-"`
+	ID       int            `gorm:"primaryKey"`
+	EventId  int            `json:"-"`
 	StartsAt time.Time      `json:"ends_at"`
 	EndsAt   time.Time      `json:"starts_at"`
 	Period   SchedulePeriod `json:"-"`
