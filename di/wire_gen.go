@@ -10,6 +10,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	"github.com/isd-sgcu/oph66-backend/internal/auth"
 	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
@@ -42,8 +43,11 @@ func Init() (Container, error) {
 	featureflagService := featureflag.NewService(featureflagRepository, zapLogger)
 	featureflagCache := featureflag.NewCache(client, zapLogger)
 	featureflagHandler := featureflag.NewHandler(featureflagService, featureflagCache)
+	authRepository := auth.NewRepository(db)
+	authService := auth.NewService(authRepository, zapLogger, config)
+	authHandler := auth.NewHandler(authService, zapLogger)
 	corsHandler := cfgldr.MakeCorsConfig(config)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, config, zapLogger, corsHandler)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger, corsHandler)
 	return container, nil
 }
 
@@ -53,16 +57,18 @@ type Container struct {
 	EventHandler       event.Handler
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
+	AuthHandler        auth.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger2 *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger2 *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
 		featureflagHandler,
+		authHandler,
 		config, logger2, corsHandler,
 	}
 }

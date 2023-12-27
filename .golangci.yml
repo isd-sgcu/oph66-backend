@@ -6,7 +6,7 @@ linters:
   fast: true
   enable:
     - gofmt
-    - nonamedreturns
+    - nakedret
     - perfsprint
     - tagalign
     - gci

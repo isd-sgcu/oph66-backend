@@ -8,6 +8,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/cache"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
 	"github.com/isd-sgcu/oph66-backend/database"
+	auth "github.com/isd-sgcu/oph66-backend/internal/auth"
 	event "github.com/isd-sgcu/oph66-backend/internal/event"
 	featureflag "github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
@@ -19,16 +20,18 @@ type Container struct {
 	EventHandler       event.Handler
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
+	AuthHandler        auth.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
 }
 
-func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, config *cfgldr.Config, logger *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
+func newContainer(eventHandler event.Handler, hcHandler healthcheck.Handler, featureflagHandler featureflag.Handler, authHandler auth.Handler, config *cfgldr.Config, logger *zap.Logger, corsHandler cfgldr.CorsHandler) Container {
 	return Container{
 		eventHandler,
 		hcHandler,
 		featureflagHandler,
+		authHandler,
 		config,
 		logger,
 		corsHandler,
@@ -51,6 +54,9 @@ func Init() (Container, error) {
 		featureflag.NewCache,
 		featureflag.NewService,
 		featureflag.NewRepository,
+		auth.NewHandler,
+		auth.NewService,
+		auth.NewRepository,
 		logger.InitLogger,
 	)
 
