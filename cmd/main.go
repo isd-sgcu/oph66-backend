@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/di"
 	"github.com/isd-sgcu/oph66-backend/docs"
 	swaggerFiles "github.com/swaggo/files"
@@ -27,12 +26,8 @@ func main() {
 
 	docs.SwaggerInfo.Host = container.Config.AppConfig.Host
 
-	if !container.Config.AppConfig.IsDevelopment() {
-		gin.SetMode(gin.ReleaseMode)
-	}
-	r := gin.Default()
+	r := container.Router
 
-	r.Use(gin.HandlerFunc(container.CorsHandler))
 	r.GET("/_hc", container.HcHandler.HealthCheck)
 	r.GET("/live", container.FeatureflagHandler.GetLivestreamInfo)
 	r.GET("/events", container.EventHandler.GetAllEvents)
@@ -42,7 +37,7 @@ func main() {
 	r.GET("/auth/login", container.AuthHandler.GoogleLogin)
 	r.GET("/auth/callback", container.AuthHandler.GoogleCallback)
 
-	if container.Config.AppConfig.Env == "development" {
+	if container.Config.AppConfig.IsDevelopment() {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 	if err := r.Run(fmt.Sprintf(":%v", container.Config.AppConfig.Port)); err != nil {

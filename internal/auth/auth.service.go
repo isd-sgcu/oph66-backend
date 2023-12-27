@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
@@ -9,14 +10,14 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	"google.golang.org/api/idtoken"
+	"gorm.io/gorm"
 )
 
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(ctx context.Context, data *RegisterRequestDTO, tokenString string, user *model.User) *apperror.AppError
-	GetUserFromJWTToken(ctx context.Context, tokenString string, user *model.User) *apperror.AppError
+	Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError
+	GetUserFromJWTToken(email string, user *model.User) *apperror.AppError
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -63,51 +64,24 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(ctx context.Context, data *RegisterRequestDTO, token string, user *model.User) *apperror.AppError {
-	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
-	if apperr != nil {
-		return apperr
-	}
-
-	err := s.repo.GetUserByEmail(user, email)
-	if err != nil {
-		user = ConvertRegisterRequestDTOToUser(data, email)
-		err = s.repo.CreateUser(user)
-		if err != nil {
-			s.logger.Error("Failed to create user", zap.Error(err))
-			return apperror.InternalError
-		}
-	} else {
+func (s *serviceImpl) Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError {
+	user = ConvertRegisterRequestDTOToUser(data, email)
+	err := s.repo.CreateUser(user)
+	if errors.Is(err, gorm.ErrDuplicatedKey) {
 		return apperror.DuplicateEmail
+	} else if err != nil {
+		s.logger.Error("Failed to create user", zap.Error(err))
+		return apperror.InternalError
 	}
 
 	return nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(ctx context.Context, token string, user *model.User) *apperror.AppError {
-	email, apperr := getEmailFromToken(ctx, token, s.cfg.OAuth2Config.ClientID)
-	if apperr != nil {
-		return apperr
-	}
-
-	err := s.repo.GetUserByEmail(user, email)
+func (s *serviceImpl) GetUserFromJWTToken(email string, result *model.User) *apperror.AppError {
+	err := s.repo.GetUserByEmail(result, email)
 	if err != nil {
 		return apperror.UserNotFound
 	}
 
 	return nil
-}
-
-func getEmailFromToken(ctx context.Context, tokenString string, clientID string) (email string, appErr *apperror.AppError) {
-	token, err := idtoken.Validate(ctx, tokenString, clientID)
-	if err != nil {
-		return "", apperror.InvalidToken
-	}
-
-	email, ok := token.Claims["email"].(string)
-	if !ok || email == "" {
-		return "", apperror.InvalidToken
-	}
-
-	return email, nil
 }

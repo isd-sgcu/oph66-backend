@@ -2,7 +2,6 @@ package auth
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
@@ -84,23 +83,25 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 func (h *handlerImpl) Register(c *gin.Context) {
 	var data RegisterRequestDTO
 	var user model.User
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
+	emailRaw, exist := c.Get("email")
+	if !exist {
 		utils.ReturnError(c, apperror.Unauthorized)
 		return
 	}
-	if !strings.HasPrefix(authHeader, "Bearer ") {
-		utils.ReturnError(c, apperror.InvalidToken)
+
+	email, ok := emailRaw.(string)
+	if !ok {
+		h.logger.Error("email string assertion failed", zap.Any("emailRaw", emailRaw))
+		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
-	token := strings.Replace(authHeader, "Bearer ", "", 1)
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	apperr := h.svc.Register(c, &data, token, &user)
+	apperr := h.svc.Register(email, &data, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -125,20 +126,21 @@ func (h *handlerImpl) Register(c *gin.Context) {
 // @Failure 401 {object} auth.GetProfileUnauthorized
 // @Failure 404 {object} auth.GetProfileUserNotFound
 func (h *handlerImpl) GetProfile(c *gin.Context) {
-	var user model.User
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
+	emailRaw, exist := c.Get("email")
+	if !exist {
 		utils.ReturnError(c, apperror.Unauthorized)
 		return
 	}
-	if !strings.HasPrefix(authHeader, "Bearer ") {
-		utils.ReturnError(c, apperror.InvalidToken)
+
+	email, ok := emailRaw.(string)
+	if !ok {
+		h.logger.Error("email string assertion failed", zap.Any("emailRaw", emailRaw))
+		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
 
-	token := strings.Replace(authHeader, "Bearer ", "", 1)
-
-	apperr := h.svc.GetUserFromJWTToken(c, token, &user)
+	var user model.User
+	apperr := h.svc.GetUserFromJWTToken(email, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
