@@ -31,6 +31,17 @@ type handlerImpl struct {
 	logger  *zap.Logger
 }
 
+// GetAllEvents godoc
+// @summary Get all events
+// @description	Get all events as array of events
+// @id GetAllEvents
+// @produce	json
+// @tags event
+// @Security Bearer
+// @router /events [get]
+// @success	200	{object} event.EventAll
+// @Failure	500	{object} event.EventAllErrorResponse
+// @Failure	404	{object} event.EventInvalidResponse
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 	hit, result, apperr := h.cache.Get(c.Request.Context(), "get_all_events")
 	if apperr != nil {
@@ -65,6 +76,18 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 	c.String(http.StatusOK, string(eventsJson))
 }
 
+// GetEvent godoc
+// @summary get event by id
+// @description Get event by id
+// @id GetEventById
+// @produce json
+// @tags event
+// @Security Bearer
+// @param eventId path string true "event id"
+// @router /events/{eventId} [get]
+// @success 200 {object} event.EventDTO
+// @Failure 500 {object} event.EventErrorResponse
+// @Failure 404 {object} event.EventInvalidResponse
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 

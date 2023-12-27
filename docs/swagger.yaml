@@ -1,0 +1,573 @@
+definitions:
+  auth.CallbackErrorResponse:
+    properties:
+      instance:
+        example: /auth/callback
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  auth.CallbackInvalidResponse:
+    properties:
+      instance:
+        example: /auth/callback
+        type: string
+      title:
+        example: bad-request
+        type: string
+    type: object
+  auth.CallbackResponse:
+    properties:
+      token:
+        example: gbxnZjiHVzb_4mDQTQNiJdrZFOCactWXkZvZOxS2_qZsy7vAQY7uA2RFIHe2JABoEjhT0Y3KlOJuOEvE2YJMLrJDagwhpAITGex
+        type: string
+    type: object
+  auth.GetProfileErrorResponse:
+    properties:
+      instance:
+        example: /auth/me
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  auth.GetProfileUnauthorized:
+    properties:
+      instance:
+        example: /auth/me
+        type: string
+      title:
+        example: unauthorized
+        type: string
+    type: object
+  auth.GetProfileUserNotFound:
+    properties:
+      instance:
+        example: /auth/me
+        type: string
+      title:
+        example: user-not-found
+        type: string
+    type: object
+  auth.MockDesiredRound:
+    properties:
+      code:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  auth.MockGetProfileResponse:
+    properties:
+      user:
+        $ref: '#/definitions/auth.MockUser'
+    type: object
+  auth.MockInterestedFaculty:
+    properties:
+      code:
+        example: "1"
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  auth.MockRegisterResponse:
+    properties:
+      user:
+        $ref: '#/definitions/auth.MockUser'
+    type: object
+  auth.MockUser:
+    properties:
+      address:
+        example: Bangkok
+        type: string
+      allergy:
+        example: None
+        type: string
+      birth_date:
+        example: "1990-01-01"
+        type: string
+      desired_rounds:
+        items:
+          $ref: '#/definitions/auth.MockDesiredRound'
+        type: array
+      first_name:
+        example: John
+        type: string
+      from_abroad:
+        example: "no"
+        type: string
+      gender:
+        example: male
+        type: string
+      grade:
+        example: undergraduate
+        type: string
+      interested_faculties:
+        items:
+          $ref: '#/definitions/auth.MockInterestedFaculty'
+        type: array
+      join_cu_reason:
+        example: Interested in the programs offered
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      medical_condition:
+        example: None
+        type: string
+      news_source:
+        example: Facebook
+        type: string
+      school:
+        example: CU
+        type: string
+      status:
+        example: student
+        type: string
+    type: object
+  auth.RegisterErrorResponse:
+    properties:
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  auth.RegisterInvalidResponse:
+    properties:
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: bad-request
+        type: string
+    type: object
+  auth.RegisterInvalidToken:
+    properties:
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: invalid-token
+        type: string
+    type: object
+  auth.RegisterUnauthorized:
+    properties:
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: unauthorized
+        type: string
+    type: object
+  bilingual_field.Bilingual:
+    properties:
+      en:
+        type: string
+      th:
+        type: string
+    type: object
+  event.DepartmentBilingual:
+    properties:
+      en:
+        example: Computer Engineering
+        type: string
+      th:
+        example: ภาควิชาคอมพิวเตอร์
+        type: string
+    type: object
+  event.DescriptionBilingual:
+    properties:
+      en:
+        example: This is the first event.
+        type: string
+      th:
+        example: รายละเอียดอีเวนท์แรก
+        type: string
+    type: object
+  event.Event:
+    properties:
+      department:
+        $ref: '#/definitions/bilingual_field.Bilingual'
+      description:
+        $ref: '#/definitions/bilingual_field.Bilingual'
+      faculty:
+        $ref: '#/definitions/faculty.Faculty'
+      id:
+        type: string
+      location:
+        $ref: '#/definitions/bilingual_field.Bilingual'
+      max_capacity:
+        type: integer
+      name:
+        $ref: '#/definitions/bilingual_field.Bilingual'
+      require_registration:
+        type: boolean
+      schedules:
+        items:
+          $ref: '#/definitions/schedule.Schedule'
+        type: array
+    type: object
+  event.EventAllErrorResponse:
+    properties:
+      instance:
+        example: /events
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  event.EventDTO:
+    properties:
+      department:
+        $ref: '#/definitions/event.DepartmentBilingual'
+      description:
+        $ref: '#/definitions/event.DescriptionBilingual'
+      faculty:
+        $ref: '#/definitions/event.Faculty'
+      id:
+        example: first-event
+        type: string
+      location:
+        $ref: '#/definitions/event.LocationBilingual'
+      max_capacity:
+        example: 100
+        type: integer
+      name:
+        $ref: '#/definitions/event.NameEventBilingual'
+      require_registration:
+        example: true
+        type: boolean
+      schedules:
+        items:
+          $ref: '#/definitions/event.Schedule'
+        type: array
+    type: object
+  event.EventErrorResponse:
+    properties:
+      instance:
+        example: /events/:eventId
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  event.EventInvalidResponse:
+    properties:
+      instance:
+        example: /events/:eventId
+        type: string
+      title:
+        example: invalid-event-id
+        type: string
+    type: object
+  event.Faculty:
+    properties:
+      code:
+        example: "21"
+        type: string
+      name:
+        $ref: '#/definitions/event.NameFacultyBilingual'
+    type: object
+  event.LocationBilingual:
+    properties:
+      en:
+        example: SIT Building
+        type: string
+      th:
+        example: อาคาร SIT
+        type: string
+    type: object
+  event.NameEventBilingual:
+    properties:
+      en:
+        example: First Event
+        type: string
+      th:
+        example: อีเวนท์แรก
+        type: string
+    type: object
+  event.NameFacultyBilingual:
+    properties:
+      en:
+        example: Faculty of Engineering
+        type: string
+      th:
+        example: คณะวิศวกรรมศาสตร์
+        type: string
+    type: object
+  event.Schedule:
+    properties:
+      ends_at:
+        example: "2021-08-01T00:00:00+07:00"
+        type: string
+      starts_at:
+        example: "2021-08-01T00:00:00+07:00"
+        type: string
+    type: object
+  faculty.Faculty:
+    properties:
+      code:
+        type: string
+      name:
+        $ref: '#/definitions/bilingual_field.Bilingual'
+    type: object
+  featureflag.errorResponse:
+    properties:
+      instance:
+        example: /featureflag/live
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  featureflag.invalidResponse:
+    properties:
+      instance:
+        example: /featureflag/live
+        type: string
+      title:
+        example: invalid-feature-flag-key
+        type: string
+    type: object
+  featureflag.response:
+    properties:
+      enabled:
+        example: true
+        type: boolean
+      extra_info:
+        example: https://www.youtube.com/watch?v=6n3pFFPSlW4
+        type: string
+      key:
+        example: livestream
+        type: string
+    type: object
+  schedule.Schedule:
+    properties:
+      ends_at:
+        type: string
+      starts_at:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Documentation outlines the specifications and endpoints for the OPH-66
+    Backend API.
+  title: OPH-66 Backend API
+  version: "1.0"
+paths:
+  /_hc:
+    get:
+      description: Health Check for the service
+      operationId: HealthCheck
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: Health Check
+      tags:
+      - healthcheck
+  /auth/callback:
+    get:
+      description: After successfully logging in with a @chula account, you'll receive
+        a token. If you attempt to log in using a different domain, Google will not
+        allow the login
+      operationId: GoogleCallback
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.CallbackResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/auth.CallbackInvalidResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/auth.CallbackErrorResponse'
+      security:
+      - Bearer: []
+      summary: receive a token after successfully login with Google
+      tags:
+      - auth
+  /auth/login:
+    get:
+      description: Redirect to Google login page
+      operationId: GoogleLogin
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Redirect to Google login page
+      tags:
+      - auth
+  /auth/me:
+    get:
+      description: Get Profile of current user
+      operationId: GetProfile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.MockGetProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.GetProfileUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/auth.GetProfileUserNotFound'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/auth.GetProfileErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get Profile of current user
+      tags:
+      - auth
+  /auth/register:
+    post:
+      description: Register new account with @chula email
+      operationId: Register
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.MockUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.MockRegisterResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.RegisterUnauthorized'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/auth.RegisterInvalidResponse'
+        "498":
+          description: ""
+          schema:
+            $ref: '#/definitions/auth.RegisterInvalidToken'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/auth.RegisterErrorResponse'
+      security:
+      - Bearer: []
+      summary: Register
+      tags:
+      - auth
+  /events:
+    get:
+      description: Get all events as array of events
+      operationId: GetAllEvents
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/event.Event'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/event.EventInvalidResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/event.EventAllErrorResponse'
+      security:
+      - Bearer: []
+      summary: Get all events
+      tags:
+      - event
+  /events/{eventId}:
+    get:
+      description: Get event by id
+      operationId: GetEventById
+      parameters:
+      - description: event id
+        in: path
+        name: eventId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/event.EventDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/event.EventInvalidResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/event.EventErrorResponse'
+      security:
+      - Bearer: []
+      summary: get event by id
+      tags:
+      - event
+  /live:
+    get:
+      description: Get livestream flag
+      operationId: GetLivestreamInfo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/featureflag.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/featureflag.invalidResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/featureflag.errorResponse'
+      security:
+      - Bearer: []
+      summary: Get livestream flag
+      tags:
+      - FeatureFlag
+schemes:
+- http
+- https
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

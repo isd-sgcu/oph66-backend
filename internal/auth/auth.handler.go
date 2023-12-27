@@ -29,11 +29,30 @@ func NewHandler(svc Service, logger *zap.Logger) Handler {
 	}
 }
 
+// GoogleLogin godoc
+// @summary Redirect to Google login page
+// @description Redirect to Google login page
+// @id GoogleLogin
+// @produce json
+// @tags auth
+// @Security Bearer
+// @router /auth/login [get]
 func (h *handlerImpl) GoogleLogin(c *gin.Context) {
 	url := h.svc.GoogleLogin()
 	c.Redirect(http.StatusTemporaryRedirect, url)
 }
 
+// GoogleCallback godoc
+// @summary receive a token after successfully login with Google
+// @description After successfully logging in with a @chula account, you'll receive a token. If you attempt to log in using a different domain, Google will not allow the login
+// @id GoogleCallback
+// @produce json
+// @tags auth
+// @Security Bearer
+// @router /auth/callback [get]
+// @success 200 {object} auth.CallbackResponse
+// @Failure 500 {object} auth.CallbackErrorResponse
+// @Failure 404 {object} auth.CallbackInvalidResponse
 func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 	code := c.Query("code")
 	token, apperr := h.svc.GoogleCallback(c, code)
@@ -47,6 +66,20 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// Register godoc
+// @summary Register
+// @description Register new account with email
+// @id Register
+// @produce json
+// @tags auth
+// @Security Bearer
+// @router /auth/register [post]
+// @param user body auth.MockUser true "User"
+// @success 200 {object} auth.MockRegisterResponse
+// @Failure 500 {object} auth.RegisterErrorResponse
+// @Failure 404 {object} auth.RegisterInvalidResponse
+// @Failure 401 {object} auth.RegisterUnauthorized
+// @Failure 498 {object} auth.RegisterInvalidToken
 func (h *handlerImpl) Register(c *gin.Context) {
 	var data RegisterRequestDTO
 	var user User
@@ -78,6 +111,18 @@ func (h *handlerImpl) Register(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// GetProfile godoc
+// @summary Get Profile of current user
+// @description Get Profile of current user
+// @id GetProfile
+// @produce json
+// @tags auth
+// @Security Bearer
+// @router /auth/me [get]
+// @success 200 {object} auth.MockGetProfileResponse
+// @Failure 500 {object} auth.GetProfileErrorResponse
+// @Failure 401 {object} auth.GetProfileUnauthorized
+// @Failure 404 {object} auth.GetProfileUserNotFound
 func (h *handlerImpl) GetProfile(c *gin.Context) {
 	var user User
 	authHeader := c.GetHeader("Authorization")
