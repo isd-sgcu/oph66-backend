@@ -1,8 +1,8 @@
 package model
 
 type DesiredRound struct {
-	UserID    uint   `gorm:"primaryKey;index"                     json:"-"`
-	Order     uint   `gorm:"primaryKey"                           json:"order"`
+	UserID    uint   `gorm:"primaryKey;index"     json:"-"`
+	Order     uint   `gorm:"primaryKey"           json:"order"`
 	Round     Round  `gorm:"foreignKey:RoundCode" json:"round"`
 	RoundCode string `json:"-"`
 }

@@ -32,7 +32,7 @@ func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) *mod
 	return user
 }
 
-func ConvertDesiredInfoToDesiredRound(dto *DesiredInfo, user *model.User, desiredRound *model.DesiredRound) {
+func ConvertDesiredInfoToDesiredRound(dto *DesiredRound, user *model.User, desiredRound *model.DesiredRound) {
 	desiredRound.Order = dto.Order
 	desiredRound.RoundCode = dto.Code
 }

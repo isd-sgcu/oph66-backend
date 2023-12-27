@@ -1,7 +1,7 @@
 package model
 
 type Section struct {
-	Code           string     `gorm:"primaryKey" json:"code"`
+	Code           string     `gorm:"primaryKey"                                       json:"code"`
 	Faculty        Faculty    `gorm:"primaryKey;foreignKey:FacultyCode"`
 	FacultyCode    string     `gorm:"not null"`
 	Department     Department `gorm:"primaryKey;foreignKey:FacultyCode,DepartmentCode"`

@@ -2,7 +2,9 @@ package event
 
 import "time"
 
-type EventAll []Event
+type GetAllEventResponse struct {
+	events []EventDTO
+}
 
 type EventInvalidResponse struct {
 	Instance string `example:"/events/:eventId" json:"instance"`

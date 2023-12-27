@@ -39,7 +39,7 @@ type handlerImpl struct {
 // @tags event
 // @Security Bearer
 // @router /events [get]
-// @success	200	{object} event.EventAll
+// @success	200	{object} event.GetAllEventResponse
 // @Failure	500	{object} event.EventAllErrorResponse
 // @Failure	404	{object} event.EventInvalidResponse
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
