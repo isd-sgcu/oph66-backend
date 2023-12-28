@@ -39,7 +39,7 @@ type handlerImpl struct {
 func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 	cacheKey := "livestream"
 
-	cached, err := h.cache.Get(c.Request.Context(), cacheKey)
+	cached, err := h.cache.Get(c, cacheKey)
 	if err != nil {
 		utils.ReturnError(c, err)
 		return
@@ -48,13 +48,13 @@ func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 		c.JSON(http.StatusOK, cached)
 		return
 	} else {
-		data, err := h.svc.GetFlag(c.Request.Context(), cacheKey)
+		data, err := h.svc.GetFlag(c, cacheKey)
 		if err != nil {
 			utils.ReturnError(c, err)
 			return
 		}
 
-		if err = h.cache.Set(c.Request.Context(), cacheKey, data, time.Duration(data.CacheDuration)*time.Second); err != nil {
+		if err = h.cache.Set(c, cacheKey, data, time.Duration(data.CacheDuration)*time.Second); err != nil {
 			utils.ReturnError(c, err)
 			return
 		}

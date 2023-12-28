@@ -43,7 +43,7 @@ type handlerImpl struct {
 // @Failure	500	{object} dto.EventAllErrorResponse
 // @Failure	404	{object} dto.EventInvalidResponse
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
-	hit, result, apperr := h.cache.Get(c.Request.Context(), "get_all_events")
+	hit, result, apperr := h.cache.Get(c, "get_all_events")
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -70,7 +70,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		return
 	}
 
-	apperr = h.cache.Set(c.Request.Context(), "get_all_events", string(eventsJson), time.Hour*6)
+	apperr = h.cache.Set(c, "get_all_events", string(eventsJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -94,7 +94,7 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 
-	hit, result, apperr := h.cache.Get(c.Request.Context(), fmt.Sprintf("get_event_by_id-%v", eventId))
+	hit, result, apperr := h.cache.Get(c, fmt.Sprintf("get_event_by_id-%v", eventId))
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -121,7 +121,7 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		return
 	}
 
-	apperr = h.cache.Set(c.Request.Context(), fmt.Sprintf("get_event_by_id-%v", eventId), string(eventJson), time.Hour*6)
+	apperr = h.cache.Set(c, fmt.Sprintf("get_event_by_id-%v", eventId), string(eventJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
