@@ -9,8 +9,8 @@ import (
 
 type Repository interface {
 	GetUserWithEventRegistrationByEmail(user *model.User, email string) error
-	GetScheduleByID(schedule *model.Schedule, scheduleId int) error
-	RegisterEvent(userID int, scheduleID int) error
+	GetScheduleById(schedule *model.Schedule, scheduleId int) error
+	RegisterEvent(userId int, scheduleId int) error
 }
 
 func NewRepository(db *gorm.DB) Repository {
@@ -27,17 +27,17 @@ func (r *repositoryImpl) GetUserWithEventRegistrationByEmail(user *model.User, e
 	return r.db.Preload("RegisteredEvents").Preload("RegisteredEvents.Schedule").Where("email = ?", email).First(&user).Error
 }
 
-func (r *repositoryImpl) GetScheduleByID(schedule *model.Schedule, scheduleID int) error {
-	return r.db.Where("id = ?", scheduleID).First(schedule).Error
+func (r *repositoryImpl) GetScheduleById(schedule *model.Schedule, scheduleId int) error {
+	return r.db.Where("id = ?", scheduleId).First(schedule).Error
 }
 
-func (r *repositoryImpl) RegisterEvent(userID int, scheduleID int) error {
+func (r *repositoryImpl) RegisterEvent(userId int, scheduleId int) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		var schedule model.Schedule
 
 		if err := tx.Clauses(clause.Locking{
 			Strength: "UPDATE",
-		}).Model(&schedule).Preload("Event").Where("id = ?", scheduleID).Find(&schedule).Error; err != nil {
+		}).Model(&schedule).Preload("Event").Where("id = ?", scheduleId).Find(&schedule).Error; err != nil {
 			return err
 		}
 
@@ -49,8 +49,8 @@ func (r *repositoryImpl) RegisterEvent(userID int, scheduleID int) error {
 		tx.Save(&schedule)
 
 		var reg model.EventRegistration
-		reg.ScheduleID = scheduleID
-		reg.UserID = userID
+		reg.ScheduleId = scheduleId
+		reg.UserId = userId
 
 		if err := tx.Create(&reg).Error; err != nil {
 			return err

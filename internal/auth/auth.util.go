@@ -26,7 +26,7 @@ func ConvertRegisterRequestDTOToUser(dto *dto.RegisterRequestDTO, email string) 
 	user.RegisteredEvents = make([]model.EventRegistration, 0)
 
 	for _, desiredRound := range dto.DesiredRounds {
-		user.DesiredRounds = append(user.DesiredRounds, DesiredRoundDTOToModel(&desiredRound, user.ID))
+		user.DesiredRounds = append(user.DesiredRounds, DesiredRoundDTOToModel(&desiredRound, user.Id))
 	}
 
 	for _, interestedFaculty := range dto.InterestedFaculties {
@@ -36,11 +36,11 @@ func ConvertRegisterRequestDTOToUser(dto *dto.RegisterRequestDTO, email string) 
 	return user
 }
 
-func DesiredRoundDTOToModel(dto *dto.DesiredRound, userID int) model.DesiredRound {
+func DesiredRoundDTOToModel(dto *dto.DesiredRound, userId int) model.DesiredRound {
 	var desiredRound model.DesiredRound
 	desiredRound.Order = dto.Order
 	desiredRound.Round = model.Round(dto.Round)
-	desiredRound.UserID = uint(userID)
+	desiredRound.UserId = uint(userId)
 	return desiredRound
 }
 
@@ -109,7 +109,7 @@ func DesiredRoundModelToDTO(m *model.DesiredRound) dto.DesiredRound {
 
 func ScheduleModelToDTO(m *model.Schedule) dto.Schedule {
 	var registeredEvent dto.Schedule
-	registeredEvent.ID = m.ID
+	registeredEvent.Id = m.Id
 	registeredEvent.CurrentAttendee = m.CurrentAttendee
 	registeredEvent.StartsAt = m.StartsAt
 	registeredEvent.EndsAt = m.EndsAt

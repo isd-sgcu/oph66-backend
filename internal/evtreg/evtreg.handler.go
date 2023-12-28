@@ -41,14 +41,14 @@ func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 		return
 	}
 
-	scheduleIDstr := c.Param("scheduleId")
-	scheduleID, err := strconv.Atoi(scheduleIDstr)
+	scheduleIdstr := c.Param("scheduleId")
+	scheduleId, err := strconv.Atoi(scheduleIdstr)
 	if err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	if apperr := h.svc.RegisterEvent(email, scheduleID); apperr != nil {
+	if apperr := h.svc.RegisterEvent(email, scheduleId); apperr != nil {
 		utils.ReturnError(c, apperr)
 	}
 

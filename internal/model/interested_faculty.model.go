@@ -1,7 +1,7 @@
 package model
 
 type InterestedFaculty struct {
-	UserID         uint       `gorm:"primaryKey;index"                                  json:"-"`
+	UserId         uint       `gorm:"primaryKey;index"                                  json:"-"`
 	Order          uint       `gorm:"primaryKey"                                        json:"order"`
 	Faculty        Faculty    `gorm:"foreignKey:FacultyCode"                            json:"faculty"`
 	FacultyCode    string     `gorm:"not null"                                          json:"-"`

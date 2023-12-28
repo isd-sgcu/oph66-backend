@@ -26,7 +26,7 @@ func EventModelToDTO(m *model.Event) dto.Event {
 
 func ScheduleModelToDTO(m *model.Schedule) dto.Schedule {
 	var schedule dto.Schedule
-	schedule.ID = m.ID
+	schedule.Id = m.Id
 	schedule.EndsAt = m.EndsAt
 	schedule.StartsAt = m.StartsAt
 	schedule.CurrentAttendee = m.CurrentAttendee

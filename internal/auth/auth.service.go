@@ -23,7 +23,7 @@ type Service interface {
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
 	oauthConfig := &oauth2.Config{
-		ClientID:     cfg.OAuth2Config.ClientID,
+		ClientID:     cfg.OAuth2Config.ClientId,
 		ClientSecret: cfg.OAuth2Config.ClientSecret,
 		RedirectURL:  cfg.OAuth2Config.RedirectURL,
 		Scopes:       cfg.OAuth2Config.Scopes,
@@ -58,7 +58,7 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 
 	rawIdToken := token.Extra("id_token")
 	if rawIdToken == nil {
-		s.logger.Error("ID token not found")
+		s.logger.Error("Id token not found")
 		return "", apperror.ServiceUnavailable
 	}
 

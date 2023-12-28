@@ -30,7 +30,7 @@ type RedisConfig struct {
 
 type OAuth2Config struct {
 	RedirectURL  string   `mapstructure:"REDIRECT_URL"`
-	ClientID     string   `mapstructure:"CLIENT_ID"`
+	ClientId     string   `mapstructure:"CLIENT_ID"`
 	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
 	Scopes       []string `mapstructure:"SCOPES"`
 }

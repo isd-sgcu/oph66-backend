@@ -12,7 +12,7 @@ const (
 )
 
 type Schedule struct {
-	ID              int            `gorm:"primaryKey"`
+	Id              int            `gorm:"primaryKey"`
 	Event           Event          `gorm:"foreignKey:EventId"`
 	EventId         string         `json:"-"`
 	CurrentAttendee int            `gorm:""`

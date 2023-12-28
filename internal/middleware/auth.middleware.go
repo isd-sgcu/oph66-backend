@@ -28,7 +28,7 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 		}
 
 		tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-		token, err := idtoken.Validate(c, tokenString, cfg.OAuth2Config.ClientID)
+		token, err := idtoken.Validate(c, tokenString, cfg.OAuth2Config.ClientId)
 
 		if err != nil {
 			utils.ReturnError(c, apperror.InvalidToken)

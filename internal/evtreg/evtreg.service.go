@@ -37,7 +37,7 @@ func (h *serviceImpl) RegisterEvent(userEmail string, scheduleId int) *apperror.
 	}
 
 	var schedule model.Schedule
-	if err := h.repo.GetScheduleByID(&schedule, scheduleId); errors.Is(err, gorm.ErrRecordNotFound) {
+	if err := h.repo.GetScheduleById(&schedule, scheduleId); errors.Is(err, gorm.ErrRecordNotFound) {
 		return apperror.ScheduleNotFound
 	} else if err != nil {
 		h.logger.Error("unable to get schedule by id", zap.String("email", userEmail), zap.Int("scheduleId", scheduleId))
@@ -50,10 +50,10 @@ func (h *serviceImpl) RegisterEvent(userEmail string, scheduleId int) *apperror.
 		}
 	}
 
-	if err := h.repo.RegisterEvent(user.ID, scheduleId); errors.Is(err, apperror.ScheduleFull) {
+	if err := h.repo.RegisterEvent(user.Id, scheduleId); errors.Is(err, apperror.ScheduleFull) {
 		return apperror.ScheduleFull
 	} else if err != nil {
-		h.logger.Error("unable to register event", zap.Int("userID", user.ID), zap.Int("scheduleID", scheduleId))
+		h.logger.Error("unable to register event", zap.Int("userId", user.Id), zap.Int("scheduleId", scheduleId))
 		return apperror.InternalError
 	}
 
