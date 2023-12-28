@@ -2,6 +2,7 @@ package evtreg
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
@@ -31,7 +32,8 @@ type handlerImpl struct {
 // @produce json
 // @tags event
 // @Security Bearer
-// @router /events/{eventId}/register [post]
+// @param scheduleId path int true "schedule id"
+// @router /schedules/{scheduleId}/register [post]
 func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 	email := c.GetString("email")
 	if email == "" {
@@ -39,13 +41,14 @@ func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 		return
 	}
 
-	var body EventRegistrationDTO
-	if err := c.ShouldBindJSON(&body); err != nil {
+	scheduleIDstr := c.Param("scheduleId")
+	scheduleID, err := strconv.Atoi(scheduleIDstr)
+	if err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	if apperr := h.svc.RegisterEvent(email, body.ScheduleId); apperr != nil {
+	if apperr := h.svc.RegisterEvent(email, scheduleID); apperr != nil {
 		utils.ReturnError(c, apperr)
 	}
 

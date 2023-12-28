@@ -32,7 +32,7 @@ func main() {
 	r.GET("/live", container.FeatureflagHandler.GetLivestreamInfo)
 	r.GET("/events", container.EventHandler.GetAllEvents)
 	r.GET("/events/:eventId", container.EventHandler.GetEventById)
-	r.POST("/events/:eventId/register", container.EvtregHandler.RegisterEvent)
+	r.POST("/schedules/:scheduleId/register", container.EvtregHandler.RegisterEvent)
 	r.POST("/auth/register", container.AuthHandler.Register)
 	r.GET("/auth/me", container.AuthHandler.GetProfile)
 	r.GET("/auth/login", container.AuthHandler.GoogleLogin)

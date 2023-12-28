@@ -122,3 +122,5 @@ CREATE TABLE "schedules" (
 );
 CREATE INDEX "idx_event_id" ON "schedules" ("event_id");
 
+INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
+

@@ -572,18 +572,6 @@ paths:
       summary: get event by id
       tags:
       - event
-  /events/{eventId}/register:
-    post:
-      description: Register event
-      operationId: RegisterEvent
-      produces:
-      - application/json
-      responses: {}
-      security:
-      - Bearer: []
-      summary: Register event
-      tags:
-      - event
   /live:
     get:
       description: Get livestream flag
@@ -606,6 +594,24 @@ paths:
       summary: Get livestream flag
       tags:
       - FeatureFlag
+  /schedules/{scheduleId}/register:
+    post:
+      description: Register event
+      operationId: RegisterEvent
+      parameters:
+      - description: schedule id
+        in: path
+        name: scheduleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Register event
+      tags:
+      - event
 schemes:
 - http
 - https

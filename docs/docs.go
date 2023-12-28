@@ -269,25 +269,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/events/{eventId}/register": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Register event",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "event"
-                ],
-                "summary": "Register event",
-                "operationId": "RegisterEvent",
-                "responses": {}
-            }
-        },
         "/live": {
             "get": {
                 "description": "Get livestream flag",
@@ -319,6 +300,34 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/schedules/{scheduleId}/register": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Register event",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Register event",
+                "operationId": "RegisterEvent",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "schedule id",
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
             }
         }
     },
