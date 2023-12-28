@@ -12,12 +12,26 @@ type Handler interface {
 	RegisterEvent(c *gin.Context)
 }
 
+func NewHandler(svc Service) Handler {
+	return &handlerImpl{
+		svc,
+	}
+}
+
 var _ Handler = &handlerImpl{}
 
 type handlerImpl struct {
 	svc Service
 }
 
+// GoogleLogin godoc
+// @summary Register event
+// @description Register event
+// @id RegisterEvent
+// @produce json
+// @tags event
+// @Security Bearer
+// @router /events/{eventId}/register [post]
 func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 	email := c.GetString("email")
 	if email == "" {

@@ -13,6 +13,13 @@ type Service interface {
 	RegisterEvent(userEmail string, scheduleId int) *apperror.AppError
 }
 
+func NewService(logger *zap.Logger, repo Repository) Service {
+	return &serviceImpl{
+		logger,
+		repo,
+	}
+}
+
 var _ Service = &serviceImpl{}
 
 type serviceImpl struct {

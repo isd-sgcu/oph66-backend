@@ -145,7 +145,7 @@
                         "Bearer": []
                     }
                 ],
-                "description": "Register new account with @chula email",
+                "description": "Register new account with email",
                 "produces": [
                     "application/json"
                 ],
@@ -219,10 +219,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/event.Event"
-                            }
+                            "$ref": "#/definitions/event.GetAllEventResponse"
                         }
                     },
                     "404": {
@@ -285,6 +282,25 @@
                         }
                     }
                 }
+            }
+        },
+        "/events/{eventId}/register": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Register event",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Register event",
+                "operationId": "RegisterEvent",
+                "responses": {}
             }
         },
         "/live": {
@@ -564,17 +580,6 @@
                 }
             }
         },
-        "bilingual_field.Bilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
-                    "type": "string"
-                },
-                "th": {
-                    "type": "string"
-                }
-            }
-        },
         "event.DepartmentBilingual": {
             "type": "object",
             "properties": {
@@ -598,41 +603,6 @@
                 "th": {
                     "type": "string",
                     "example": "รายละเอียดอีเวนท์แรก"
-                }
-            }
-        },
-        "event.Event": {
-            "type": "object",
-            "properties": {
-                "department": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "description": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "faculty": {
-                    "$ref": "#/definitions/faculty.Faculty"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "location": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "max_capacity": {
-                    "type": "integer"
-                },
-                "name": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "require_registration": {
-                    "type": "boolean"
-                },
-                "schedules": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/schedule.Schedule"
-                    }
                 }
             }
         },
@@ -725,6 +695,9 @@
                 }
             }
         },
+        "event.GetAllEventResponse": {
+            "type": "object"
+        },
         "event.LocationBilingual": {
             "type": "object",
             "properties": {
@@ -777,17 +750,6 @@
                 }
             }
         },
-        "faculty.Faculty": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "name": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                }
-            }
-        },
         "featureflag.errorResponse": {
             "type": "object",
             "properties": {
@@ -828,17 +790,6 @@
                 "key": {
                     "type": "string",
                     "example": "livestream"
-                }
-            }
-        },
-        "schedule.Schedule": {
-            "type": "object",
-            "properties": {
-                "ends_at": {
-                    "type": "string"
-                },
-                "starts_at": {
-                    "type": "string"
                 }
             }
         }

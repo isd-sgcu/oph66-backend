@@ -164,13 +164,6 @@ definitions:
         example: unauthorized
         type: string
     type: object
-  bilingual_field.Bilingual:
-    properties:
-      en:
-        type: string
-      th:
-        type: string
-    type: object
   event.DepartmentBilingual:
     properties:
       en:
@@ -188,29 +181,6 @@ definitions:
       th:
         example: รายละเอียดอีเวนท์แรก
         type: string
-    type: object
-  event.Event:
-    properties:
-      department:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      description:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      faculty:
-        $ref: '#/definitions/faculty.Faculty'
-      id:
-        type: string
-      location:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      max_capacity:
-        type: integer
-      name:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      require_registration:
-        type: boolean
-      schedules:
-        items:
-          $ref: '#/definitions/schedule.Schedule'
-        type: array
     type: object
   event.EventAllErrorResponse:
     properties:
@@ -273,6 +243,8 @@ definitions:
       name:
         $ref: '#/definitions/event.NameFacultyBilingual'
     type: object
+  event.GetAllEventResponse:
+    type: object
   event.LocationBilingual:
     properties:
       en:
@@ -309,13 +281,6 @@ definitions:
         example: "2021-08-01T00:00:00+07:00"
         type: string
     type: object
-  faculty.Faculty:
-    properties:
-      code:
-        type: string
-      name:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-    type: object
   featureflag.errorResponse:
     properties:
       instance:
@@ -344,13 +309,6 @@ definitions:
         type: string
       key:
         example: livestream
-        type: string
-    type: object
-  schedule.Schedule:
-    properties:
-      ends_at:
-        type: string
-      starts_at:
         type: string
     type: object
 info:
@@ -444,7 +402,7 @@ paths:
       - auth
   /auth/register:
     post:
-      description: Register new account with @chula email
+      description: Register new account with email
       operationId: Register
       parameters:
       - description: User
@@ -491,9 +449,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/event.Event'
-            type: array
+            $ref: '#/definitions/event.GetAllEventResponse'
         "404":
           description: Not Found
           schema:
@@ -535,6 +491,18 @@ paths:
       security:
       - Bearer: []
       summary: get event by id
+      tags:
+      - event
+  /events/{eventId}/register:
+    post:
+      description: Register event
+      operationId: RegisterEvent
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Register event
       tags:
       - event
   /live:

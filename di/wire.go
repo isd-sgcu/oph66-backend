@@ -14,6 +14,7 @@ import (
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
 	"github.com/isd-sgcu/oph66-backend/internal/router"
+	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -23,6 +24,7 @@ type Container struct {
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
 	AuthHandler        auth.Handler
+	EvtregHandler      evtreg.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -34,6 +36,7 @@ func newContainer(
 	hcHandler healthcheck.Handler,
 	featureflagHandler featureflag.Handler,
 	authHandler auth.Handler,
+	evtregHandler evtreg.Handler,
 	config *cfgldr.Config,
 	logger *zap.Logger,
 	corsHandler cfgldr.CorsHandler,
@@ -44,6 +47,7 @@ func newContainer(
 		hcHandler,
 		featureflagHandler,
 		authHandler,
+		evtregHandler,
 		config,
 		logger,
 		corsHandler,
@@ -67,6 +71,9 @@ func Init() (Container, error) {
 		featureflag.NewCache,
 		featureflag.NewService,
 		featureflag.NewRepository,
+		evtreg.NewRepository,
+		evtreg.NewService,
+		evtreg.NewHandler,
 		auth.NewHandler,
 		auth.NewService,
 		auth.NewRepository,
