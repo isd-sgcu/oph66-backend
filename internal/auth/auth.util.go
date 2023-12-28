@@ -4,8 +4,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/internal/model"
 )
 
-func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) *model.User {
-	user := &model.User{}
+func ConvertRegisterRequestDTOToUser(user *model.User, dto *RegisterRequestDTO, email string) {
 	user.Gender = dto.Gender
 	user.FirstName = dto.FirstName
 	user.LastName = dto.LastName
@@ -25,58 +24,54 @@ func ConvertRegisterRequestDTOToUser(dto *RegisterRequestDTO, email string) *mod
 	user.RegisteredEvents = make([]model.EventRegistration, 0)
 
 	for i, desiredRound := range dto.DesiredRounds {
-		ConvertDesiredInfoToDesiredRound(&desiredRound, user, &user.DesiredRounds[i])
+		DesiredRoundDTOToModel(&user.DesiredRounds[i], &desiredRound, user)
 	}
 
 	for i, interestedFaculty := range dto.InterestedFaculties {
-		ConvertFacultyInfoToInterestedFaculty(&interestedFaculty, user, &user.InterestedFaculties[i])
+		FacultyInfoToInterestedFaculty(&user.InterestedFaculties[i], &interestedFaculty, user)
 	}
-
-	return user
 }
 
-func ConvertDesiredInfoToDesiredRound(dto *DesiredRound, user *model.User, desiredRound *model.DesiredRound) {
+func DesiredRoundDTOToModel(desiredRound *model.DesiredRound, dto *DesiredRound, user *model.User) {
+	desiredRound.Order = dto.Order
+	desiredRound.Round = model.Round(dto.Round)
+	desiredRound.UserID = uint(user.ID)
 }
 
-func ConvertFacultyInfoToInterestedFaculty(dto *FacultyInfoId, user *model.User, interestedFaculty *model.InterestedFaculty) {
+func FacultyInfoToInterestedFaculty(interestedFaculty *model.InterestedFaculty, dto *FacultyInfoId, user *model.User) {
 	interestedFaculty.Order = dto.Order
 	interestedFaculty.FacultyCode = dto.FacultyCode
 	interestedFaculty.DepartmentCode = dto.DepartmentCode
 	interestedFaculty.SectionCode = dto.SectionCode
 }
 
-func ConvertUserModelToUserDTO(mUser *model.User) User {
-	user := User{
-		Gender:              mUser.Gender,
-		FirstName:           mUser.FirstName,
-		LastName:            mUser.LastName,
-		School:              mUser.School,
-		BirthDate:           mUser.BirthDate,
-		Address:             mUser.Address,
-		FromAbroad:          mUser.FromAbroad,
-		Allergy:             mUser.Allergy,
-		MedicalCondition:    mUser.MedicalCondition,
-		JoinCUReason:        mUser.JoinCUReason,
-		NewsSource:          mUser.NewsSource,
-		Status:              mUser.Status,
-		Grade:               mUser.Grade,
-		DesiredRounds:       make([]DesiredRound, 0, len(mUser.DesiredRounds)),
-		InterestedFaculties: make([]FacultyInfo, 0, len(mUser.InterestedFaculties)),
+func UserModelToUserDTO(user *User, mUser *model.User) {
+	user.Gender = mUser.Gender
+	user.FirstName = mUser.FirstName
+	user.LastName = mUser.LastName
+	user.School = mUser.School
+	user.BirthDate = mUser.BirthDate
+	user.Address = mUser.Address
+	user.FromAbroad = mUser.FromAbroad
+	user.Allergy = mUser.Allergy
+	user.MedicalCondition = mUser.MedicalCondition
+	user.JoinCUReason = mUser.JoinCUReason
+	user.NewsSource = mUser.NewsSource
+	user.Status = mUser.Status
+	user.Grade = mUser.Grade
+	user.DesiredRounds = make([]DesiredRound, len(mUser.DesiredRounds))
+	user.InterestedFaculties = make([]FacultyInfo, len(mUser.InterestedFaculties))
+
+	for i, round := range mUser.DesiredRounds {
+		DesiredRoundModelToDTO(&user.DesiredRounds[i], &round)
 	}
 
-	for _, round := range mUser.DesiredRounds {
-		user.DesiredRounds = append(user.DesiredRounds, ConvertDesiredRoundModelToDTO(&round))
+	for i, faculty := range mUser.InterestedFaculties {
+		InterestedFacultyToFacultyInfo(&user.InterestedFaculties[i], &faculty)
 	}
-
-	for _, faculty := range mUser.InterestedFaculties {
-		user.InterestedFaculties = append(user.InterestedFaculties, ConvertInterestedFacultyToFacultyInfo(&faculty))
-	}
-
-	return user
 }
 
-func ConvertInterestedFacultyToFacultyInfo(m *model.InterestedFaculty) FacultyInfo {
-	var facultyInfo FacultyInfo
+func InterestedFacultyToFacultyInfo(facultyInfo *FacultyInfo, m *model.InterestedFaculty) {
 	facultyInfo.Department.Code = m.DepartmentCode
 	facultyInfo.Department.Name.En = m.Department.Name.En
 	facultyInfo.Department.Name.Th = m.Department.Name.Th
@@ -86,12 +81,9 @@ func ConvertInterestedFacultyToFacultyInfo(m *model.InterestedFaculty) FacultyIn
 	facultyInfo.Section.Code = m.SectionCode
 	facultyInfo.Section.Name.En = m.Section.Name.En
 	facultyInfo.Section.Name.Th = m.Section.Name.Th
-	return facultyInfo
 }
 
-func ConvertDesiredRoundModelToDTO(m *model.DesiredRound) DesiredRound {
-	var dr DesiredRound
-	dr.Order = m.Order
-	dr.Round = string(m.Round)
-	return dr
+func DesiredRoundModelToDTO(desiredRound *DesiredRound, m *model.DesiredRound) {
+	desiredRound.Order = m.Order
+	desiredRound.Round = string(m.Round)
 }

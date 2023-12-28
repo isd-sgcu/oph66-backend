@@ -442,8 +442,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/auth.CallbackErrorResponse'
-      security:
-      - Bearer: []
       summary: receive a token after successfully login with Google
       tags:
       - auth
@@ -454,8 +452,6 @@ paths:
       produces:
       - application/json
       responses: {}
-      security:
-      - Bearer: []
       summary: Redirect to Google login page
       tags:
       - auth
@@ -607,8 +603,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/featureflag.errorResponse'
-      security:
-      - Bearer: []
       summary: Get livestream flag
       tags:
       - FeatureFlag

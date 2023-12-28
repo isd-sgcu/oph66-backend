@@ -78,27 +78,21 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 // @Failure 401 {object} auth.RegisterUnauthorized
 // @Failure 498 {object} auth.RegisterInvalidToken
 func (h *handlerImpl) Register(c *gin.Context) {
-	var data RegisterRequestDTO
-	var user User
-	emailRaw, exist := c.Get("email")
-	if !exist {
+	email := c.GetString("email")
+	if email == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
 		return
 	}
 
-	email, ok := emailRaw.(string)
-	if !ok {
-		h.logger.Error("email string assertion failed", zap.Any("emailRaw", emailRaw))
-		utils.ReturnError(c, apperror.InternalError)
-		return
-	}
+	var data RegisterRequestDTO
+	var user User
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	apperr := h.svc.Register(email, &data, &user)
+	apperr := h.svc.Register(&user, email, &data)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -123,21 +117,14 @@ func (h *handlerImpl) Register(c *gin.Context) {
 // @Failure 401 {object} auth.GetProfileUnauthorized
 // @Failure 404 {object} auth.GetProfileUserNotFound
 func (h *handlerImpl) GetProfile(c *gin.Context) {
-	emailRaw, exist := c.Get("email")
-	if !exist {
+	email := c.GetString("email")
+	if email == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
 		return
 	}
 
-	email, ok := emailRaw.(string)
-	if !ok {
-		h.logger.Error("email string assertion failed", zap.Any("emailRaw", emailRaw))
-		utils.ReturnError(c, apperror.InternalError)
-		return
-	}
-
 	var user User
-	apperr := h.svc.GetUserFromJWTToken(email, &user)
+	apperr := h.svc.GetUserFromJWTToken(&user, email)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return

@@ -44,11 +44,6 @@ const docTemplate = `{
         },
         "/auth/callback": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "After successfully logging in with a @chula account, you'll receive a token. If you attempt to log in using a different domain, Google will not allow the login",
                 "produces": [
                     "application/json"
@@ -82,11 +77,6 @@ const docTemplate = `{
         },
         "/auth/login": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Redirect to Google login page",
                 "produces": [
                     "application/json"
@@ -300,11 +290,6 @@ const docTemplate = `{
         },
         "/live": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get livestream flag",
                 "produces": [
                     "application/json"
