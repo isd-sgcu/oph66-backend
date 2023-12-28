@@ -14,7 +14,7 @@ const (
 type Schedule struct {
 	ID              int            `gorm:"primaryKey"`
 	Event           Event          `gorm:"foreignKey:EventId"`
-	EventId         int            `json:"-"`
+	EventId         string         `json:"-"`
 	CurrentAttendee int            `gorm:""`
 	StartsAt        time.Time      `json:"ends_at"`
 	EndsAt          time.Time      `json:"starts_at"`

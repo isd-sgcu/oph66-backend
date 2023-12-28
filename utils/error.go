@@ -9,7 +9,7 @@ func ReturnError(c *gin.Context, err *apperror.AppError) {
 	c.JSON(
 		err.HttpCode,
 		gin.H{
-			"instance": c.FullPath(),
+			"instance": c.Request.URL.Path,
 			"title":    err.Id,
 		},
 	)

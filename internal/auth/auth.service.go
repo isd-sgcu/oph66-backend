@@ -6,6 +6,7 @@ import (
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
@@ -16,8 +17,8 @@ import (
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(user *User, email string, data *RegisterRequestDTO) *apperror.AppError
-	GetUserFromJWTToken(user *User, email string) *apperror.AppError
+	Register(email string, data *dto.RegisterRequestDTO) (*dto.User, *apperror.AppError)
+	GetUserFromJWTToken(email string) (*dto.User, *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -64,30 +65,30 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(user *User, email string, data *RegisterRequestDTO) *apperror.AppError {
+func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto.User, *apperror.AppError) {
 	var mUser model.User
 	ConvertRegisterRequestDTOToUser(&mUser, data, email)
 	err := s.repo.CreateUser(&mUser)
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
-		return apperror.DuplicateEmail
+		return nil, apperror.DuplicateEmail
 	} else if err != nil {
 		s.logger.Error("Failed to create user", zap.Error(err))
-		return apperror.InternalError
+		return nil, apperror.InternalError
 	}
 
-	UserModelToUserDTO(user, &mUser)
+	user := UserModelToUserDTO(&mUser)
 
-	return nil
+	return &user, nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(user *User, email string) *apperror.AppError {
+func (s *serviceImpl) GetUserFromJWTToken(email string) (*dto.User, *apperror.AppError) {
 	var mUser model.User
 	err := s.repo.GetUserByEmail(&mUser, email)
 	if err != nil {
-		return apperror.UserNotFound
+		return nil, apperror.UserNotFound
 	}
 
-	UserModelToUserDTO(user, &mUser)
+	user := UserModelToUserDTO(&mUser)
 
-	return nil
+	return &user, nil
 }

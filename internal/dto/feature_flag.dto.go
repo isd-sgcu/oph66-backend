@@ -1,4 +1,4 @@
-package featureflag
+package dto
 
 type response struct {
 	Key       string `example:"livestream"                                  json:"key"`

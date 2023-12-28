@@ -1,4 +1,4 @@
-package auth
+package dto
 
 type RegisterRequestDTO struct {
 	Gender              string          `example:"male"                               json:"gender"`
@@ -58,26 +58,22 @@ type User struct {
 	Grade               string         `example:"undergraduate"                      json:"grade"`
 	DesiredRounds       []DesiredRound `json:"desired_rounds"`
 	InterestedFaculties []FacultyInfo  `json:"interested_faculties"`
+	RegisteredEvents    []Schedule     `json:"registered_events"`
 }
 
 type FacultyInfo struct {
 	Faculty struct {
-		Name BillingualName `json:"name"`
+		Name BilingualField `json:"name"`
 		Code string         `json:"code"`
 	} `json:"faculty"`
 	Department struct {
-		Name BillingualName `json:"name"`
+		Name BilingualField `json:"name"`
 		Code string         `json:"code"`
 	} `json:"department"`
 	Section struct {
-		Name BillingualName `json:"name"`
+		Name BilingualField `json:"name"`
 		Code string         `json:"code"`
 	} `json:"section"`
-}
-
-type BillingualName struct {
-	Th string `json:"th"`
-	En string `json:"en"`
 }
 
 type CallbackResponse struct {

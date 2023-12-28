@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/utils"
 	"go.uber.org/zap"
 )
@@ -47,9 +48,9 @@ func (h *handlerImpl) GoogleLogin(c *gin.Context) {
 // @produce json
 // @tags auth
 // @router /auth/callback [get]
-// @success 200 {object} auth.CallbackResponse
-// @Failure 500 {object} auth.CallbackErrorResponse
-// @Failure 404 {object} auth.CallbackInvalidResponse
+// @success 200 {object} dto.CallbackResponse
+// @Failure 500 {object} dto.CallbackErrorResponse
+// @Failure 404 {object} dto.CallbackInvalidResponse
 func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 	code := c.Query("code")
 	token, apperr := h.svc.GoogleCallback(c, code)
@@ -57,7 +58,7 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 		utils.ReturnError(c, apperr)
 		return
 	}
-	response := GoogleCallbackResponse{
+	response := dto.GoogleCallbackResponse{
 		Token: token,
 	}
 	c.JSON(http.StatusOK, response)
@@ -71,12 +72,12 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 // @tags auth
 // @Security Bearer
 // @router /auth/register [post]
-// @param user body auth.RegisterRequestDTO true "User"
-// @success 200 {object} auth.RegisterResponse
-// @Failure 500 {object} auth.RegisterErrorResponse
-// @Failure 404 {object} auth.RegisterInvalidResponse
-// @Failure 401 {object} auth.RegisterUnauthorized
-// @Failure 498 {object} auth.RegisterInvalidToken
+// @param user body dto.RegisterRequestDTO true "User"
+// @success 200 {object} dto.RegisterResponse
+// @Failure 500 {object} dto.RegisterErrorResponse
+// @Failure 404 {object} dto.RegisterInvalidResponse
+// @Failure 401 {object} dto.RegisterUnauthorized
+// @Failure 498 {object} dto.RegisterInvalidToken
 func (h *handlerImpl) Register(c *gin.Context) {
 	email := c.GetString("email")
 	if email == "" {
@@ -84,21 +85,20 @@ func (h *handlerImpl) Register(c *gin.Context) {
 		return
 	}
 
-	var data RegisterRequestDTO
-	var user User
+	var data dto.RegisterRequestDTO
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
-	apperr := h.svc.Register(&user, email, &data)
+	user, apperr := h.svc.Register(email, &data)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}
-	response := RegisterResponse{
-		User: &user,
+	response := dto.RegisterResponse{
+		User: user,
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -112,10 +112,10 @@ func (h *handlerImpl) Register(c *gin.Context) {
 // @tags auth
 // @Security Bearer
 // @router /auth/me [get]
-// @success 200 {object} auth.GetProfileResponse
-// @Failure 500 {object} auth.GetProfileErrorResponse
-// @Failure 401 {object} auth.GetProfileUnauthorized
-// @Failure 404 {object} auth.GetProfileUserNotFound
+// @success 200 {object} dto.GetProfileResponse
+// @Failure 500 {object} dto.GetProfileErrorResponse
+// @Failure 401 {object} dto.GetProfileUnauthorized
+// @Failure 404 {object} dto.GetProfileUserNotFound
 func (h *handlerImpl) GetProfile(c *gin.Context) {
 	email := c.GetString("email")
 	if email == "" {
@@ -123,15 +123,14 @@ func (h *handlerImpl) GetProfile(c *gin.Context) {
 		return
 	}
 
-	var user User
-	apperr := h.svc.GetUserFromJWTToken(&user, email)
+	user, apperr := h.svc.GetUserFromJWTToken(email)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}
 
-	response := GetProfileResponse{
-		User: &user,
+	response := dto.GetProfileResponse{
+		User: user,
 	}
 
 	c.JSON(http.StatusOK, response)

@@ -33,9 +33,9 @@ type handlerImpl struct {
 // @produce json
 // @tags FeatureFlag
 // @router /live [get]
-// @success 200 {object} featureflag.response
-// @Failure 500 {object} featureflag.errorResponse
-// @Failure 404 {object} featureflag.invalidResponse
+// @success 200 {object} dto.response
+// @Failure 500 {object} dto.errorResponse
+// @Failure 404 {object} dto.invalidResponse
 func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 	cacheKey := "livestream"
 
