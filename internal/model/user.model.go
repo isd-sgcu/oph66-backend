@@ -16,9 +16,9 @@ type User struct {
 	NewsSource          string              `json:"news_source"`
 	Status              string              `json:"status"`
 	Grade               string              `json:"grade"`
-	DesiredRounds       []DesiredRound      `gorm:"foreignKey:UserID"`
-	InterestedFaculties []InterestedFaculty `gorm:"foreignKey:UserID"`
-	RegisteredEvents    []EventRegistration `gorm:"foreignKey:UserID"`
+	DesiredRounds       []DesiredRound      `gorm:"foreignKey:UserID"        json:"desired_rounds"`
+	InterestedFaculties []InterestedFaculty `gorm:"foreignKey:UserID"        json:"interested_faculties"`
+	RegisteredEvents    []EventRegistration `gorm:"foreignKey:UserID"        json:"registered_events"`
 }
 
 func (u User) TableName() string {

@@ -1,35 +1,33 @@
 package auth
 
-import "github.com/isd-sgcu/oph66-backend/internal/model"
-
 type RegisterRequestDTO struct {
-	Gender              string         `json:"gender"`
-	FirstName           string         `json:"first_name"`
-	LastName            string         `json:"last_name"`
-	School              string         `json:"school"`
-	BirthDate           string         `json:"birth_date"`
-	Address             string         `json:"address"`
-	FromAbroad          string         `json:"from_abroad"`
-	Allergy             string         `json:"allergy"`
-	MedicalCondition    string         `json:"medical_condition"`
-	JoinCUReason        string         `json:"join_cu_reason"`
-	NewsSource          string         `json:"news_source"`
-	Status              string         `json:"status"`
-	Grade               string         `json:"grade"`
-	DesiredRounds       []DesiredRound `json:"desired_rounds"`
-	InterestedFaculties []FacultyInfo  `json:"interested_faculties"`
+	Gender              string          `example:"male"                               json:"gender"`
+	FirstName           string          `example:"John"                               json:"first_name"`
+	LastName            string          `example:"Doe"                                json:"last_name"`
+	School              string          `example:"CU"                                 json:"school"`
+	BirthDate           string          `example:"1990-01-01"                         json:"birth_date"`
+	Address             string          `example:"Bangkok"                            json:"address"`
+	FromAbroad          string          `example:"no"                                 json:"from_abroad"`
+	Allergy             string          `example:"None"                               json:"allergy"`
+	MedicalCondition    string          `example:"None"                               json:"medical_condition"`
+	JoinCUReason        string          `example:"Interested in the programs offered" json:"join_cu_reason"`
+	NewsSource          string          `example:"Facebook"                           json:"news_source"`
+	Status              string          `example:"student"                            json:"status"`
+	Grade               string          `example:"undergraduate"                      json:"grade"`
+	DesiredRounds       []DesiredRound  `json:"desired_rounds"`
+	InterestedFaculties []FacultyInfoId `json:"interested_faculties"`
 }
 
 type DesiredRound struct {
-	Order uint   `json:"order"`
-	Code  string `json:"code"`
+	Order uint   `example:"1" json:"order"`
+	Round string `example:"1" json:"round"`
 }
 
-type FacultyInfo struct {
-	Order          uint   `json:"order"`
-	FacultyCode    string `json:"faculty_code"`
-	DepartmentCode string `json:"department_code"`
-	SectionCode    string `json:"section_code"`
+type FacultyInfoId struct {
+	Order          uint   `example:"1"  json:"order"`
+	FacultyCode    string `example:"21" json:"faculty_code"`
+	DepartmentCode string `example:"10" json:"department_code"`
+	SectionCode    string `example:"-"  json:"section_code"`
 }
 
 type GoogleCallbackResponse struct {
@@ -37,39 +35,49 @@ type GoogleCallbackResponse struct {
 }
 
 type RegisterResponse struct {
-	User *model.User `json:"user"`
+	User *User `json:"user"`
 }
 
 type GetProfileResponse struct {
-	User *model.User `json:"user"`
+	User *User `json:"user"`
 }
 
-type MockUser struct {
-	Gender              string                  `example:"male"                               json:"gender"`
-	FirstName           string                  `example:"John"                               json:"first_name"`
-	LastName            string                  `example:"Doe"                                json:"last_name"`
-	School              string                  `example:"CU"                                 json:"school"`
-	BirthDate           string                  `example:"1990-01-01"                         json:"birth_date"`
-	Address             string                  `example:"Bangkok"                            json:"address"`
-	FromAbroad          string                  `example:"no"                                 json:"from_abroad"`
-	Allergy             string                  `example:"None"                               json:"allergy"`
-	MedicalCondition    string                  `example:"None"                               json:"medical_condition"`
-	JoinCUReason        string                  `example:"Interested in the programs offered" json:"join_cu_reason"`
-	NewsSource          string                  `example:"Facebook"                           json:"news_source"`
-	Status              string                  `example:"student"                            json:"status"`
-	Grade               string                  `example:"undergraduate"                      json:"grade"`
-	DesiredRounds       []MockDesiredRound      `json:"desired_rounds"`
-	InterestedFaculties []MockInterestedFaculty `json:"interested_faculties"`
+type User struct {
+	Gender              string         `example:"male"                               json:"gender"`
+	FirstName           string         `example:"John"                               json:"first_name"`
+	LastName            string         `example:"Doe"                                json:"last_name"`
+	School              string         `example:"CU"                                 json:"school"`
+	BirthDate           string         `example:"1990-01-01"                         json:"birth_date"`
+	Address             string         `example:"Bangkok"                            json:"address"`
+	FromAbroad          string         `example:"no"                                 json:"from_abroad"`
+	Allergy             string         `example:"None"                               json:"allergy"`
+	MedicalCondition    string         `example:"None"                               json:"medical_condition"`
+	JoinCUReason        string         `example:"Interested in the programs offered" json:"join_cu_reason"`
+	NewsSource          string         `example:"Facebook"                           json:"news_source"`
+	Status              string         `example:"student"                            json:"status"`
+	Grade               string         `example:"undergraduate"                      json:"grade"`
+	DesiredRounds       []DesiredRound `json:"desired_rounds"`
+	InterestedFaculties []FacultyInfo  `json:"interested_faculties"`
 }
 
-type MockDesiredRound struct {
-	Order uint   `example:"1" json:"order"`
-	Code  string `example:"1" json:"code"`
+type FacultyInfo struct {
+	Faculty struct {
+		Name BillingualName `json:"name"`
+		Code string         `json:"code"`
+	} `json:"faculty"`
+	Department struct {
+		Name BillingualName `json:"name"`
+		Code string         `json:"code"`
+	} `json:"department"`
+	Section struct {
+		Name BillingualName `json:"name"`
+		Code string         `json:"code"`
+	} `json:"section"`
 }
 
-type MockInterestedFaculty struct {
-	Order uint   `example:"1" json:"order"`
-	Code  string `example:"1" json:"code"`
+type BillingualName struct {
+	Th string `json:"th"`
+	En string `json:"en"`
 }
 
 type CallbackResponse struct {
@@ -84,10 +92,6 @@ type CallbackErrorResponse struct {
 type CallbackInvalidResponse struct {
 	Instance string `example:"/auth/callback" json:"instance"`
 	Title    string `example:"bad-request"    json:"title"`
-}
-
-type MockRegisterResponse struct {
-	MockUser MockUser `json:"user"`
 }
 
 type RegisterErrorResponse struct {
@@ -108,10 +112,6 @@ type RegisterUnauthorized struct {
 type RegisterInvalidToken struct {
 	Instance string `example:"/auth/register" json:"instance"`
 	Title    string `example:"invalid-token"  json:"title"`
-}
-
-type MockGetProfileResponse struct {
-	MockUser MockUser `json:"user"`
 }
 
 type GetProfileErrorResponse struct {

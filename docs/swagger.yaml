@@ -1,4 +1,11 @@
 definitions:
+  auth.BillingualName:
+    properties:
+      en:
+        type: string
+      th:
+        type: string
+    type: object
   auth.CallbackErrorResponse:
     properties:
       instance:
@@ -23,6 +30,54 @@ definitions:
         example: gbxnZjiHVzb_4mDQTQNiJdrZFOCactWXkZvZOxS2_qZsy7vAQY7uA2RFIHe2JABoEjhT0Y3KlOJuOEvE2YJMLrJDagwhpAITGex
         type: string
     type: object
+  auth.DesiredRound:
+    properties:
+      order:
+        example: 1
+        type: integer
+      round:
+        example: "1"
+        type: string
+    type: object
+  auth.FacultyInfo:
+    properties:
+      department:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/auth.BillingualName'
+        type: object
+      faculty:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/auth.BillingualName'
+        type: object
+      section:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/auth.BillingualName'
+        type: object
+    type: object
+  auth.FacultyInfoId:
+    properties:
+      department_code:
+        example: "10"
+        type: string
+      faculty_code:
+        example: "21"
+        type: string
+      order:
+        example: 1
+        type: integer
+      section_code:
+        example: '-'
+        type: string
+    type: object
   auth.GetProfileErrorResponse:
     properties:
       instance:
@@ -31,6 +86,11 @@ definitions:
       title:
         example: internal-server-error
         type: string
+    type: object
+  auth.GetProfileResponse:
+    properties:
+      user:
+        $ref: '#/definitions/auth.User'
     type: object
   auth.GetProfileUnauthorized:
     properties:
@@ -48,84 +108,6 @@ definitions:
         type: string
       title:
         example: user-not-found
-        type: string
-    type: object
-  auth.MockDesiredRound:
-    properties:
-      code:
-        example: "1"
-        type: string
-      order:
-        example: 1
-        type: integer
-    type: object
-  auth.MockGetProfileResponse:
-    properties:
-      user:
-        $ref: '#/definitions/auth.MockUser'
-    type: object
-  auth.MockInterestedFaculty:
-    properties:
-      code:
-        example: "1"
-        type: string
-      order:
-        example: 1
-        type: integer
-    type: object
-  auth.MockRegisterResponse:
-    properties:
-      user:
-        $ref: '#/definitions/auth.MockUser'
-    type: object
-  auth.MockUser:
-    properties:
-      address:
-        example: Bangkok
-        type: string
-      allergy:
-        example: None
-        type: string
-      birth_date:
-        example: "1990-01-01"
-        type: string
-      desired_rounds:
-        items:
-          $ref: '#/definitions/auth.MockDesiredRound'
-        type: array
-      first_name:
-        example: John
-        type: string
-      from_abroad:
-        example: "no"
-        type: string
-      gender:
-        example: male
-        type: string
-      grade:
-        example: undergraduate
-        type: string
-      interested_faculties:
-        items:
-          $ref: '#/definitions/auth.MockInterestedFaculty'
-        type: array
-      join_cu_reason:
-        example: Interested in the programs offered
-        type: string
-      last_name:
-        example: Doe
-        type: string
-      medical_condition:
-        example: None
-        type: string
-      news_source:
-        example: Facebook
-        type: string
-      school:
-        example: CU
-        type: string
-      status:
-        example: student
         type: string
     type: object
   auth.RegisterErrorResponse:
@@ -155,6 +137,61 @@ definitions:
         example: invalid-token
         type: string
     type: object
+  auth.RegisterRequestDTO:
+    properties:
+      address:
+        example: Bangkok
+        type: string
+      allergy:
+        example: None
+        type: string
+      birth_date:
+        example: "1990-01-01"
+        type: string
+      desired_rounds:
+        items:
+          $ref: '#/definitions/auth.DesiredRound'
+        type: array
+      first_name:
+        example: John
+        type: string
+      from_abroad:
+        example: "no"
+        type: string
+      gender:
+        example: male
+        type: string
+      grade:
+        example: undergraduate
+        type: string
+      interested_faculties:
+        items:
+          $ref: '#/definitions/auth.FacultyInfoId'
+        type: array
+      join_cu_reason:
+        example: Interested in the programs offered
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      medical_condition:
+        example: None
+        type: string
+      news_source:
+        example: Facebook
+        type: string
+      school:
+        example: CU
+        type: string
+      status:
+        example: student
+        type: string
+    type: object
+  auth.RegisterResponse:
+    properties:
+      user:
+        $ref: '#/definitions/auth.User'
+    type: object
   auth.RegisterUnauthorized:
     properties:
       instance:
@@ -162,6 +199,56 @@ definitions:
         type: string
       title:
         example: unauthorized
+        type: string
+    type: object
+  auth.User:
+    properties:
+      address:
+        example: Bangkok
+        type: string
+      allergy:
+        example: None
+        type: string
+      birth_date:
+        example: "1990-01-01"
+        type: string
+      desired_rounds:
+        items:
+          $ref: '#/definitions/auth.DesiredRound'
+        type: array
+      first_name:
+        example: John
+        type: string
+      from_abroad:
+        example: "no"
+        type: string
+      gender:
+        example: male
+        type: string
+      grade:
+        example: undergraduate
+        type: string
+      interested_faculties:
+        items:
+          $ref: '#/definitions/auth.FacultyInfo'
+        type: array
+      join_cu_reason:
+        example: Interested in the programs offered
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      medical_condition:
+        example: None
+        type: string
+      news_source:
+        example: Facebook
+        type: string
+      school:
+        example: CU
+        type: string
+      status:
+        example: student
         type: string
     type: object
   event.DepartmentBilingual:
@@ -382,7 +469,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.MockGetProfileResponse'
+            $ref: '#/definitions/auth.GetProfileResponse'
         "401":
           description: Unauthorized
           schema:
@@ -410,14 +497,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/auth.MockUser'
+          $ref: '#/definitions/auth.RegisterRequestDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.MockRegisterResponse'
+            $ref: '#/definitions/auth.RegisterResponse'
         "401":
           description: Unauthorized
           schema:
@@ -458,8 +545,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/event.EventAllErrorResponse'
-      security:
-      - Bearer: []
       summary: Get all events
       tags:
       - event
@@ -488,8 +573,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/event.EventErrorResponse'
-      security:
-      - Bearer: []
       summary: get event by id
       tags:
       - event

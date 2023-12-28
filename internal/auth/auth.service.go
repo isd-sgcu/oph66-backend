@@ -16,8 +16,8 @@ import (
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError
-	GetUserFromJWTToken(email string, user *model.User) *apperror.AppError
+	Register(email string, data *RegisterRequestDTO, user *User) *apperror.AppError
+	GetUserFromJWTToken(email string, user *User) *apperror.AppError
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
@@ -64,9 +64,9 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError {
-	user = ConvertRegisterRequestDTOToUser(data, email)
-	err := s.repo.CreateUser(user)
+func (s *serviceImpl) Register(email string, data *RegisterRequestDTO, user *User) *apperror.AppError {
+	mUser := ConvertRegisterRequestDTOToUser(data, email)
+	err := s.repo.CreateUser(mUser)
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
 		return apperror.DuplicateEmail
 	} else if err != nil {
@@ -74,14 +74,19 @@ func (s *serviceImpl) Register(email string, data *RegisterRequestDTO, user *mod
 		return apperror.InternalError
 	}
 
+	*user = ConvertUserModelToUserDTO(mUser)
+
 	return nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(email string, result *model.User) *apperror.AppError {
-	err := s.repo.GetUserByEmail(result, email)
+func (s *serviceImpl) GetUserFromJWTToken(email string, result *User) *apperror.AppError {
+	var mUser model.User
+	err := s.repo.GetUserByEmail(&mUser, email)
 	if err != nil {
 		return apperror.UserNotFound
 	}
+
+	*result = ConvertUserModelToUserDTO(&mUser)
 
 	return nil
 }

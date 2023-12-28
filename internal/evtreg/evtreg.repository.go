@@ -49,7 +49,7 @@ func (r *repositoryImpl) RegisterEvent(userID int, scheduleID int) error {
 		tx.Save(&schedule)
 
 		var reg model.EventRegistration
-		reg.ScheduleId = scheduleID
+		reg.ScheduleID = scheduleID
 		reg.UserID = userID
 
 		if err := tx.Create(&reg).Error; err != nil {

@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
-	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"github.com/isd-sgcu/oph66-backend/utils"
 	"go.uber.org/zap"
 )
@@ -35,7 +34,6 @@ func NewHandler(svc Service, logger *zap.Logger) Handler {
 // @id GoogleLogin
 // @produce json
 // @tags auth
-// @Security Bearer
 // @router /auth/login [get]
 func (h *handlerImpl) GoogleLogin(c *gin.Context) {
 	url := h.svc.GoogleLogin()
@@ -48,7 +46,6 @@ func (h *handlerImpl) GoogleLogin(c *gin.Context) {
 // @id GoogleCallback
 // @produce json
 // @tags auth
-// @Security Bearer
 // @router /auth/callback [get]
 // @success 200 {object} auth.CallbackResponse
 // @Failure 500 {object} auth.CallbackErrorResponse
@@ -74,15 +71,15 @@ func (h *handlerImpl) GoogleCallback(c *gin.Context) {
 // @tags auth
 // @Security Bearer
 // @router /auth/register [post]
-// @param user body auth.MockUser true "User"
-// @success 200 {object} auth.MockRegisterResponse
+// @param user body auth.RegisterRequestDTO true "User"
+// @success 200 {object} auth.RegisterResponse
 // @Failure 500 {object} auth.RegisterErrorResponse
 // @Failure 404 {object} auth.RegisterInvalidResponse
 // @Failure 401 {object} auth.RegisterUnauthorized
 // @Failure 498 {object} auth.RegisterInvalidToken
 func (h *handlerImpl) Register(c *gin.Context) {
 	var data RegisterRequestDTO
-	var user model.User
+	var user User
 	emailRaw, exist := c.Get("email")
 	if !exist {
 		utils.ReturnError(c, apperror.Unauthorized)
@@ -121,7 +118,7 @@ func (h *handlerImpl) Register(c *gin.Context) {
 // @tags auth
 // @Security Bearer
 // @router /auth/me [get]
-// @success 200 {object} auth.MockGetProfileResponse
+// @success 200 {object} auth.GetProfileResponse
 // @Failure 500 {object} auth.GetProfileErrorResponse
 // @Failure 401 {object} auth.GetProfileUnauthorized
 // @Failure 404 {object} auth.GetProfileUserNotFound
@@ -139,7 +136,7 @@ func (h *handlerImpl) GetProfile(c *gin.Context) {
 		return
 	}
 
-	var user model.User
+	var user User
 	apperr := h.svc.GetUserFromJWTToken(email, &user)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)

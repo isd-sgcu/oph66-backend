@@ -32,7 +32,6 @@ type handlerImpl struct {
 // @id GetLivestreamInfo
 // @produce json
 // @tags FeatureFlag
-// @Security Bearer
 // @router /live [get]
 // @success 200 {object} featureflag.response
 // @Failure 500 {object} featureflag.errorResponse

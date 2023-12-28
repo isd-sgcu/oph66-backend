@@ -22,10 +22,16 @@ CREATE TABLE "departments" (
     PRIMARY KEY ("code", "faculty_code"),
     CONSTRAINT "fk_departments_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
--- Create "rounds" table
-CREATE TABLE "rounds" (
-    "round_no" INT NOT NULL,
-    PRIMARY KEY ("round_no")
+-- Create "sections" table
+CREATE TABLE "sections" (
+    "code" VARCHAR(10) NOT NULL,
+    "faculty_code" VARCHAR(10) NOT NULL,
+    "department_code" VARCHAR(10) NOT NULL,
+    "name_th" VARCHAR(80) NULL,
+    "name_en" VARCHAR(80) NULL,
+    PRIMARY KEY ("code", "department_code", "faculty_code"),
+    CONSTRAINT "fk_sections_department" FOREIGN KEY ("faculty_code", "department_code") REFERENCES "departments" ("faculty_code", "code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_sections_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 -- Create "users" table
 CREATE TABLE "users" (
@@ -48,13 +54,20 @@ CREATE TABLE "users" (
 );
 -- Create index "idx_users_email" to table: "users"
 CREATE INDEX "idx_users_email" ON "users" ("email");
+-- Create "rounds" enum
+CREATE TYPE "rounds" AS ENUM (
+	'1',
+	'2',
+	'3',
+	'4',
+	'5'
+);
 -- Create "desired_rounds" table
 CREATE TABLE "desired_rounds" (
     "user_id" INT NOT NULL,
     "order" INT NOT NULL,
-    "round_code" INT NOT NULL,
+    "round" rounds NOT NULL,
     PRIMARY KEY ("user_id", "order"),
-    CONSTRAINT "fk_desired_rounds_round" FOREIGN KEY ("round_code") REFERENCES "rounds" ("round_no") ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT "fk_users_desired_rounds" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 -- Create index "idx_desired_rounds_user_id" to table: "desired_rounds"
@@ -82,8 +95,10 @@ CREATE TABLE "interested_faculties" (
     "order" INT NOT NULL,
     "faculty_code" VARCHAR(10) NOT NULL,
     "department_code" VARCHAR(10) NOT NULL,
+    "section_code" VARCHAR(10) NOT NULL,
     PRIMARY KEY ("user_id", "order"),
-    CONSTRAINT "fk_interested_faculties_department" FOREIGN KEY ("faculty_code", "department_code") REFERENCES "departments" ("faculty_code", "code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_interested_faculties_section" FOREIGN KEY ("section_code", "department_code", "faculty_code") REFERENCES "sections" ("code", "department_code", "faculty_code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_interested_faculties_department" FOREIGN KEY ("department_code", "faculty_code") REFERENCES "departments" ("code", "faculty_code") ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT "fk_interested_faculties_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT "fk_users_interested_faculties" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
@@ -107,14 +122,3 @@ CREATE TABLE "schedules" (
 );
 CREATE INDEX "idx_event_id" ON "schedules" ("event_id");
 
--- Create "sections" table
-CREATE TABLE "sections" (
-    "code" VARCHAR(10) NOT NULL,
-    "faculty_code" VARCHAR(10) NOT NULL,
-    "department_code" VARCHAR(10) NOT NULL,
-    "name_th" VARCHAR(80) NULL,
-    "name_en" VARCHAR(80) NULL,
-    PRIMARY KEY ("code", "department_code", "faculty_code"),
-    CONSTRAINT "fk_sections_department" FOREIGN KEY ("faculty_code", "department_code") REFERENCES "departments" ("faculty_code", "code") ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT "fk_sections_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION
-);

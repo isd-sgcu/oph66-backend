@@ -119,7 +119,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.MockGetProfileResponse"
+                            "$ref": "#/definitions/auth.GetProfileResponse"
                         }
                     },
                     "401": {
@@ -166,7 +166,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.MockUser"
+                            "$ref": "#/definitions/auth.RegisterRequestDTO"
                         }
                     }
                 ],
@@ -174,7 +174,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.MockRegisterResponse"
+                            "$ref": "#/definitions/auth.RegisterResponse"
                         }
                     },
                     "401": {
@@ -206,11 +206,6 @@ const docTemplate = `{
         },
         "/events": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get all events as array of events",
                 "produces": [
                     "application/json"
@@ -244,11 +239,6 @@ const docTemplate = `{
         },
         "/events/{eventId}": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get event by id",
                 "produces": [
                     "application/json"
@@ -348,6 +338,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "auth.BillingualName": {
+            "type": "object",
+            "properties": {
+                "en": {
+                    "type": "string"
+                },
+                "th": {
+                    "type": "string"
+                }
+            }
+        },
         "auth.CallbackErrorResponse": {
             "type": "object",
             "properties": {
@@ -383,6 +384,78 @@ const docTemplate = `{
                 }
             }
         },
+        "auth.DesiredRound": {
+            "type": "object",
+            "properties": {
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "round": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "auth.FacultyInfo": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/auth.BillingualName"
+                        }
+                    }
+                },
+                "faculty": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/auth.BillingualName"
+                        }
+                    }
+                },
+                "section": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/auth.BillingualName"
+                        }
+                    }
+                }
+            }
+        },
+        "auth.FacultyInfoId": {
+            "type": "object",
+            "properties": {
+                "department_code": {
+                    "type": "string",
+                    "example": "10"
+                },
+                "faculty_code": {
+                    "type": "string",
+                    "example": "21"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "section_code": {
+                    "type": "string",
+                    "example": "-"
+                }
+            }
+        },
         "auth.GetProfileErrorResponse": {
             "type": "object",
             "properties": {
@@ -393,6 +466,14 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "internal-server-error"
+                }
+            }
+        },
+        "auth.GetProfileResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/auth.User"
                 }
             }
         },
@@ -419,117 +500,6 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "user-not-found"
-                }
-            }
-        },
-        "auth.MockDesiredRound": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "order": {
-                    "type": "integer",
-                    "example": 1
-                }
-            }
-        },
-        "auth.MockGetProfileResponse": {
-            "type": "object",
-            "properties": {
-                "user": {
-                    "$ref": "#/definitions/auth.MockUser"
-                }
-            }
-        },
-        "auth.MockInterestedFaculty": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string",
-                    "example": "1"
-                },
-                "order": {
-                    "type": "integer",
-                    "example": 1
-                }
-            }
-        },
-        "auth.MockRegisterResponse": {
-            "type": "object",
-            "properties": {
-                "user": {
-                    "$ref": "#/definitions/auth.MockUser"
-                }
-            }
-        },
-        "auth.MockUser": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "Bangkok"
-                },
-                "allergy": {
-                    "type": "string",
-                    "example": "None"
-                },
-                "birth_date": {
-                    "type": "string",
-                    "example": "1990-01-01"
-                },
-                "desired_rounds": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/auth.MockDesiredRound"
-                    }
-                },
-                "first_name": {
-                    "type": "string",
-                    "example": "John"
-                },
-                "from_abroad": {
-                    "type": "string",
-                    "example": "no"
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "male"
-                },
-                "grade": {
-                    "type": "string",
-                    "example": "undergraduate"
-                },
-                "interested_faculties": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/auth.MockInterestedFaculty"
-                    }
-                },
-                "join_cu_reason": {
-                    "type": "string",
-                    "example": "Interested in the programs offered"
-                },
-                "last_name": {
-                    "type": "string",
-                    "example": "Doe"
-                },
-                "medical_condition": {
-                    "type": "string",
-                    "example": "None"
-                },
-                "news_source": {
-                    "type": "string",
-                    "example": "Facebook"
-                },
-                "school": {
-                    "type": "string",
-                    "example": "CU"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "student"
                 }
             }
         },
@@ -572,6 +542,83 @@ const docTemplate = `{
                 }
             }
         },
+        "auth.RegisterRequestDTO": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "Bangkok"
+                },
+                "allergy": {
+                    "type": "string",
+                    "example": "None"
+                },
+                "birth_date": {
+                    "type": "string",
+                    "example": "1990-01-01"
+                },
+                "desired_rounds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/auth.DesiredRound"
+                    }
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "from_abroad": {
+                    "type": "string",
+                    "example": "no"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "grade": {
+                    "type": "string",
+                    "example": "undergraduate"
+                },
+                "interested_faculties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/auth.FacultyInfoId"
+                    }
+                },
+                "join_cu_reason": {
+                    "type": "string",
+                    "example": "Interested in the programs offered"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "None"
+                },
+                "news_source": {
+                    "type": "string",
+                    "example": "Facebook"
+                },
+                "school": {
+                    "type": "string",
+                    "example": "CU"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "student"
+                }
+            }
+        },
+        "auth.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/auth.User"
+                }
+            }
+        },
         "auth.RegisterUnauthorized": {
             "type": "object",
             "properties": {
@@ -582,6 +629,75 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "unauthorized"
+                }
+            }
+        },
+        "auth.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "Bangkok"
+                },
+                "allergy": {
+                    "type": "string",
+                    "example": "None"
+                },
+                "birth_date": {
+                    "type": "string",
+                    "example": "1990-01-01"
+                },
+                "desired_rounds": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/auth.DesiredRound"
+                    }
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "from_abroad": {
+                    "type": "string",
+                    "example": "no"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "grade": {
+                    "type": "string",
+                    "example": "undergraduate"
+                },
+                "interested_faculties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/auth.FacultyInfo"
+                    }
+                },
+                "join_cu_reason": {
+                    "type": "string",
+                    "example": "Interested in the programs offered"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "None"
+                },
+                "news_source": {
+                    "type": "string",
+                    "example": "Facebook"
+                },
+                "school": {
+                    "type": "string",
+                    "example": "CU"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "student"
                 }
             }
         },

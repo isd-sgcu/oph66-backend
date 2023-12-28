@@ -37,7 +37,6 @@ type handlerImpl struct {
 // @id GetAllEvents
 // @produce	json
 // @tags event
-// @Security Bearer
 // @router /events [get]
 // @success	200	{object} event.GetAllEventResponse
 // @Failure	500	{object} event.EventAllErrorResponse
@@ -82,7 +81,6 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 // @id GetEventById
 // @produce json
 // @tags event
-// @Security Bearer
 // @param eventId path string true "event id"
 // @router /events/{eventId} [get]
 // @success 200 {object} event.EventDTO

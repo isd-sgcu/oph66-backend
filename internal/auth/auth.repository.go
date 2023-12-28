@@ -25,5 +25,5 @@ func (r *repositoryImpl) CreateUser(user *model.User) error {
 }
 
 func (r *repositoryImpl) GetUserByEmail(user *model.User, email string) error {
-	return r.db.Preload("RegisteredEvents").Preload("DesiredRounds").Preload("DesiredRounds.Round").Preload("InterestedFaculties").Preload("InterestedFaculties.Faculty").Preload("InterestedFaculties.Department").Preload("InterestedFaculties.Section").Where("email = ?", email).First(&user).Error
+	return r.db.Debug().Preload("RegisteredEvents").Preload("DesiredRounds").Preload("DesiredRounds").Preload("InterestedFaculties").Preload("InterestedFaculties.Faculty").Preload("InterestedFaculties.Department").Preload("InterestedFaculties.Section").Where("email = ?", email).First(&user).Error
 }
