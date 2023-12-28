@@ -52,6 +52,9 @@ CREATE TABLE "users" (
     "grade" VARCHAR(50) NULL,
     PRIMARY KEY ("id")
 );
+
+ALTER SEQUENCE "users_id_seq" RESTART 10000;
+
 -- Create index "idx_users_email" to table: "users"
 CREATE INDEX "idx_users_email" ON "users" ("email");
 -- Create "rounds" enum
@@ -117,10 +120,17 @@ CREATE TABLE "schedules" (
     "starts_at" timestamptz NULL,
     "ends_at" timestamptz NULL,
     "period" schedule_period NULL,
+    "current_attendee" INT NOT NULL DEFAULT 0,
     PRIMARY KEY ("id"),
     CONSTRAINT "fk_events_schedules" FOREIGN KEY ("event_id") REFERENCES "events" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 CREATE INDEX "idx_event_id" ON "schedules" ("event_id");
 
-INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
+-- Create event regestration table
+CREATE TABLE event_registrations (
+    "user_id" INT NOT NULL,
+    "schedule_id" INT NOT NULL,
+    PRIMARY KEY ("user_id", "schedule_id")
+);
 
+INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
