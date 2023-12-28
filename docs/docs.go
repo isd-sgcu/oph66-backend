@@ -284,19 +284,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.response"
+                            "$ref": "#/definitions/dto.FeatureFlagResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/dto.invalidResponse"
+                            "$ref": "#/definitions/dto.FeatureFlagInvalidKeyResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/dto.errorResponse"
+                            "$ref": "#/definitions/dto.FeatureFlagInternalErrorResponse"
                         }
                     }
                 }
@@ -548,6 +548,49 @@ const docTemplate = `{
                 "section_code": {
                     "type": "string",
                     "example": "-"
+                }
+            }
+        },
+        "dto.FeatureFlagInternalErrorResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/featureflag/live"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "internal-server-error"
+                }
+            }
+        },
+        "dto.FeatureFlagInvalidKeyResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/featureflag/live"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "invalid-feature-flag-key"
+                }
+            }
+        },
+        "dto.FeatureFlagResponse": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "extra_info": {
+                    "type": "string",
+                    "example": "\u003cjsonobject\u003e"
+                },
+                "key": {
+                    "type": "string",
+                    "example": "livestream"
                 }
             }
         },
@@ -843,49 +886,6 @@ const docTemplate = `{
                 "status": {
                     "type": "string",
                     "example": "student"
-                }
-            }
-        },
-        "dto.errorResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/featureflag/live"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "internal-server-error"
-                }
-            }
-        },
-        "dto.invalidResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/featureflag/live"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "invalid-feature-flag-key"
-                }
-            }
-        },
-        "dto.response": {
-            "type": "object",
-            "properties": {
-                "enabled": {
-                    "type": "boolean",
-                    "example": true
-                },
-                "extra_info": {
-                    "type": "string",
-                    "example": "https://www.youtube.com/watch?v=6n3pFFPSlW4"
-                },
-                "key": {
-                    "type": "string",
-                    "example": "livestream"
                 }
             }
         }
