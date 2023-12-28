@@ -1,5 +1,12 @@
 definitions:
-  auth.CallbackErrorResponse:
+  dto.BilingualField:
+    properties:
+      en:
+        type: string
+      th:
+        type: string
+    type: object
+  dto.CallbackErrorResponse:
     properties:
       instance:
         example: /auth/callback
@@ -8,7 +15,7 @@ definitions:
         example: internal-server-error
         type: string
     type: object
-  auth.CallbackInvalidResponse:
+  dto.CallbackInvalidResponse:
     properties:
       instance:
         example: /auth/callback
@@ -17,13 +24,172 @@ definitions:
         example: bad-request
         type: string
     type: object
-  auth.CallbackResponse:
+  dto.CallbackResponse:
     properties:
       token:
         example: gbxnZjiHVzb_4mDQTQNiJdrZFOCactWXkZvZOxS2_qZsy7vAQY7uA2RFIHe2JABoEjhT0Y3KlOJuOEvE2YJMLrJDagwhpAITGex
         type: string
     type: object
-  auth.GetProfileErrorResponse:
+  dto.Department:
+    properties:
+      code:
+        example: "21"
+        type: string
+      name:
+        $ref: '#/definitions/dto.BilingualField'
+    type: object
+  dto.DesiredRound:
+    properties:
+      order:
+        example: 1
+        type: integer
+      round:
+        example: "1"
+        type: string
+    type: object
+  dto.Event:
+    properties:
+      department:
+        $ref: '#/definitions/dto.Department'
+      description:
+        $ref: '#/definitions/dto.BilingualField'
+      faculty:
+        $ref: '#/definitions/dto.Faculty'
+      id:
+        example: first-event
+        type: string
+      location:
+        $ref: '#/definitions/dto.BilingualField'
+      max_capacity:
+        example: 100
+        type: integer
+      name:
+        $ref: '#/definitions/dto.BilingualField'
+      require_registration:
+        example: true
+        type: boolean
+      schedules:
+        items:
+          $ref: '#/definitions/dto.Schedule'
+        type: array
+    type: object
+  dto.EventAllErrorResponse:
+    properties:
+      instance:
+        example: /events
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  dto.EventErrorResponse:
+    properties:
+      instance:
+        example: /events/:eventId
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  dto.EventInvalidResponse:
+    properties:
+      instance:
+        example: /events/:eventId
+        type: string
+      title:
+        example: invalid-event-id
+        type: string
+    type: object
+  dto.Faculty:
+    properties:
+      code:
+        example: "21"
+        type: string
+      name:
+        $ref: '#/definitions/dto.BilingualField'
+    type: object
+  dto.FacultyInfo:
+    properties:
+      department:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/dto.BilingualField'
+        type: object
+      faculty:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/dto.BilingualField'
+        type: object
+      section:
+        properties:
+          code:
+            type: string
+          name:
+            $ref: '#/definitions/dto.BilingualField'
+        type: object
+    type: object
+  dto.FacultyInfoId:
+    properties:
+      department_code:
+        example: "10"
+        type: string
+      faculty_code:
+        example: "21"
+        type: string
+      order:
+        example: 1
+        type: integer
+      section_code:
+        example: '-'
+        type: string
+    type: object
+  dto.FeatureFlagInternalErrorResponse:
+    properties:
+      instance:
+        example: /featureflag/live
+        type: string
+      title:
+        example: internal-server-error
+        type: string
+    type: object
+  dto.FeatureFlagInvalidKeyResponse:
+    properties:
+      instance:
+        example: /featureflag/live
+        type: string
+      title:
+        example: invalid-feature-flag-key
+        type: string
+    type: object
+  dto.FeatureFlagResponse:
+    properties:
+      enabled:
+        example: true
+        type: boolean
+      extra_info:
+        example: <jsonobject>
+        type: string
+      key:
+        example: livestream
+        type: string
+    type: object
+  dto.GetAllEventResponse:
+    properties:
+      events:
+        items:
+          $ref: '#/definitions/dto.Event'
+        type: array
+    type: object
+  dto.GetEventByIdResponse:
+    properties:
+      event:
+        $ref: '#/definitions/dto.Event'
+    type: object
+  dto.GetProfileErrorResponse:
     properties:
       instance:
         example: /auth/me
@@ -32,7 +198,12 @@ definitions:
         example: internal-server-error
         type: string
     type: object
-  auth.GetProfileUnauthorized:
+  dto.GetProfileResponse:
+    properties:
+      user:
+        $ref: '#/definitions/dto.User'
+    type: object
+  dto.GetProfileUnauthorized:
     properties:
       instance:
         example: /auth/me
@@ -41,7 +212,7 @@ definitions:
         example: unauthorized
         type: string
     type: object
-  auth.GetProfileUserNotFound:
+  dto.GetProfileUserNotFound:
     properties:
       instance:
         example: /auth/me
@@ -50,35 +221,34 @@ definitions:
         example: user-not-found
         type: string
     type: object
-  auth.MockDesiredRound:
+  dto.RegisterErrorResponse:
     properties:
-      code:
-        example: "1"
+      instance:
+        example: /auth/register
         type: string
-      order:
-        example: 1
-        type: integer
-    type: object
-  auth.MockGetProfileResponse:
-    properties:
-      user:
-        $ref: '#/definitions/auth.MockUser'
-    type: object
-  auth.MockInterestedFaculty:
-    properties:
-      code:
-        example: "1"
+      title:
+        example: internal-server-error
         type: string
-      order:
-        example: 1
-        type: integer
     type: object
-  auth.MockRegisterResponse:
+  dto.RegisterInvalidResponse:
     properties:
-      user:
-        $ref: '#/definitions/auth.MockUser'
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: bad-request
+        type: string
     type: object
-  auth.MockUser:
+  dto.RegisterInvalidToken:
+    properties:
+      instance:
+        example: /auth/register
+        type: string
+      title:
+        example: invalid-token
+        type: string
+    type: object
+  dto.RegisterRequestDTO:
     properties:
       address:
         example: Bangkok
@@ -91,7 +261,7 @@ definitions:
         type: string
       desired_rounds:
         items:
-          $ref: '#/definitions/auth.MockDesiredRound'
+          $ref: '#/definitions/dto.DesiredRound'
         type: array
       first_name:
         example: John
@@ -107,7 +277,7 @@ definitions:
         type: string
       interested_faculties:
         items:
-          $ref: '#/definitions/auth.MockInterestedFaculty'
+          $ref: '#/definitions/dto.FacultyInfoId'
         type: array
       join_cu_reason:
         example: Interested in the programs offered
@@ -128,34 +298,12 @@ definitions:
         example: student
         type: string
     type: object
-  auth.RegisterErrorResponse:
+  dto.RegisterResponse:
     properties:
-      instance:
-        example: /auth/register
-        type: string
-      title:
-        example: internal-server-error
-        type: string
+      user:
+        $ref: '#/definitions/dto.User'
     type: object
-  auth.RegisterInvalidResponse:
-    properties:
-      instance:
-        example: /auth/register
-        type: string
-      title:
-        example: bad-request
-        type: string
-    type: object
-  auth.RegisterInvalidToken:
-    properties:
-      instance:
-        example: /auth/register
-        type: string
-      title:
-        example: invalid-token
-        type: string
-    type: object
-  auth.RegisterUnauthorized:
+  dto.RegisterUnauthorized:
     properties:
       instance:
         example: /auth/register
@@ -164,193 +312,76 @@ definitions:
         example: unauthorized
         type: string
     type: object
-  bilingual_field.Bilingual:
+  dto.Schedule:
     properties:
-      en:
-        type: string
-      th:
-        type: string
-    type: object
-  event.DepartmentBilingual:
-    properties:
-      en:
-        example: Computer Engineering
-        type: string
-      th:
-        example: ภาควิชาคอมพิวเตอร์
-        type: string
-    type: object
-  event.DescriptionBilingual:
-    properties:
-      en:
-        example: This is the first event.
-        type: string
-      th:
-        example: รายละเอียดอีเวนท์แรก
-        type: string
-    type: object
-  event.Event:
-    properties:
-      department:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      description:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      faculty:
-        $ref: '#/definitions/faculty.Faculty'
-      id:
-        type: string
-      location:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      max_capacity:
+      current_attendee:
+        example: 83
         type: integer
-      name:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-      require_registration:
-        type: boolean
-      schedules:
-        items:
-          $ref: '#/definitions/schedule.Schedule'
-        type: array
-    type: object
-  event.EventAllErrorResponse:
-    properties:
-      instance:
-        example: /events
-        type: string
-      title:
-        example: internal-server-error
-        type: string
-    type: object
-  event.EventDTO:
-    properties:
-      department:
-        $ref: '#/definitions/event.DepartmentBilingual'
-      description:
-        $ref: '#/definitions/event.DescriptionBilingual'
-      faculty:
-        $ref: '#/definitions/event.Faculty'
-      id:
-        example: first-event
-        type: string
-      location:
-        $ref: '#/definitions/event.LocationBilingual'
-      max_capacity:
-        example: 100
-        type: integer
-      name:
-        $ref: '#/definitions/event.NameEventBilingual'
-      require_registration:
-        example: true
-        type: boolean
-      schedules:
-        items:
-          $ref: '#/definitions/event.Schedule'
-        type: array
-    type: object
-  event.EventErrorResponse:
-    properties:
-      instance:
-        example: /events/:eventId
-        type: string
-      title:
-        example: internal-server-error
-        type: string
-    type: object
-  event.EventInvalidResponse:
-    properties:
-      instance:
-        example: /events/:eventId
-        type: string
-      title:
-        example: invalid-event-id
-        type: string
-    type: object
-  event.Faculty:
-    properties:
-      code:
-        example: "21"
-        type: string
-      name:
-        $ref: '#/definitions/event.NameFacultyBilingual'
-    type: object
-  event.LocationBilingual:
-    properties:
-      en:
-        example: SIT Building
-        type: string
-      th:
-        example: อาคาร SIT
-        type: string
-    type: object
-  event.NameEventBilingual:
-    properties:
-      en:
-        example: First Event
-        type: string
-      th:
-        example: อีเวนท์แรก
-        type: string
-    type: object
-  event.NameFacultyBilingual:
-    properties:
-      en:
-        example: Faculty of Engineering
-        type: string
-      th:
-        example: คณะวิศวกรรมศาสตร์
-        type: string
-    type: object
-  event.Schedule:
-    properties:
       ends_at:
         example: "2021-08-01T00:00:00+07:00"
+        type: string
+      id:
+        example: 5
+        type: integer
+      period:
+        example: 20-morning
         type: string
       starts_at:
         example: "2021-08-01T00:00:00+07:00"
         type: string
     type: object
-  faculty.Faculty:
+  dto.User:
     properties:
-      code:
+      address:
+        example: Bangkok
         type: string
-      name:
-        $ref: '#/definitions/bilingual_field.Bilingual'
-    type: object
-  featureflag.errorResponse:
-    properties:
-      instance:
-        example: /featureflag/live
+      allergy:
+        example: None
         type: string
-      title:
-        example: internal-server-error
+      birth_date:
+        example: "1990-01-01"
         type: string
-    type: object
-  featureflag.invalidResponse:
-    properties:
-      instance:
-        example: /featureflag/live
+      desired_rounds:
+        items:
+          $ref: '#/definitions/dto.DesiredRound'
+        type: array
+      first_name:
+        example: John
         type: string
-      title:
-        example: invalid-feature-flag-key
+      from_abroad:
+        example: "no"
         type: string
-    type: object
-  featureflag.response:
-    properties:
-      enabled:
-        example: true
-        type: boolean
-      extra_info:
-        example: https://www.youtube.com/watch?v=6n3pFFPSlW4
+      gender:
+        example: male
         type: string
-      key:
-        example: livestream
+      grade:
+        example: undergraduate
         type: string
-    type: object
-  schedule.Schedule:
-    properties:
-      ends_at:
+      interested_faculties:
+        items:
+          $ref: '#/definitions/dto.FacultyInfo'
+        type: array
+      join_cu_reason:
+        example: Interested in the programs offered
         type: string
-      starts_at:
+      last_name:
+        example: Doe
+        type: string
+      medical_condition:
+        example: None
+        type: string
+      news_source:
+        example: Facebook
+        type: string
+      registered_events:
+        items:
+          $ref: '#/definitions/dto.Schedule'
+        type: array
+      school:
+        example: CU
+        type: string
+      status:
+        example: student
         type: string
     type: object
 info:
@@ -388,17 +419,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.CallbackResponse'
+            $ref: '#/definitions/dto.CallbackResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth.CallbackInvalidResponse'
+            $ref: '#/definitions/dto.CallbackInvalidResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth.CallbackErrorResponse'
-      security:
-      - Bearer: []
+            $ref: '#/definitions/dto.CallbackErrorResponse'
       summary: receive a token after successfully login with Google
       tags:
       - auth
@@ -409,8 +438,6 @@ paths:
       produces:
       - application/json
       responses: {}
-      security:
-      - Bearer: []
       summary: Redirect to Google login page
       tags:
       - auth
@@ -424,19 +451,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.MockGetProfileResponse'
+            $ref: '#/definitions/dto.GetProfileResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth.GetProfileUnauthorized'
+            $ref: '#/definitions/dto.GetProfileUnauthorized'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth.GetProfileUserNotFound'
+            $ref: '#/definitions/dto.GetProfileUserNotFound'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth.GetProfileErrorResponse'
+            $ref: '#/definitions/dto.GetProfileErrorResponse'
       security:
       - Bearer: []
       summary: Get Profile of current user
@@ -444,7 +471,7 @@ paths:
       - auth
   /auth/register:
     post:
-      description: Register new account with @chula email
+      description: Register new account with email
       operationId: Register
       parameters:
       - description: User
@@ -452,30 +479,30 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/auth.MockUser'
+          $ref: '#/definitions/dto.RegisterRequestDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.MockRegisterResponse'
+            $ref: '#/definitions/dto.RegisterResponse'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth.RegisterUnauthorized'
+            $ref: '#/definitions/dto.RegisterUnauthorized'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth.RegisterInvalidResponse'
+            $ref: '#/definitions/dto.RegisterInvalidResponse'
         "498":
           description: ""
           schema:
-            $ref: '#/definitions/auth.RegisterInvalidToken'
+            $ref: '#/definitions/dto.RegisterInvalidToken'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth.RegisterErrorResponse'
+            $ref: '#/definitions/dto.RegisterErrorResponse'
       security:
       - Bearer: []
       summary: Register
@@ -491,19 +518,15 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/event.Event'
-            type: array
+            $ref: '#/definitions/dto.GetAllEventResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/event.EventInvalidResponse'
+            $ref: '#/definitions/dto.EventInvalidResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/event.EventAllErrorResponse'
-      security:
-      - Bearer: []
+            $ref: '#/definitions/dto.EventAllErrorResponse'
       summary: Get all events
       tags:
       - event
@@ -523,17 +546,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/event.EventDTO'
+            $ref: '#/definitions/dto.GetEventByIdResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/event.EventInvalidResponse'
+            $ref: '#/definitions/dto.EventInvalidResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/event.EventErrorResponse'
-      security:
-      - Bearer: []
+            $ref: '#/definitions/dto.EventErrorResponse'
       summary: get event by id
       tags:
       - event
@@ -547,20 +568,36 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/featureflag.response'
+            $ref: '#/definitions/dto.FeatureFlagResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/featureflag.invalidResponse'
+            $ref: '#/definitions/dto.FeatureFlagInvalidKeyResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/featureflag.errorResponse'
-      security:
-      - Bearer: []
+            $ref: '#/definitions/dto.FeatureFlagInternalErrorResponse'
       summary: Get livestream flag
       tags:
       - FeatureFlag
+  /schedules/{scheduleId}/register:
+    post:
+      description: Register event
+      operationId: RegisterEvent
+      parameters:
+      - description: schedule id
+        in: path
+        name: scheduleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - Bearer: []
+      summary: Register event
+      tags:
+      - event
 schemes:
 - http
 - https

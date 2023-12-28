@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/utils"
 	"go.uber.org/zap"
 )
@@ -37,13 +38,12 @@ type handlerImpl struct {
 // @id GetAllEvents
 // @produce	json
 // @tags event
-// @Security Bearer
 // @router /events [get]
-// @success	200	{object} event.GetAllEventResponse
-// @Failure	500	{object} event.EventAllErrorResponse
-// @Failure	404	{object} event.EventInvalidResponse
+// @success	200	{object} dto.GetAllEventResponse
+// @Failure	500	{object} dto.EventAllErrorResponse
+// @Failure	404	{object} dto.EventInvalidResponse
 func (h *handlerImpl) GetAllEvents(c *gin.Context) {
-	hit, result, apperr := h.cache.Get(c.Request.Context(), "get_all_events")
+	hit, result, apperr := h.cache.Get(c, "get_all_events")
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -59,21 +59,25 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 		return
 	}
 
-	eventsJson, err := json.Marshal(events)
+	response := dto.GetAllEventResponse{
+		Events: events,
+	}
+
+	eventsJson, err := json.Marshal(response)
 	if err != nil {
 		h.logger.Error("could not serialize into json format", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
 
-	apperr = h.cache.Set(c.Request.Context(), "get_all_events", string(eventsJson), time.Hour*6)
+	apperr = h.cache.Set(c, "get_all_events", string(eventsJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}
 
 	setHeader(c)
-	c.String(http.StatusOK, string(eventsJson))
+	c.JSON(http.StatusOK, response)
 }
 
 // GetEvent godoc
@@ -82,16 +86,15 @@ func (h *handlerImpl) GetAllEvents(c *gin.Context) {
 // @id GetEventById
 // @produce json
 // @tags event
-// @Security Bearer
 // @param eventId path string true "event id"
 // @router /events/{eventId} [get]
-// @success 200 {object} event.EventDTO
-// @Failure 500 {object} event.EventErrorResponse
-// @Failure 404 {object} event.EventInvalidResponse
+// @success 200 {object} dto.GetEventByIdResponse
+// @Failure 500 {object} dto.EventErrorResponse
+// @Failure 404 {object} dto.EventInvalidResponse
 func (h *handlerImpl) GetEventById(c *gin.Context) {
 	eventId := c.Param("eventId")
 
-	hit, result, apperr := h.cache.Get(c.Request.Context(), fmt.Sprintf("get_event_by_id-%v", eventId))
+	hit, result, apperr := h.cache.Get(c, fmt.Sprintf("get_event_by_id-%v", eventId))
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
@@ -107,21 +110,25 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 		return
 	}
 
-	eventJson, err := json.Marshal(event)
+	response := dto.GetEventByIdResponse{
+		Event: event,
+	}
+
+	eventJson, err := json.Marshal(response)
 	if err != nil {
 		h.logger.Error("could not serialize into json format", zap.Error(err))
 		utils.ReturnError(c, apperror.InternalError)
 		return
 	}
 
-	apperr = h.cache.Set(c.Request.Context(), fmt.Sprintf("get_event_by_id-%v", eventId), string(eventJson), time.Hour*6)
+	apperr = h.cache.Set(c, fmt.Sprintf("get_event_by_id-%v", eventId), string(eventJson), time.Hour*6)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}
 
 	setHeader(c)
-	c.String(http.StatusOK, string(eventJson))
+	c.JSON(http.StatusOK, response)
 }
 
 func setHeader(c *gin.Context) {

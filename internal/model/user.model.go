@@ -1,7 +1,7 @@
 package model
 
 type User struct {
-	ID                  uint                `gorm:"primaryKey;autoIncrement" json:"id"`
+	Id                  int                 `gorm:"primaryKey;autoIncrement" json:"id"`
 	Gender              string              `json:"gender"`
 	FirstName           string              `json:"first_name"`
 	LastName            string              `json:"last_name"`
@@ -16,8 +16,9 @@ type User struct {
 	NewsSource          string              `json:"news_source"`
 	Status              string              `json:"status"`
 	Grade               string              `json:"grade"`
-	DesiredRounds       []DesiredRound      `gorm:"foreignKey:UserID"`
-	InterestedFaculties []InterestedFaculty `gorm:"foreignKey:UserID"`
+	DesiredRounds       []DesiredRound      `gorm:"foreignKey:UserId"        json:"desired_rounds"`
+	InterestedFaculties []InterestedFaculty `gorm:"foreignKey:UserId"        json:"interested_faculties"`
+	RegisteredEvents    []EventRegistration `gorm:"foreignKey:UserId"        json:"registered_events"`
 }
 
 func (u User) TableName() string {

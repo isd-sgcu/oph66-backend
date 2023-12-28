@@ -6,6 +6,7 @@ import (
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
@@ -16,13 +17,13 @@ import (
 type Service interface {
 	GoogleLogin() (url string)
 	GoogleCallback(ctx context.Context, code string) (idToken string, appErr *apperror.AppError)
-	Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError
-	GetUserFromJWTToken(email string, user *model.User) *apperror.AppError
+	Register(email string, data *dto.RegisterRequestDTO) (*dto.User, *apperror.AppError)
+	GetUserFromJWTToken(email string) (*dto.User, *apperror.AppError)
 }
 
 func NewService(repo Repository, logger *zap.Logger, cfg *cfgldr.Config) Service {
 	oauthConfig := &oauth2.Config{
-		ClientID:     cfg.OAuth2Config.ClientID,
+		ClientID:     cfg.OAuth2Config.ClientId,
 		ClientSecret: cfg.OAuth2Config.ClientSecret,
 		RedirectURL:  cfg.OAuth2Config.RedirectURL,
 		Scopes:       cfg.OAuth2Config.Scopes,
@@ -57,31 +58,41 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 
 	rawIdToken := token.Extra("id_token")
 	if rawIdToken == nil {
-		s.logger.Error("ID token not found")
+		s.logger.Error("Id token not found")
 		return "", apperror.ServiceUnavailable
 	}
 
 	return rawIdToken.(string), nil
 }
 
-func (s *serviceImpl) Register(email string, data *RegisterRequestDTO, user *model.User) *apperror.AppError {
-	user = ConvertRegisterRequestDTOToUser(data, email)
-	err := s.repo.CreateUser(user)
+func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto.User, *apperror.AppError) {
+	mUser := ConvertRegisterRequestDTOToUser(data, email)
+	err := s.repo.CreateUser(&mUser)
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
-		return apperror.DuplicateEmail
+		return nil, apperror.DuplicateEmail
+	} else if errors.Is(err, gorm.ErrForeignKeyViolated) {
+		return nil, apperror.BadRequest
 	} else if err != nil {
-		s.logger.Error("Failed to create user", zap.Error(err))
-		return apperror.InternalError
+		s.logger.Error("Failed to create user", zap.Error(err), zap.Any("register", data))
+		return nil, apperror.InternalError
 	}
 
-	return nil
+	user := UserModelToUserDTO(&mUser)
+
+	return &user, nil
 }
 
-func (s *serviceImpl) GetUserFromJWTToken(email string, result *model.User) *apperror.AppError {
-	err := s.repo.GetUserByEmail(result, email)
-	if err != nil {
-		return apperror.UserNotFound
+func (s *serviceImpl) GetUserFromJWTToken(email string) (*dto.User, *apperror.AppError) {
+	var mUser model.User
+	err := s.repo.GetUserByEmail(&mUser, email)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, apperror.UserNotFound
+	} else if err != nil {
+		s.logger.Error("failed to find user by email", zap.Error(err), zap.String("email", email))
+		return nil, apperror.InternalError
 	}
 
-	return nil
+	user := UserModelToUserDTO(&mUser)
+
+	return &user, nil
 }

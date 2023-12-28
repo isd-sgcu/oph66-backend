@@ -21,9 +21,9 @@ func NewRepository(db *gorm.DB) Repository {
 }
 
 func (r *repositoryImpl) GetAllEvents(results *[]model.Event) error {
-	return r.db.Model(&model.Event{}).Omit("description_th, description_en").Preload("Schedules").Preload("Faculty").Find(results).Error
+	return r.db.Model(&model.Event{}).Omit("description_th, description_en").Preload("Schedules").Preload("Faculty").Preload("Department").Find(results).Error
 }
 
 func (r *repositoryImpl) GetEventById(result *model.Event, eventId string) error {
-	return r.db.Model(&model.Event{}).Preload("Schedules").Preload("Faculty").First(result, "id = ?", eventId).Error
+	return r.db.Model(&model.Event{}).Preload("Schedules").Preload("Faculty").Preload("Department").First(result, "id = ?", eventId).Error
 }

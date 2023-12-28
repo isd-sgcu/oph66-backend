@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
-	"github.com/isd-sgcu/oph66-backend/internal/model"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
@@ -15,7 +15,7 @@ import (
 type Cache interface {
 	// Return nil, nil when no error and also not found
 	Get(ctx context.Context, key string) (json.RawMessage, *apperror.AppError)
-	Set(ctx context.Context, key string, value *model.FeatureFlag, cacheDuration time.Duration) *apperror.AppError
+	Set(ctx context.Context, key string, value *dto.FeatureFlagResponse, cacheDuration time.Duration) *apperror.AppError
 }
 
 func NewCache(client *redis.Client, logger *zap.Logger) Cache {
@@ -48,7 +48,7 @@ func (c *cacheImpl) Get(ctx context.Context, key string) (json.RawMessage, *appe
 	}
 }
 
-func (c *cacheImpl) Set(ctx context.Context, key string, value *model.FeatureFlag, cacheDuration time.Duration) *apperror.AppError {
+func (c *cacheImpl) Set(ctx context.Context, key string, value *dto.FeatureFlagResponse, cacheDuration time.Duration) *apperror.AppError {
 	prefixedKey := cacheKeyPrefix + key
 	raw, err := json.Marshal(value)
 

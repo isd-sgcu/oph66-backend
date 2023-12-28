@@ -1,0 +1,822 @@
+- code: "27"
+  name_th: คณะครุศาสตร์
+  departments:
+    - code: "0"
+      name_th: สาขาวิชาธุรกิจและอาชีวศึกษา (วิชาเอกธุรกิจและอาชีวศึกษา)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชาการศึกษาปฐมวัย (วิชาเอกการศึกษาปฐมวัย)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาวิชาประถมศึกษา (วิชาเอกประถมศึกษา)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: สาขาวิชามัธยมศึกษา (มนุษยศาสตร์และสังคมศาสตร์)
+      sections:
+        - code: "0"
+          name_th: วิชาเอกสังคมศึกษา
+        - code: "1"
+          name_th: วิชาเอกภาษาไทย
+        - code: "2"
+          name_th: วิชาเอกภาษาอังกฤษ
+        - code: "3"
+          name_th: วิชาเอกภาษาจีน
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: สาขาวิชามัธยมศึกษา (วิทยาศาสตร์)
+      sections:
+        - code: "0"
+          name_th: วิชาเอกวิทย์ทั่วไป
+        - code: "1"
+          name_th: วิชาเอกฟิสิกส์
+        - code: "2"
+          name_th: วิชาเอกเคมี
+        - code: "3"
+          name_th: วิชาเอกชีววิทยา
+        - code: "4"
+          name_th: วิชาเอกคณิตศาสตร์
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: สาขาวิชาสุขศึกษาและพลศึกษา (วิชาเอกสุขศึกษาและพลศึกษา)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: สาขาวิชาเทคโนโลยีการศึกษา
+      sections:
+        - code: "0"
+          name_th: วิชาเอกเทคโนโลยีการศึกษา
+        - code: "1"
+          name_th: วิชาเอกคอมพิวเตอร์ศึกษา
+        - code: '-'
+          name_th: '-'
+    - code: "7"
+      name_th: สาขาวิชาดนตรีศึกษา
+      sections:
+        - code: "0"
+          name_th: วิชาเอกดนตรีไทย
+        - code: "1"
+          name_th: วิชาเอกดนตรีสากล
+        - code: "2"
+          name_th: การสอนดนตรี
+        - code: '-'
+          name_th: '-'
+    - code: "8"
+      name_th: สาขาวิชาศิลปศึกษา (วิชาเอกศิลปศึกษา)
+      sections:
+        - code: "0"
+          name_th: สาขาวิชาจิตวิทยาการศึกษา การแนะแนวและการศึกษาพิเศษ
+        - code: "1"
+          name_th: วิชาเอกจิตวิทยาการศึกษาและการแนะแนว
+        - code: "2"
+          name_th: วิชาเอกการศึกษาพิเศษ
+        - code: '-'
+          name_th: '-'
+    - code: "9"
+      name_th: สาขาวิชาการศึกษานอกระบบโรงเรียน (วิชาเอกการศึกษานอกระบบโรงเรียน)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "38"
+  name_th: คณะจิตวิทยา
+  departments:
+    - code: "0"
+      name_th: สาขาวิชาจิตวิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชาจิตวิทยา (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "32"
+  name_th: คณะทันตแพทยศาสตร์
+  departments:
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "34"
+  name_th: คณะนิติศาสตร์
+  departments:
+    - code: "0"
+      name_th: สาขาวิชากฎหมายธุรกิจและภาษีอากร
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชากฎหมายแพ่งพาณิชย์และอาญา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาวิชากฎหมายมหาชน
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: สาขาวิชากฎหมายระหว่างประเทศ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "28"
+  name_th: คณะนิเทศศาสตร์
+  departments:
+    - code: "0"
+      name_th: การประชาสัมพันธ์ (Public Relations)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: การโฆษณาและการสื่อสารตราสินค้า (Advertising and Brand Communications)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: การออกแบบและผลิตสื่อ (Media Design and Production)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: วารสารสนเทศและสื่อใหม่ (Journalism, Information, and New Media)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: วาทนิเทศ (Speech Communication)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: สื่อสารการแสดง (Performing Arts)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: การภาพยนตร์และภาพนิ่ง (Film and Still Photography)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "7"
+      name_th: การจัดการการสื่อสาร (นานาชาติ) (Communication Management)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "26"
+  name_th: คณะพาณิชยศาสตร์และการบัญชี
+  departments:
+    - code: "0"
+      name_th: สาขาการบัญชี
+      sections:
+        - code: "0"
+          name_th: สาขาบัญชี (Accounting)
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาบริหาร
+      sections:
+        - code: "0"
+          name_th: การจัดการเพื่อเป็นผู้ประกอบการธุรกิจ (Entrepreneurial Management)
+        - code: "1"
+          name_th: ระบบสารสนเทศทางการจัดการ (Management Information Systems)
+        - code: "2"
+          name_th: การธนาคารและการเงิน (Banking and Finance)
+        - code: "3"
+          name_th: การตลาด (Marketing)
+        - code: "4"
+          name_th: การจัดการโลจิสติกส์ระหว่างประเทศ (International Logistics Management)
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาสถิติ
+      sections:
+        - code: "0"
+          name_th: สถิติและวิทยาการข้อมูล (Statistics and Data Science)
+        - code: "1"
+          name_th: การประกันภัย (Insurance)
+        - code: "2"
+          name_th: เทคโนโลยีสารสนเทศเพื่อธุรกิจ (Information Technology for Business)
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: หลักสูตรนานาชาติ (BBA)
+      sections:
+        - code: "0"
+          name_th: การจัดการธุรกิจระหว่างประเทศ  (International Business Management)
+        - code: "1"
+          name_th: การบัญชี (Accounting)
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "30"
+  name_th: คณะแพทยศาสตร์
+  departments:
+    - code: "0"
+      name_th: แพทยศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "33"
+  name_th: คณะเภสัชศาสตร์
+  departments:
+    - code: "0"
+      name_th: การบริบาลทางเภสัชกรรม
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: เภสัชกรรมอุตสาหการ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "24"
+  name_th: คณะรัฐศาสตร์
+  departments:
+    - code: "0"
+      name_th: สาขาวิชาการปกครอง
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชาความสัมพันธ์ระหว่างประเทศ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาวิชาสังคมวิทยาและมานุษยวิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: สาขาวิชารัฐประศาสนศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: สาขาวิชาการเมืองและโลกสัมพันธ์ศึกษา (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "23"
+  name_th: คณะวิทยาศาสตร์
+  departments:
+    - code: "0"
+      name_th: สาขาวิชาคณิตศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชาวิทยาการคอมพิวเตอร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาวิชาเคมี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: สาขาวิชาชีววิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: สาขาวิชาสัตววิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: สาขาวิชาฟิสิกส์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: สาขาวิชาพฤกษศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "7"
+      name_th: สาขาวิชาพันธุศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "8"
+      name_th: สาขาวิชาเคมีวิศวกรรม
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "9"
+      name_th: สาขาวิชาธรณีวิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "10"
+      name_th: สาขาวิชาวิทยาศาสตร์สิ่งแวดล้อม
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "11"
+      name_th: สาขาวิชาวิทยาศาสตร์ทางทะเล
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "12"
+      name_th: สาขาวิชาชีวเคมี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "13"
+      name_th: สาขาวิชาวัสดุศาสตร์และเทคโนโลยี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "14"
+      name_th: สาขาวิชาจุลชีววิทยา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "15"
+      name_th: สาขาวิชาเทคโนโลยีทางภาพและการพิมพ์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "16"
+      name_th: สาขาวิชาเทคโนโลยีทางอาหาร
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "17"
+      name_th: 'หลักสูตรเทคโนโลยีชีวภาพ (นานาชาติ: BBTech)'
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "18"
+      name_th: 'หลักสูตรเคมีประยุกต์ (นานาชาติ: BSAC)'
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "39"
+  name_th: คณะวิทยาศาสตร์การกีฬา
+  departments:
+    - code: "0"
+      name_th: วิทยาศาสตร์การกีฬา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "21"
+  name_th: คณะวิศวกรรมศาสตร์
+  departments:
+    - code: "0"
+      name_th: สาขาวิชาวิศวกรรมโยธา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: สาขาวิชาวิศวกรรมไฟฟ้า
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: สาขาวิชาวิศวกรรมเครื่องกล
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: สาขาวิชาวิศวกรรมยานยนต์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: สาขาวิชาวิศวกรรมนิวเคลียร์และรังสี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: สาขาวิชาวิศวกรรมอุตสาหการ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: สาขาวิชาวิศวกรรมเคมี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "7"
+      name_th: สาขาวิชาวิศวกรรมทรัพยากรธรณี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "8"
+      name_th: สาขาวิชาวิศวกรรมปิโตรเลียม
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "9"
+      name_th: สาขาวิชาวิศวกรรมสำรวจ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "10"
+      name_th: สาขาวิชาวิศวกรรมสิ่งแวดล้อม
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "11"
+      name_th: สาขาวิชาวิศวกรรมโลหการและวัสดุ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "12"
+      name_th: สาขาวิชาวิศวกรรมคอมพิวเตอร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "13"
+      name_th: สาขาวิชาวิศวกรรมคอมพิวเตอร์และเทคโนโลยีดิจิทัล
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "14"
+      name_th: สาขาวิชาการออกแบบและการผลิตยานยนต์ (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "15"
+      name_th: สาขาวิชาวิศวกรรมนาโน (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "16"
+      name_th: สาขาวิชาวิศวกรรมสารสนเทศและการสื่อสาร (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "17"
+      name_th: สาขาวิชาวิศวกรรมอากาศยาน (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "18"
+      name_th: สาขาวิชาวิศวกรรมหุ่นยนต์และปัญญาประดิษฐ์ (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "19"
+      name_th: สาขาวิชาวิศวกรรมเคมีและกระบวนการ (หลักสูตรนานาชาติ)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "35"
+  name_th: คณะศิลปกรรมศาสตร์
+  departments:
+    - code: "0"
+      name_th: ดุริยางคศิลป์ (Music)
+      sections:
+        - code: "0"
+          name_th: ดุริยางคศิลป์ไทย
+        - code: "1"
+          name_th: ดุริยางคศิลป์ตะวันตก
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: ทัศนศิลป์ (Visual Arts)
+      sections:
+        - code: "0"
+          name_th: จิตรกรรม
+        - code: "1"
+          name_th: ภาพพิมพ์
+        - code: "2"
+          name_th: ประติมากรรม
+        - code: "3"
+          name_th: ภาพถ่าย
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: นาฏยศิลป์ (Dance)
+      sections:
+        - code: "0"
+          name_th: นาฏยศิลป์ไทย
+        - code: "1"
+          name_th: นาฏยศิลป์ตะวันตก
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: นฤมิตศิลป์ (Creative Arts)
+      sections:
+        - code: "0"
+          name_th: แฟชั่น
+        - code: "1"
+          name_th: นิทรรศการ
+        - code: "2"
+          name_th: กราฟฟิก
+        - code: "3"
+          name_th: เซรามิก
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "29"
+  name_th: คณะเศรษฐศาสตร์
+  departments:
+    - code: "0"
+      name_th: เศรษฐศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "25"
+  name_th: คณะสถาปัตยกรรมศาสตร์
+  departments:
+    - code: "0"
+      name_th: ภาควิชาสถาปัตยกรรมศาสตร์ (Architecture)
+      sections:
+        - code: "0"
+          name_th: สาขาวิชาสถาปัตยกรรมไทย (Thai Architecture)
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: ภาควิชาสถาปัตยกรรมภายใน (Interior Architecture)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: ภาควิชาภูมิสถาปัตยกรรม (Landscape Architecture)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: ภาควิชาการวางแผนภาคและเมือง (Urban and Regional Planning)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: ภาควิชาการออกแบบอุตสาหกรรม (Industrial Design)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: Communication Design (CommDe)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: International Program in Design & Architecture (INDA)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "37"
+  name_th: คณะสหเวชศาสตร์
+  departments:
+    - code: "0"
+      name_th: เทคนิคการแพทย์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: กายภาพบำบัด
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: รังสีเทคนิค
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: โภชนาการและการกำหนดอาหาร
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "31"
+  name_th: คณะสัตวแพทยศาสตร์
+  departments:
+    - code: "0"
+      name_th: สัตวแพทยศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "22"
+  name_th: คณะอักษรศาสตร์
+  departments:
+    - code: "0"
+      name_th: ภาษาเยอรมัน
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "1"
+      name_th: ภาษาอิตาเลียน
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "2"
+      name_th: ภาษารัสเซีย
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "3"
+      name_th: ภาษาจีน
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "4"
+      name_th: ภาษาไทย
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "5"
+      name_th: ภาษาเอเชียใต้
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "6"
+      name_th: ภาษาญี่ปุ่น
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "7"
+      name_th: ภาษาอังกฤษ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "8"
+      name_th: ภาษาฝรั่งเศส
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "9"
+      name_th: ภาษาโปรตุเกส
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "10"
+      name_th: ภาษาสเปน
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "11"
+      name_th: ภาษาเกาหลี
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "12"
+      name_th: ภูมิศาสตร์และภูมิสารสนเทศ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "13"
+      name_th: ปรัชญา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "14"
+      name_th: ประวัติศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "15"
+      name_th: สารสนเทศศึกษา
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "16"
+      name_th: ภาษาศาสตร์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "17"
+      name_th: วรรณกรรมโลกและการเขียนเชิงสร้างสรรค์
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "18"
+      name_th: ศิลปการละคร
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "19"
+      name_th: เทคโนโลยีภาษาและสารสนเทศ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: "20"
+      name_th: นานาชาติ (BALAC)
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "56"
+  name_th: สถาบันนวัตกรรมบูรณาการแห่ง จุฬาลงกรณ์มหาวิทยาลัย
+  departments:
+    - code: "0"
+      name_th: ศิลปศาสตรและวิทยาศาสตรบัณฑิต สาขาวิชานวัตกรรมบูรณาการ
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'
+- code: "40"
+  name_th: สำนักวิชาทรัพยากรการเกษตร
+  departments:
+    - code: "0"
+      name_th: สำนักวิชาทรัพยากรการเกษตร
+      sections:
+        - code: '-'
+          name_th: '-'
+    - code: '-'
+      name_th: '-'
+      sections:
+        - code: '-'
+          name_th: '-'

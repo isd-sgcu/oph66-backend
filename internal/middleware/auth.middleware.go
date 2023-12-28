@@ -14,61 +14,36 @@ import (
 type AuthMiddleware gin.HandlerFunc
 
 func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddleware {
-
 	return func(c *gin.Context) {
-
 		authHeader := c.GetHeader("Authorization")
-
 		if authHeader == "" {
-
 			c.Next()
-
 			return
-
 		}
 
 		if !strings.HasPrefix(authHeader, "Bearer ") {
-
 			utils.ReturnError(c, apperror.InvalidToken)
-
 			c.Abort()
-
 			return
-
 		}
 
 		tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-
-		token, err := idtoken.Validate(c, tokenString, cfg.OAuth2Config.ClientID)
+		token, err := idtoken.Validate(c, tokenString, cfg.OAuth2Config.ClientId)
 
 		if err != nil {
-
 			utils.ReturnError(c, apperror.InvalidToken)
-
 			c.Abort()
-
 			return
-
 		}
 
 		if email, ok := token.Claims["email"].(string); ok {
-
 			c.Set("email", email)
-
 			c.Next()
-
 			return
-
 		} else {
-
 			utils.ReturnError(c, apperror.ServiceUnavailable)
-
 			c.Abort()
-
 			return
-
 		}
-
 	}
-
 }

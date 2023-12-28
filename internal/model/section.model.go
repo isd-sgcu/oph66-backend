@@ -1,12 +1,12 @@
 package model
 
 type Section struct {
-	Code           string     `gorm:"primaryKey"                                       json:"code"`
-	Faculty        Faculty    `gorm:"primaryKey;foreignKey:FacultyCode"`
-	FacultyCode    string     `gorm:"not null"`
-	Department     Department `gorm:"primaryKey;foreignKey:FacultyCode,DepartmentCode"`
-	DepartmentCode string     `gorm:"not null"`
-	Name           string     `json:"name"`
+	Code           string     `gorm:"primaryKey"                            json:"code"`
+	Department     Department `gorm:"foreignKey:FacultyCode,DepartmentCode"`
+	DepartmentCode string     `gorm:"primaryKey;not null"`
+	Faculty        Faculty    `gorm:"foreignKey:FacultyCode"`
+	FacultyCode    string     `gorm:"primaryKey;not null"`
+	Name           Bilingual  `gorm:"embedded;embeddedPrefix:name_"         json:"name"`
 }
 
 func (u Section) TableName() string {

@@ -24,3 +24,6 @@ lint:
 
 lint-fix:
 	golangci-lint run --fix
+
+swag:
+	swag init -g ./cmd/main.go -o ./docs

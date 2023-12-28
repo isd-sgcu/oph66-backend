@@ -12,6 +12,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/database"
 	"github.com/isd-sgcu/oph66-backend/internal/auth"
 	"github.com/isd-sgcu/oph66-backend/internal/event"
+	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
@@ -48,10 +49,13 @@ func Init() (Container, error) {
 	authRepository := auth.NewRepository(db)
 	authService := auth.NewService(authRepository, zapLogger, config)
 	authHandler := auth.NewHandler(authService, zapLogger)
+	evtregRepository := evtreg.NewRepository(db)
+	evtregService := evtreg.NewService(zapLogger, evtregRepository)
+	evtregHandler := evtreg.NewHandler(evtregService)
 	corsHandler := cfgldr.MakeCorsConfig(config)
 	authMiddleware := middleware.NewAuthMiddleware(authRepository, config)
 	routerRouter := router.NewRouter(config, corsHandler, authMiddleware)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, config, zapLogger, corsHandler, routerRouter)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, evtregHandler, config, zapLogger, corsHandler, routerRouter)
 	return container, nil
 }
 
@@ -62,6 +66,7 @@ type Container struct {
 	HcHandler          healthcheck.Handler
 	FeatureflagHandler featureflag.Handler
 	AuthHandler        auth.Handler
+	EvtregHandler      evtreg.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -73,6 +78,7 @@ func newContainer(
 	hcHandler healthcheck.Handler,
 	featureflagHandler featureflag.Handler,
 	authHandler auth.Handler,
+	evtregHandler evtreg.Handler,
 	config *cfgldr.Config, logger2 *zap.Logger,
 	corsHandler cfgldr.CorsHandler, router2 *router.Router,
 ) Container {
@@ -81,6 +87,7 @@ func newContainer(
 		hcHandler,
 		featureflagHandler,
 		authHandler,
+		evtregHandler,
 		config, logger2, corsHandler, router2,
 	}
 }

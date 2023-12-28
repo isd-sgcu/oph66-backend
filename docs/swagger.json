@@ -39,11 +39,6 @@
         },
         "/auth/callback": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "After successfully logging in with a @chula account, you'll receive a token. If you attempt to log in using a different domain, Google will not allow the login",
                 "produces": [
                     "application/json"
@@ -57,19 +52,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.CallbackResponse"
+                            "$ref": "#/definitions/dto.CallbackResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/auth.CallbackInvalidResponse"
+                            "$ref": "#/definitions/dto.CallbackInvalidResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/auth.CallbackErrorResponse"
+                            "$ref": "#/definitions/dto.CallbackErrorResponse"
                         }
                     }
                 }
@@ -77,11 +72,6 @@
         },
         "/auth/login": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Redirect to Google login page",
                 "produces": [
                     "application/json"
@@ -114,25 +104,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.MockGetProfileResponse"
+                            "$ref": "#/definitions/dto.GetProfileResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/auth.GetProfileUnauthorized"
+                            "$ref": "#/definitions/dto.GetProfileUnauthorized"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/auth.GetProfileUserNotFound"
+                            "$ref": "#/definitions/dto.GetProfileUserNotFound"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/auth.GetProfileErrorResponse"
+                            "$ref": "#/definitions/dto.GetProfileErrorResponse"
                         }
                     }
                 }
@@ -145,7 +135,7 @@
                         "Bearer": []
                     }
                 ],
-                "description": "Register new account with @chula email",
+                "description": "Register new account with email",
                 "produces": [
                     "application/json"
                 ],
@@ -161,7 +151,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.MockUser"
+                            "$ref": "#/definitions/dto.RegisterRequestDTO"
                         }
                     }
                 ],
@@ -169,31 +159,31 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.MockRegisterResponse"
+                            "$ref": "#/definitions/dto.RegisterResponse"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/auth.RegisterUnauthorized"
+                            "$ref": "#/definitions/dto.RegisterUnauthorized"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/auth.RegisterInvalidResponse"
+                            "$ref": "#/definitions/dto.RegisterInvalidResponse"
                         }
                     },
                     "498": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/auth.RegisterInvalidToken"
+                            "$ref": "#/definitions/dto.RegisterInvalidToken"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/auth.RegisterErrorResponse"
+                            "$ref": "#/definitions/dto.RegisterErrorResponse"
                         }
                     }
                 }
@@ -201,11 +191,6 @@
         },
         "/events": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get all events as array of events",
                 "produces": [
                     "application/json"
@@ -219,22 +204,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/event.Event"
-                            }
+                            "$ref": "#/definitions/dto.GetAllEventResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/event.EventInvalidResponse"
+                            "$ref": "#/definitions/dto.EventInvalidResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/event.EventAllErrorResponse"
+                            "$ref": "#/definitions/dto.EventAllErrorResponse"
                         }
                     }
                 }
@@ -242,11 +224,6 @@
         },
         "/events/{eventId}": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get event by id",
                 "produces": [
                     "application/json"
@@ -269,19 +246,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/event.EventDTO"
+                            "$ref": "#/definitions/dto.GetEventByIdResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/event.EventInvalidResponse"
+                            "$ref": "#/definitions/dto.EventInvalidResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/event.EventErrorResponse"
+                            "$ref": "#/definitions/dto.EventErrorResponse"
                         }
                     }
                 }
@@ -289,11 +266,6 @@
         },
         "/live": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get livestream flag",
                 "produces": [
                     "application/json"
@@ -307,27 +279,66 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/featureflag.response"
+                            "$ref": "#/definitions/dto.FeatureFlagResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/featureflag.invalidResponse"
+                            "$ref": "#/definitions/dto.FeatureFlagInvalidKeyResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/featureflag.errorResponse"
+                            "$ref": "#/definitions/dto.FeatureFlagInternalErrorResponse"
                         }
                     }
                 }
             }
+        },
+        "/schedules/{scheduleId}/register": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Register event",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "event"
+                ],
+                "summary": "Register event",
+                "operationId": "RegisterEvent",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "schedule id",
+                        "name": "scheduleId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
-        "auth.CallbackErrorResponse": {
+        "dto.BilingualField": {
+            "type": "object",
+            "properties": {
+                "en": {
+                    "type": "string"
+                },
+                "th": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CallbackErrorResponse": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -340,7 +351,7 @@
                 }
             }
         },
-        "auth.CallbackInvalidResponse": {
+        "dto.CallbackInvalidResponse": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -353,7 +364,7 @@
                 }
             }
         },
-        "auth.CallbackResponse": {
+        "dto.CallbackResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -362,7 +373,242 @@
                 }
             }
         },
-        "auth.GetProfileErrorResponse": {
+        "dto.Department": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "21"
+                },
+                "name": {
+                    "$ref": "#/definitions/dto.BilingualField"
+                }
+            }
+        },
+        "dto.DesiredRound": {
+            "type": "object",
+            "properties": {
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "round": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "dto.Event": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "$ref": "#/definitions/dto.Department"
+                },
+                "description": {
+                    "$ref": "#/definitions/dto.BilingualField"
+                },
+                "faculty": {
+                    "$ref": "#/definitions/dto.Faculty"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "first-event"
+                },
+                "location": {
+                    "$ref": "#/definitions/dto.BilingualField"
+                },
+                "max_capacity": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "name": {
+                    "$ref": "#/definitions/dto.BilingualField"
+                },
+                "require_registration": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "schedules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Schedule"
+                    }
+                }
+            }
+        },
+        "dto.EventAllErrorResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/events"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "internal-server-error"
+                }
+            }
+        },
+        "dto.EventErrorResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/events/:eventId"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "internal-server-error"
+                }
+            }
+        },
+        "dto.EventInvalidResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/events/:eventId"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "invalid-event-id"
+                }
+            }
+        },
+        "dto.Faculty": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "21"
+                },
+                "name": {
+                    "$ref": "#/definitions/dto.BilingualField"
+                }
+            }
+        },
+        "dto.FacultyInfo": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/dto.BilingualField"
+                        }
+                    }
+                },
+                "faculty": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/dto.BilingualField"
+                        }
+                    }
+                },
+                "section": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "$ref": "#/definitions/dto.BilingualField"
+                        }
+                    }
+                }
+            }
+        },
+        "dto.FacultyInfoId": {
+            "type": "object",
+            "properties": {
+                "department_code": {
+                    "type": "string",
+                    "example": "10"
+                },
+                "faculty_code": {
+                    "type": "string",
+                    "example": "21"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "section_code": {
+                    "type": "string",
+                    "example": "-"
+                }
+            }
+        },
+        "dto.FeatureFlagInternalErrorResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/featureflag/live"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "internal-server-error"
+                }
+            }
+        },
+        "dto.FeatureFlagInvalidKeyResponse": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/featureflag/live"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "invalid-feature-flag-key"
+                }
+            }
+        },
+        "dto.FeatureFlagResponse": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "extra_info": {
+                    "type": "string",
+                    "example": "\u003cjsonobject\u003e"
+                },
+                "key": {
+                    "type": "string",
+                    "example": "livestream"
+                }
+            }
+        },
+        "dto.GetAllEventResponse": {
+            "type": "object",
+            "properties": {
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Event"
+                    }
+                }
+            }
+        },
+        "dto.GetEventByIdResponse": {
+            "type": "object",
+            "properties": {
+                "event": {
+                    "$ref": "#/definitions/dto.Event"
+                }
+            }
+        },
+        "dto.GetProfileErrorResponse": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -375,7 +621,15 @@
                 }
             }
         },
-        "auth.GetProfileUnauthorized": {
+        "dto.GetProfileResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/dto.User"
+                }
+            }
+        },
+        "dto.GetProfileUnauthorized": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -388,7 +642,7 @@
                 }
             }
         },
-        "auth.GetProfileUserNotFound": {
+        "dto.GetProfileUserNotFound": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -401,49 +655,46 @@
                 }
             }
         },
-        "auth.MockDesiredRound": {
+        "dto.RegisterErrorResponse": {
             "type": "object",
             "properties": {
-                "code": {
+                "instance": {
                     "type": "string",
-                    "example": "1"
+                    "example": "/auth/register"
                 },
-                "order": {
-                    "type": "integer",
-                    "example": 1
-                }
-            }
-        },
-        "auth.MockGetProfileResponse": {
-            "type": "object",
-            "properties": {
-                "user": {
-                    "$ref": "#/definitions/auth.MockUser"
-                }
-            }
-        },
-        "auth.MockInterestedFaculty": {
-            "type": "object",
-            "properties": {
-                "code": {
+                "title": {
                     "type": "string",
-                    "example": "1"
-                },
-                "order": {
-                    "type": "integer",
-                    "example": 1
+                    "example": "internal-server-error"
                 }
             }
         },
-        "auth.MockRegisterResponse": {
+        "dto.RegisterInvalidResponse": {
             "type": "object",
             "properties": {
-                "user": {
-                    "$ref": "#/definitions/auth.MockUser"
+                "instance": {
+                    "type": "string",
+                    "example": "/auth/register"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "bad-request"
                 }
             }
         },
-        "auth.MockUser": {
+        "dto.RegisterInvalidToken": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string",
+                    "example": "/auth/register"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "invalid-token"
+                }
+            }
+        },
+        "dto.RegisterRequestDTO": {
             "type": "object",
             "properties": {
                 "address": {
@@ -461,7 +712,7 @@
                 "desired_rounds": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/auth.MockDesiredRound"
+                        "$ref": "#/definitions/dto.DesiredRound"
                     }
                 },
                 "first_name": {
@@ -483,7 +734,7 @@
                 "interested_faculties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/auth.MockInterestedFaculty"
+                        "$ref": "#/definitions/dto.FacultyInfoId"
                     }
                 },
                 "join_cu_reason": {
@@ -512,46 +763,15 @@
                 }
             }
         },
-        "auth.RegisterErrorResponse": {
+        "dto.RegisterResponse": {
             "type": "object",
             "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/auth/register"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "internal-server-error"
+                "user": {
+                    "$ref": "#/definitions/dto.User"
                 }
             }
         },
-        "auth.RegisterInvalidResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/auth/register"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "bad-request"
-                }
-            }
-        },
-        "auth.RegisterInvalidToken": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/auth/register"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "invalid-token"
-                }
-            }
-        },
-        "auth.RegisterUnauthorized": {
+        "dto.RegisterUnauthorized": {
             "type": "object",
             "properties": {
                 "instance": {
@@ -564,281 +784,103 @@
                 }
             }
         },
-        "bilingual_field.Bilingual": {
+        "dto.Schedule": {
             "type": "object",
             "properties": {
-                "en": {
-                    "type": "string"
-                },
-                "th": {
-                    "type": "string"
-                }
-            }
-        },
-        "event.DepartmentBilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
-                    "type": "string",
-                    "example": "Computer Engineering"
-                },
-                "th": {
-                    "type": "string",
-                    "example": "ภาควิชาคอมพิวเตอร์"
-                }
-            }
-        },
-        "event.DescriptionBilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
-                    "type": "string",
-                    "example": "This is the first event."
-                },
-                "th": {
-                    "type": "string",
-                    "example": "รายละเอียดอีเวนท์แรก"
-                }
-            }
-        },
-        "event.Event": {
-            "type": "object",
-            "properties": {
-                "department": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "description": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "faculty": {
-                    "$ref": "#/definitions/faculty.Faculty"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "location": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "max_capacity": {
-                    "type": "integer"
-                },
-                "name": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                },
-                "require_registration": {
-                    "type": "boolean"
-                },
-                "schedules": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/schedule.Schedule"
-                    }
-                }
-            }
-        },
-        "event.EventAllErrorResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/events"
-                },
-                "title": {
-                    "type": "string",
-                    "example": "internal-server-error"
-                }
-            }
-        },
-        "event.EventDTO": {
-            "type": "object",
-            "properties": {
-                "department": {
-                    "$ref": "#/definitions/event.DepartmentBilingual"
-                },
-                "description": {
-                    "$ref": "#/definitions/event.DescriptionBilingual"
-                },
-                "faculty": {
-                    "$ref": "#/definitions/event.Faculty"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "first-event"
-                },
-                "location": {
-                    "$ref": "#/definitions/event.LocationBilingual"
-                },
-                "max_capacity": {
+                "current_attendee": {
                     "type": "integer",
-                    "example": 100
+                    "example": 83
                 },
-                "name": {
-                    "$ref": "#/definitions/event.NameEventBilingual"
+                "ends_at": {
+                    "type": "string",
+                    "example": "2021-08-01T00:00:00+07:00"
                 },
-                "require_registration": {
-                    "type": "boolean",
-                    "example": true
+                "id": {
+                    "type": "integer",
+                    "example": 5
                 },
-                "schedules": {
+                "period": {
+                    "type": "string",
+                    "example": "20-morning"
+                },
+                "starts_at": {
+                    "type": "string",
+                    "example": "2021-08-01T00:00:00+07:00"
+                }
+            }
+        },
+        "dto.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "Bangkok"
+                },
+                "allergy": {
+                    "type": "string",
+                    "example": "None"
+                },
+                "birth_date": {
+                    "type": "string",
+                    "example": "1990-01-01"
+                },
+                "desired_rounds": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/event.Schedule"
+                        "$ref": "#/definitions/dto.DesiredRound"
                     }
-                }
-            }
-        },
-        "event.EventErrorResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/events/:eventId"
                 },
-                "title": {
+                "first_name": {
                     "type": "string",
-                    "example": "internal-server-error"
-                }
-            }
-        },
-        "event.EventInvalidResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/events/:eventId"
+                    "example": "John"
                 },
-                "title": {
+                "from_abroad": {
                     "type": "string",
-                    "example": "invalid-event-id"
-                }
-            }
-        },
-        "event.Faculty": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string",
-                    "example": "21"
+                    "example": "no"
                 },
-                "name": {
-                    "$ref": "#/definitions/event.NameFacultyBilingual"
-                }
-            }
-        },
-        "event.LocationBilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
+                "gender": {
                     "type": "string",
-                    "example": "SIT Building"
+                    "example": "male"
                 },
-                "th": {
+                "grade": {
                     "type": "string",
-                    "example": "อาคาร SIT"
-                }
-            }
-        },
-        "event.NameEventBilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
-                    "type": "string",
-                    "example": "First Event"
+                    "example": "undergraduate"
                 },
-                "th": {
-                    "type": "string",
-                    "example": "อีเวนท์แรก"
-                }
-            }
-        },
-        "event.NameFacultyBilingual": {
-            "type": "object",
-            "properties": {
-                "en": {
-                    "type": "string",
-                    "example": "Faculty of Engineering"
+                "interested_faculties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.FacultyInfo"
+                    }
                 },
-                "th": {
+                "join_cu_reason": {
                     "type": "string",
-                    "example": "คณะวิศวกรรมศาสตร์"
-                }
-            }
-        },
-        "event.Schedule": {
-            "type": "object",
-            "properties": {
-                "ends_at": {
-                    "type": "string",
-                    "example": "2021-08-01T00:00:00+07:00"
+                    "example": "Interested in the programs offered"
                 },
-                "starts_at": {
+                "last_name": {
                     "type": "string",
-                    "example": "2021-08-01T00:00:00+07:00"
-                }
-            }
-        },
-        "faculty.Faculty": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
+                    "example": "Doe"
                 },
-                "name": {
-                    "$ref": "#/definitions/bilingual_field.Bilingual"
-                }
-            }
-        },
-        "featureflag.errorResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
+                "medical_condition": {
                     "type": "string",
-                    "example": "/featureflag/live"
+                    "example": "None"
                 },
-                "title": {
+                "news_source": {
                     "type": "string",
-                    "example": "internal-server-error"
-                }
-            }
-        },
-        "featureflag.invalidResponse": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string",
-                    "example": "/featureflag/live"
+                    "example": "Facebook"
                 },
-                "title": {
-                    "type": "string",
-                    "example": "invalid-feature-flag-key"
-                }
-            }
-        },
-        "featureflag.response": {
-            "type": "object",
-            "properties": {
-                "enabled": {
-                    "type": "boolean",
-                    "example": true
+                "registered_events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Schedule"
+                    }
                 },
-                "extra_info": {
+                "school": {
                     "type": "string",
-                    "example": "https://www.youtube.com/watch?v=6n3pFFPSlW4"
+                    "example": "CU"
                 },
-                "key": {
+                "status": {
                     "type": "string",
-                    "example": "livestream"
-                }
-            }
-        },
-        "schedule.Schedule": {
-            "type": "object",
-            "properties": {
-                "ends_at": {
-                    "type": "string"
-                },
-                "starts_at": {
-                    "type": "string"
+                    "example": "student"
                 }
             }
         }

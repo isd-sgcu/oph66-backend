@@ -24,4 +24,7 @@ var (
 	Unauthorized          = &AppError{"unauthorized", http.StatusUnauthorized}
 	ServiceUnavailable    = &AppError{"service-unavailable", http.StatusServiceUnavailable}
 	UserNotFound          = &AppError{"user-not-found", http.StatusNotFound}
+	ScheduleNotFound      = &AppError{"schedule-not-found", http.StatusNotFound}
+	DuplicatePeriod       = &AppError{"duplicate-period", http.StatusConflict}
+	ScheduleFull          = &AppError{"schedule-full", http.StatusBadRequest}
 )

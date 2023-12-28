@@ -32,15 +32,14 @@ type handlerImpl struct {
 // @id GetLivestreamInfo
 // @produce json
 // @tags FeatureFlag
-// @Security Bearer
 // @router /live [get]
-// @success 200 {object} featureflag.response
-// @Failure 500 {object} featureflag.errorResponse
-// @Failure 404 {object} featureflag.invalidResponse
+// @success 200 {object} dto.FeatureFlagResponse
+// @Failure 500 {object} dto.FeatureFlagInternalErrorResponse
+// @Failure 404 {object} dto.FeatureFlagInvalidKeyResponse
 func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 	cacheKey := "livestream"
 
-	cached, err := h.cache.Get(c.Request.Context(), cacheKey)
+	cached, err := h.cache.Get(c, cacheKey)
 	if err != nil {
 		utils.ReturnError(c, err)
 		return
@@ -49,20 +48,20 @@ func (h *handlerImpl) GetLivestreamInfo(c *gin.Context) {
 		c.JSON(http.StatusOK, cached)
 		return
 	} else {
-		data, err := h.svc.GetFlag(c.Request.Context(), cacheKey)
+		response, err := h.svc.GetFlag(c, cacheKey)
 		if err != nil {
 			utils.ReturnError(c, err)
 			return
 		}
 
-		if err = h.cache.Set(c.Request.Context(), cacheKey, data, time.Duration(data.CacheDuration)*time.Second); err != nil {
+		if err = h.cache.Set(c, cacheKey, response, time.Duration(response.CacheDuration)*time.Second); err != nil {
 			utils.ReturnError(c, err)
 			return
 		}
 
 		c.JSON(
 			http.StatusOK,
-			data,
+			response,
 		)
 	}
 }
