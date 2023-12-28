@@ -85,8 +85,11 @@ func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto
 func (s *serviceImpl) GetUserFromJWTToken(email string) (*dto.User, *apperror.AppError) {
 	var mUser model.User
 	err := s.repo.GetUserByEmail(&mUser, email)
-	if err != nil {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, apperror.UserNotFound
+	} else if err != nil {
+		s.logger.Error("failed to find user by email", zap.Error(err), zap.String("email", email))
+		return nil, apperror.InternalError
 	}
 
 	user := UserModelToUserDTO(&mUser)
