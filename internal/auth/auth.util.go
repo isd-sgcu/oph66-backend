@@ -75,6 +75,10 @@ func UserModelToUserDTO(mUser *model.User) dto.User {
 		user.InterestedFaculties = append(user.InterestedFaculties, InterestedFacultyToFacultyInfo(&faculty))
 	}
 
+	for _, registeredEvent := range mUser.RegisteredEvents {
+		user.RegisteredEvents = append(user.RegisteredEvents, ScheduleModelToDTO(&registeredEvent.Schedule))
+	}
+
 	return user
 }
 
@@ -97,4 +101,14 @@ func DesiredRoundModelToDTO(m *model.DesiredRound) dto.DesiredRound {
 	desiredRound.Order = m.Order
 	desiredRound.Round = string(m.Round)
 	return desiredRound
+}
+
+func ScheduleModelToDTO(m *model.Schedule) dto.Schedule {
+	var registeredEvent dto.Schedule
+	registeredEvent.ID = m.ID
+	registeredEvent.CurrentAttendee = m.CurrentAttendee
+	registeredEvent.StartsAt = m.StartsAt
+	registeredEvent.EndsAt = m.EndsAt
+	registeredEvent.Period = string(m.Period)
+	return registeredEvent
 }
