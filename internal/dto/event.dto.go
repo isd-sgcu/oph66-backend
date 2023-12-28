@@ -50,9 +50,9 @@ type Department struct {
 }
 
 type Schedule struct {
-	Id              int       `example:"5" json:"id"`
-	CurrentAttendee int       `example:"83" json:"current_attendee"`
+	Id              int       `example:"5"                         json:"id"`
+	CurrentAttendee int       `example:"83"                        json:"current_attendee"`
 	StartsAt        time.Time `example:"2021-08-01T00:00:00+07:00" json:"ends_at"`
 	EndsAt          time.Time `example:"2021-08-01T00:00:00+07:00" json:"starts_at"`
-	Period          string    `example:"20-morning" json:"period"`
+	Period          string    `example:"20-morning"                json:"period"`
 }

@@ -5,9 +5,9 @@ import "encoding/json"
 type JSON any
 
 type FeatureFlagResponse struct {
-	Key           string          `example:"livestream"                                  json:"key"`
-	Enabled       bool            `example:"true"                                        json:"enabled"`
-	ExtraInfo     json.RawMessage `example:"<jsonobject>" swaggertype:"string" json:"extra_info"`
+	Key           string          `example:"livestream"   json:"key"`
+	Enabled       bool            `example:"true"         json:"enabled"`
+	ExtraInfo     json.RawMessage `example:"<jsonobject>" json:"extra_info" swaggertype:"string"`
 	CacheDuration int             `json:"-"`
 }
 
