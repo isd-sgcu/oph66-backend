@@ -5,7 +5,8 @@ import (
 	"github.com/isd-sgcu/oph66-backend/internal/model"
 )
 
-func ConvertRegisterRequestDTOToUser(user *model.User, dto *dto.RegisterRequestDTO, email string) {
+func ConvertRegisterRequestDTOToUser(dto *dto.RegisterRequestDTO, email string) model.User {
+	var user model.User
 	user.Gender = dto.Gender
 	user.FirstName = dto.FirstName
 	user.LastName = dto.LastName
@@ -20,23 +21,26 @@ func ConvertRegisterRequestDTOToUser(user *model.User, dto *dto.RegisterRequestD
 	user.NewsSource = dto.NewsSource
 	user.Status = dto.Status
 	user.Grade = dto.Grade
-	user.DesiredRounds = make([]model.DesiredRound, len(dto.DesiredRounds))
-	user.InterestedFaculties = make([]model.InterestedFaculty, len(dto.InterestedFaculties))
-	user.RegisteredEvents = make([]model.EventRegistration, 0, len(user.RegisteredEvents))
+	user.DesiredRounds = make([]model.DesiredRound, 0, len(dto.DesiredRounds))
+	user.InterestedFaculties = make([]model.InterestedFaculty, 0, len(dto.InterestedFaculties))
+	user.RegisteredEvents = make([]model.EventRegistration, 0)
 
 	for _, desiredRound := range dto.DesiredRounds {
-		user.DesiredRounds = append(user.DesiredRounds, DesiredRoundDTOToModel(&desiredRound))
+		user.DesiredRounds = append(user.DesiredRounds, DesiredRoundDTOToModel(&desiredRound, user.ID))
 	}
 
 	for _, interestedFaculty := range dto.InterestedFaculties {
 		user.InterestedFaculties = append(user.InterestedFaculties, FacultyInfoIdToInterestedFaculty(&interestedFaculty))
 	}
+
+	return user
 }
 
-func DesiredRoundDTOToModel(dto *dto.DesiredRound) model.DesiredRound {
+func DesiredRoundDTOToModel(dto *dto.DesiredRound, userID int) model.DesiredRound {
 	var desiredRound model.DesiredRound
 	desiredRound.Order = dto.Order
 	desiredRound.Round = model.Round(dto.Round)
+	desiredRound.UserID = uint(userID)
 	return desiredRound
 }
 

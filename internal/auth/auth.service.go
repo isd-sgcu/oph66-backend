@@ -66,13 +66,14 @@ func (s *serviceImpl) GoogleCallback(ctx context.Context, code string) (idToken 
 }
 
 func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto.User, *apperror.AppError) {
-	var mUser model.User
-	ConvertRegisterRequestDTOToUser(&mUser, data, email)
+	mUser := ConvertRegisterRequestDTOToUser(data, email)
 	err := s.repo.CreateUser(&mUser)
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
 		return nil, apperror.DuplicateEmail
+	} else if errors.Is(err, gorm.ErrForeignKeyViolated) {
+		return nil, apperror.BadRequest
 	} else if err != nil {
-		s.logger.Error("Failed to create user", zap.Error(err))
+		s.logger.Error("Failed to create user", zap.Error(err), zap.Any("register", data))
 		return nil, apperror.InternalError
 	}
 

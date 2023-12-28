@@ -7,5 +7,5 @@ import (
 )
 
 func New(config *cfgldr.Config) (*gorm.DB, error) {
-	return gorm.Open(postgres.Open(config.DatabaseConfig.Url), &gorm.Config{})
+	return gorm.Open(postgres.Open(config.DatabaseConfig.Url), &gorm.Config{TranslateError: true})
 }
