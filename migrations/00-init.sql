@@ -74,7 +74,7 @@ CREATE TABLE "events" (
     "description_th" TEXT NULL,
     PRIMARY KEY ("id"), 
     CONSTRAINT "fk_events_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT "fk_events_department" FOREIGN KEY ("faculty_code", "department_code") REFERENCES "departments" ("faculty_code", "code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_events_department" FOREIGN KEY ("faculty_code", "department_code") REFERENCES "departments" ("faculty_code", "code") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 -- Create "interested_faculties" table
 CREATE TABLE "interested_faculties" (
@@ -104,8 +104,8 @@ CREATE TABLE "schedules" (
     "period" schedule_period NULL,
     PRIMARY KEY ("id"),
     CONSTRAINT "fk_events_schedules" FOREIGN KEY ("event_id") REFERENCES "events" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
-);    
-CREATE INDEX "idx_event_id" ON "schedules" ("event_id")
+);
+CREATE INDEX "idx_event_id" ON "schedules" ("event_id");
 
 -- Create "sections" table
 CREATE TABLE "sections" (
