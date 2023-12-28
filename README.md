@@ -15,6 +15,11 @@
 docker compose up -d
 ```
 
+### Generate swagger documentation
+```sh
+swag init -g ./cmd/main.go -o ./docs
+```
+
 ### Migrating with Atlas
 Atlas provides a streamlined way to manage and migrate database schemas effortlessly. Follow the steps below to set up and migrate your database using Atlas.
 1. Installation
