@@ -7,6 +7,9 @@ import (
 
 func EventModelToDTO(m *model.Event) dto.Event {
 	var event dto.Event
+	if m == nil {
+		return event
+	}
 	event.Id = m.Id
 	event.Name = dto.BilingualModelToDTO(&m.Name)
 	event.Faculty.Code = m.FacultyCode
@@ -26,6 +29,9 @@ func EventModelToDTO(m *model.Event) dto.Event {
 
 func ScheduleModelToDTO(m *model.Schedule) dto.Schedule {
 	var schedule dto.Schedule
+	if m == nil {
+		return schedule
+	}
 	schedule.Id = m.Id
 	schedule.EndsAt = m.EndsAt
 	schedule.StartsAt = m.StartsAt
