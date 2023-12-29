@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.0.0-rc2] - 2023-12-29
 
 ### 🐛 Bug Fixes
 
@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### 🎨 Styling
 
-- Add url to changelog - ([6c86e08](https://github.com/isd-sgcu/oph66-backend/commit/6c86e08fa46ee9c569eb56df7aa3cb4e0b8a3d7e))
+- Add url to changelog (#20) - ([418b581](https://github.com/isd-sgcu/oph66-backend/commit/418b581c111e62797ac45cd36e0032c578fd65e6))
 
 ## [1.0.0-rc1] - 2023-12-28
 
