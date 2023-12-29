@@ -9,6 +9,9 @@ type BilingualField struct {
 
 func BilingualModelToDTO(m *model.Bilingual) BilingualField {
 	var bf BilingualField
+	if m == nil {
+		return bf
+	}
 	bf.En = m.En
 	bf.Th = m.Th
 	return bf

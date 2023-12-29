@@ -38,6 +38,9 @@ func ConvertRegisterRequestDTOToUser(dto *dto.RegisterRequestDTO, email string) 
 
 func DesiredRoundDTOToModel(dto *dto.DesiredRound, userId int) model.DesiredRound {
 	var desiredRound model.DesiredRound
+	if dto == nil {
+		return desiredRound
+	}
 	desiredRound.Order = dto.Order
 	desiredRound.Round = model.Round(dto.Round)
 	desiredRound.UserId = uint(userId)
@@ -88,6 +91,9 @@ func UserModelToUserDTO(mUser *model.User) dto.User {
 
 func InterestedFacultyToFacultyInfo(m *model.InterestedFaculty) dto.FacultyInfo {
 	var facultyInfo dto.FacultyInfo
+	if m == nil {
+		return facultyInfo
+	}
 	facultyInfo.Department.Code = m.DepartmentCode
 	facultyInfo.Department.Name.En = m.Department.Name.En
 	facultyInfo.Department.Name.Th = m.Department.Name.Th
@@ -102,6 +108,9 @@ func InterestedFacultyToFacultyInfo(m *model.InterestedFaculty) dto.FacultyInfo 
 
 func DesiredRoundModelToDTO(m *model.DesiredRound) dto.DesiredRound {
 	var desiredRound dto.DesiredRound
+	if m == nil {
+		return desiredRound
+	}
 	desiredRound.Order = m.Order
 	desiredRound.Round = string(m.Round)
 	return desiredRound
@@ -109,6 +118,9 @@ func DesiredRoundModelToDTO(m *model.DesiredRound) dto.DesiredRound {
 
 func ScheduleModelToDTO(m *model.Schedule) dto.Schedule {
 	var registeredEvent dto.Schedule
+	if m == nil {
+		return registeredEvent
+	}
 	registeredEvent.Id = m.Id
 	registeredEvent.CurrentAttendee = m.CurrentAttendee
 	registeredEvent.StartsAt = m.StartsAt
