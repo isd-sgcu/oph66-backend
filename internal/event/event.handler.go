@@ -133,5 +133,5 @@ func (h *handlerImpl) GetEventById(c *gin.Context) {
 
 func setHeader(c *gin.Context) {
 	c.Header("Content-Type", "application/json; charset=utf-8")
-	c.Header("Cache-Control", "public, max-age=3600")
+	c.Header("Cache-Control", "public, max-age=30")
 }

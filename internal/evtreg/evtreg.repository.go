@@ -24,11 +24,11 @@ type repositoryImpl struct {
 }
 
 func (r *repositoryImpl) GetUserWithEventRegistrationByEmail(user *model.User, email string) error {
-	return r.db.Preload("RegisteredEvents").Preload("RegisteredEvents.Schedule").Where("email = ?", email).First(&user).Error
+	return r.db.Model(user).Preload("RegisteredEvents").Preload("RegisteredEvents.Schedule").Where("email = ?", email).First(&user).Error
 }
 
 func (r *repositoryImpl) GetScheduleById(schedule *model.Schedule, scheduleId int) error {
-	return r.db.Where("id = ?", scheduleId).First(schedule).Error
+	return r.db.Model(schedule).Where("id = ?", scheduleId).First(schedule).Error
 }
 
 func (r *repositoryImpl) RegisterEvent(userId int, scheduleId int) error {

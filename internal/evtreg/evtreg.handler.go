@@ -48,8 +48,9 @@ func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 		return
 	}
 
-	if apperr := h.svc.RegisterEvent(email, scheduleId); apperr != nil {
+	if apperr := h.svc.RegisterEvent(c, email, scheduleId); apperr != nil {
 		utils.ReturnError(c, apperr)
+		return
 	}
 
 	c.AbortWithStatus(http.StatusNoContent)
