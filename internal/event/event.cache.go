@@ -13,6 +13,7 @@ import (
 type Cache interface {
 	Get(ctx context.Context, key string) (bool, string, *apperror.AppError)
 	Set(ctx context.Context, key string, value string, expiration time.Duration) *apperror.AppError
+	Del(ctx context.Context, keys ...string) *apperror.AppError
 }
 
 type cacheImpl struct {
@@ -47,4 +48,12 @@ func (s *cacheImpl) Set(ctx context.Context, key string, value string, expiratio
 	} else {
 		return nil
 	}
+}
+
+func (s *cacheImpl) Del(ctx context.Context, keys ...string) *apperror.AppError {
+	if err := s.redis.Del(ctx, keys...).Err(); err != nil {
+		s.logger.Error("could not delete keys", zap.Strings("keys", keys), zap.Error(err))
+		return apperror.InternalError
+	}
+	return nil
 }

@@ -134,3 +134,17 @@ CREATE TABLE event_registrations (
 );
 
 INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
+
+CREATE OR REPLACE FUNCTION update_attandee_count()
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
+declare
+	sid INTEGER;
+	cnt INTEGER;
+BEGIN
+for sid, cnt in select id, count(user_id) from schedules s left join event_registrations er on s.id = er.schedule_id group by s.id loop
+	update schedules set current_attendee = cnt where id = sid;
+end loop;
+end;
+$function$;
