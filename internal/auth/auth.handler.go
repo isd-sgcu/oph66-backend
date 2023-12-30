@@ -47,6 +47,7 @@ func (h *handlerImpl) GoogleLogin(c *gin.Context) {
 // @id GoogleCallback
 // @produce json
 // @tags auth
+// @param code query string true "Authorization code"
 // @router /auth/callback [get]
 // @success 200 {object} dto.CallbackResponse
 // @Failure 500 {object} dto.CallbackErrorResponse

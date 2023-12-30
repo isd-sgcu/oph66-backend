@@ -413,6 +413,12 @@ paths:
         a token. If you attempt to log in using a different domain, Google will not
         allow the login
       operationId: GoogleCallback
+      parameters:
+      - description: Authorization code
+        in: query
+        name: code
+        required: true
+        type: string
       produces:
       - application/json
       responses:
