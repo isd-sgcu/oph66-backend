@@ -53,6 +53,15 @@ const docTemplate = `{
                 ],
                 "summary": "receive a token after successfully login with Google",
                 "operationId": "GoogleCallback",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization code",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
