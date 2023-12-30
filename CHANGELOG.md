@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc3] - 2023-12-30
+
+### 🐛 Bug Fixes
+
+- Invalidate cache (#21) - ([e23bf61](https://github.com/isd-sgcu/oph66-backend/commit/e23bf61caa5e7a58b30f34ca7bff9db08471e6d9))
+- Duplicate email (#22) - ([b8ebb23](https://github.com/isd-sgcu/oph66-backend/commit/b8ebb23cbb362c8fb5b0e1367b095c71c1383454))
+- `GoogleCallback` incomplete docs (#23) - ([9123a0f](https://github.com/isd-sgcu/oph66-backend/commit/9123a0f478b4027527394fbeb41edc5ff22f5fdb))
+
 ## [1.0.0-rc2] - 2023-12-29
 
 ### 🐛 Bug Fixes
