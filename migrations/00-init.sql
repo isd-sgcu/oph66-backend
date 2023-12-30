@@ -56,7 +56,7 @@ CREATE TABLE "users" (
 ALTER SEQUENCE "users_id_seq" RESTART 10000;
 
 -- Create index "idx_users_email" to table: "users"
-CREATE INDEX "idx_users_email" ON "users" ("email");
+CREATE UNIQUE INDEX "idx_users_email" ON "users" ("email");
 -- Create "rounds" enum
 CREATE TYPE "rounds" AS ENUM (
 	'1',
