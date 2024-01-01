@@ -1,7 +1,11 @@
 package model
 
+import "time"
+
 type User struct {
 	Id                  int                 `gorm:"primaryKey;autoIncrement" json:"id"`
+	CreatedAt           time.Time           `gorm:"autoCreateTime"`
+	UpdatedAt           time.Time           `gorm:"autoUpdateTime:milli"`
 	Gender              string              `json:"gender"`
 	FirstName           string              `json:"first_name"`
 	LastName            string              `json:"last_name"`

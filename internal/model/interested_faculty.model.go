@@ -1,8 +1,12 @@
 package model
 
+import "time"
+
 type InterestedFaculty struct {
 	UserId         uint       `gorm:"primaryKey;index"                                  json:"-"`
 	Order          uint       `gorm:"primaryKey"                                        json:"order"`
+	CreatedAt      time.Time  `gorm:"autoCreateTime"`
+	UpdatedAt      time.Time  `gorm:"autoUpdateTime:milli"`
 	Faculty        Faculty    `gorm:"foreignKey:FacultyCode"                            json:"faculty"`
 	FacultyCode    string     `gorm:"not null"                                          json:"-"`
 	Department     Department `gorm:"foreignKey:DepartmentCode,FacultyCode"             json:"department"`
