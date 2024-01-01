@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc4] - 2024-01-01
+
+### ⛰️  Features
+
+- Created at and updated at (#25) - ([1945fd6](https://github.com/isd-sgcu/oph66-backend/commit/1945fd6d273d51ec06d7628eea9b2ea608061783))
+
+### ⚙️ Miscellaneous Tasks
+
+- Update faculty info (#24) - ([eea4506](https://github.com/isd-sgcu/oph66-backend/commit/eea4506b39208c17e38a1ff3699d0dd18812f4ea))
+
 ## [1.0.0-rc3] - 2023-12-30
 
 ### 🐛 Bug Fixes
