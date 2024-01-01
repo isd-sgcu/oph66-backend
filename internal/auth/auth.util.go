@@ -73,6 +73,7 @@ func UserModelToUserDTO(mUser *model.User) dto.User {
 	user.Grade = mUser.Grade
 	user.DesiredRounds = make([]dto.DesiredRound, 0, len(mUser.DesiredRounds))
 	user.InterestedFaculties = make([]dto.FacultyInfo, 0, len(mUser.InterestedFaculties))
+	user.RegisteredEvents = make([]dto.Schedule, 0, len(mUser.RegisteredEvents))
 
 	for _, round := range mUser.DesiredRounds {
 		user.DesiredRounds = append(user.DesiredRounds, DesiredRoundModelToDTO(&round))

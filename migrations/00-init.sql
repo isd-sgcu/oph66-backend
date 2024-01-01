@@ -36,6 +36,8 @@ CREATE TABLE "sections" (
 -- Create "users" table
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
     "gender" VARCHAR(80) NULL,
     "first_name" VARCHAR(80) NULL,
     "last_name" VARCHAR(80) NULL,
@@ -68,6 +70,8 @@ CREATE TYPE "rounds" AS ENUM (
 -- Create "desired_rounds" table
 CREATE TABLE "desired_rounds" (
     "user_id" INT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
     "order" INT NOT NULL,
     "round" rounds NOT NULL,
     PRIMARY KEY ("user_id", "order"),
@@ -95,6 +99,8 @@ CREATE TABLE "events" (
 -- Create "interested_faculties" table
 CREATE TABLE "interested_faculties" (
     "user_id" bigint NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
     "order" INT NOT NULL,
     "faculty_code" VARCHAR(10) NOT NULL,
     "department_code" VARCHAR(10) NOT NULL,
@@ -130,8 +136,12 @@ CREATE INDEX "idx_event_id" ON "schedules" ("event_id");
 CREATE TABLE event_registrations (
     "user_id" INT NOT NULL,
     "schedule_id" INT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
     PRIMARY KEY ("user_id", "schedule_id")
 );
+
+CREATE INDEX "idx_event_registrations_user_id" ON "event_registrations" ("user_id"); 
 
 INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
 
