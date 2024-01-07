@@ -399,19 +399,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.DesiredRound": {
-            "type": "object",
-            "properties": {
-                "order": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "round": {
-                    "type": "string",
-                    "example": "1"
-                }
-            }
-        },
         "dto.Event": {
             "type": "object",
             "properties": {
@@ -711,39 +698,25 @@ const docTemplate = `{
         "dto.RegisterRequestDTO": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "Bangkok"
-                },
-                "allergy": {
-                    "type": "string",
-                    "example": "None"
-                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
                 },
-                "desired_rounds": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.DesiredRound"
-                    }
+                "country": {
+                    "type": "string",
+                    "example": "Japan"
+                },
+                "desired_round": {
+                    "type": "string",
+                    "example": "3"
+                },
+                "educational_level": {
+                    "type": "string",
+                    "example": "Ph.D."
                 },
                 "first_name": {
                     "type": "string",
                     "example": "John"
-                },
-                "from_abroad": {
-                    "type": "string",
-                    "example": "no"
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "male"
-                },
-                "grade": {
-                    "type": "string",
-                    "example": "undergraduate"
                 },
                 "interested_faculties": {
                     "type": "array",
@@ -759,21 +732,35 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Doe"
                 },
-                "medical_condition": {
-                    "type": "string",
-                    "example": "None"
+                "news_sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "facebook",
+                        "instagram",
+                        "faculty",
+                        "chula-student",
+                        "friend",
+                        "parent",
+                        "school",
+                        "other"
+                    ]
                 },
-                "news_source": {
+                "province": {
                     "type": "string",
-                    "example": "Facebook"
-                },
-                "school": {
-                    "type": "string",
-                    "example": "CU"
+                    "example": "Tokyo"
                 },
                 "status": {
                     "type": "string",
                     "example": "student"
+                },
+                "visiting_faculties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.FacultyInfoId"
+                    }
                 }
             }
         },
@@ -826,39 +813,24 @@ const docTemplate = `{
         "dto.User": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string",
-                    "example": "Bangkok"
-                },
-                "allergy": {
-                    "type": "string",
-                    "example": "None"
-                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
                 },
-                "desired_rounds": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.DesiredRound"
-                    }
+                "country": {
+                    "type": "string",
+                    "example": "Japan"
+                },
+                "desired_round": {
+                    "type": "string"
+                },
+                "educational_level": {
+                    "type": "string",
+                    "example": "Ph.D."
                 },
                 "first_name": {
                     "type": "string",
                     "example": "John"
-                },
-                "from_abroad": {
-                    "type": "string",
-                    "example": "no"
-                },
-                "gender": {
-                    "type": "string",
-                    "example": "male"
-                },
-                "grade": {
-                    "type": "string",
-                    "example": "undergraduate"
                 },
                 "interested_faculties": {
                     "type": "array",
@@ -874,13 +846,19 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Doe"
                 },
-                "medical_condition": {
-                    "type": "string",
-                    "example": "None"
+                "news_sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "facebook",
+                        "instagram"
+                    ]
                 },
-                "news_source": {
+                "province": {
                     "type": "string",
-                    "example": "Facebook"
+                    "example": "Austin"
                 },
                 "registered_events": {
                     "type": "array",
@@ -888,13 +866,15 @@ const docTemplate = `{
                         "$ref": "#/definitions/dto.Schedule"
                     }
                 },
-                "school": {
-                    "type": "string",
-                    "example": "CU"
-                },
                 "status": {
                     "type": "string",
                     "example": "student"
+                },
+                "visiting_faculties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.FacultyInfo"
+                    }
                 }
             }
         }

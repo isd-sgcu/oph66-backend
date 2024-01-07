@@ -38,20 +38,16 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL,
     "updated_at" TIMESTAMPTZ NOT NULL,
-    "gender" VARCHAR(80) NULL,
     "first_name" VARCHAR(80) NULL,
     "last_name" VARCHAR(80) NULL,
     "email" VARCHAR(80) NOT NULL,
-    "school" VARCHAR(80) NULL,
     "birth_date" VARCHAR(80) NULL,
-    "address" VARCHAR(300) NULL,
-    "from_abroad" VARCHAR(80) NULL,
-    "allergy" VARCHAR(150) NULL,
-    "medical_condition" VARCHAR(150) NULL,
     "join_cu_reason" VARCHAR(300) NULL,
-    "news_source" VARCHAR(100) NULL,
     "status" VARCHAR(80) NULL,
-    "grade" VARCHAR(50) NULL,
+    "country" VARCHAR(80) NULL,
+    "province" VARCHAR(80) NULL,
+    "educational_level" VARCHAR(80) NULL,
+    "desired_round" VARCHAR(40) NULL,
     PRIMARY KEY ("id")
 );
 
@@ -67,18 +63,46 @@ CREATE TYPE "rounds" AS ENUM (
 	'4',
 	'5'
 );
--- Create "desired_rounds" table
-CREATE TABLE "desired_rounds" (
+
+CREATE TYPE news_source AS ENUM (
+    'facebook',
+    'instagram',
+    'faculty',
+    'chula-student',
+    'friend',
+    'parent',
+    'school',
+    'other'
+);
+
+-- Create "news_sources" table
+CREATE TABLE "news_sources_users" (
     "user_id" INT NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL,
     "updated_at" TIMESTAMPTZ NOT NULL,
-    "order" INT NOT NULL,
-    "round" rounds NOT NULL,
-    PRIMARY KEY ("user_id", "order"),
-    CONSTRAINT "fk_users_desired_rounds" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
+    "news_source" news_source NOT NULL,
+    PRIMARY KEY ("user_id", "news_sources"),
+    CONSTRAINT "fk_news_sources_users" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
--- Create index "idx_desired_rounds_user_id" to table: "desired_rounds"
-CREATE INDEX "idx_desired_rounds_user_id" ON "desired_rounds" ("user_id");
+
+-- Create "visiting_faculties" table
+CREATE TABLE "visiting_faculties" (
+    "user_id" bigint NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
+    "order" INT NOT NULL,
+    "faculty_code" VARCHAR(10) NOT NULL,
+    "department_code" VARCHAR(10) NOT NULL,
+    "section_code" VARCHAR(10) NOT NULL,
+    PRIMARY KEY ("user_id", "order"),
+    CONSTRAINT "fk_visiting_faculties_section" FOREIGN KEY ("section_code", "department_code", "faculty_code") REFERENCES "sections" ("code", "department_code", "faculty_code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_visiting_faculties_department" FOREIGN KEY ("department_code", "faculty_code") REFERENCES "departments" ("code", "faculty_code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_visiting_faculties_faculty" FOREIGN KEY ("faculty_code") REFERENCES "faculties" ("code") ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT "fk_users_visiting_faculties" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+-- Create index "idx_visiting_faculties_user_id" to table: "visiting_faculties"
+CREATE INDEX "idx_visiting_faculties_user_id" ON "visiting_faculties" ("user_id");
+
 -- Create "events" table
 CREATE TABLE "events" (
     "id" VARCHAR(30) NOT NULL,
