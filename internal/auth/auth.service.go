@@ -77,7 +77,7 @@ func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto
 		return nil, apperror.InternalError
 	}
 
-	user := UserModelToUserDTO(&mUser)
+	user := UserModelToDTO(&mUser)
 
 	return &user, nil
 }
@@ -92,7 +92,7 @@ func (s *serviceImpl) GetUserFromJWTToken(email string) (*dto.User, *apperror.Ap
 		return nil, apperror.InternalError
 	}
 
-	user := UserModelToUserDTO(&mUser)
+	user := UserModelToDTO(&mUser)
 
 	return &user, nil
 }

@@ -21,19 +21,22 @@ func NewRepository(db *gorm.DB) Repository {
 }
 
 func (r *repositoryImpl) CreateUser(user *model.User) error {
-	return r.db.Create(&user).Error
+	return r.db.Model(user).Create(&user).Error
 }
 
 func (r *repositoryImpl) GetUserByEmail(user *model.User, email string) error {
 	return r.db.
+		Model(user).
 		Preload("RegisteredEvents").
-		Preload("DesiredRounds").
-		Preload("DesiredRounds").
+		Preload("NewsSourceUsers").
 		Preload("InterestedFaculties").
 		Preload("InterestedFaculties.Faculty").
 		Preload("InterestedFaculties.Department").
 		Preload("InterestedFaculties.Section").
-		Preload("InterestedFaculties.Section").
+		Preload("VisitingFaculties").
+		Preload("VisitingFaculties.Faculty").
+		Preload("VisitingFaculties.Department").
+		Preload("VisitingFaculties.Section").
 		Preload("RegisteredEvents.Schedule").
 		Where("email = ?", email).
 		First(&user).Error

@@ -1,26 +1,18 @@
 package dto
 
 type RegisterRequestDTO struct {
-	Gender              string          `example:"male"                               json:"gender"`
-	FirstName           string          `example:"John"                               json:"first_name"`
-	LastName            string          `example:"Doe"                                json:"last_name"`
-	School              string          `example:"CU"                                 json:"school"`
-	BirthDate           string          `example:"1990-01-01"                         json:"birth_date"`
-	Address             string          `example:"Bangkok"                            json:"address"`
-	FromAbroad          string          `example:"no"                                 json:"from_abroad"`
-	Allergy             string          `example:"None"                               json:"allergy"`
-	MedicalCondition    string          `example:"None"                               json:"medical_condition"`
-	JoinCUReason        string          `example:"Interested in the programs offered" json:"join_cu_reason"`
-	NewsSource          string          `example:"Facebook"                           json:"news_source"`
-	Status              string          `example:"student"                            json:"status"`
-	Grade               string          `example:"undergraduate"                      json:"grade"`
-	DesiredRounds       []DesiredRound  `json:"desired_rounds"`
+	FirstName           string          `example:"John"                                                                json:"first_name"`
+	LastName            string          `example:"Doe"                                                                 json:"last_name"`
+	BirthDate           string          `example:"1990-01-01"                                                          json:"birth_date"`
+	JoinCUReason        string          `example:"Interested in the programs offered"                                  json:"join_cu_reason"`
+	Status              string          `example:"student"                                                             json:"status"`
+	DesiredRound        string          `example:"3"                                                                   json:"desired_round"`
+	Country             string          `example:"Japan"                                                               json:"country"`
+	Province            string          `example:"Tokyo"                                                               json:"province"`
+	EducationalLevel    string          `example:"Ph.D."                                                               json:"educational_level"`
 	InterestedFaculties []FacultyInfoId `json:"interested_faculties"`
-}
-
-type DesiredRound struct {
-	Order uint   `example:"1" json:"order"`
-	Round string `example:"1" json:"round"`
+	VisitingFaculties   []FacultyInfoId `json:"visiting_faculties"`
+	NewsSource          []NewsSource    `example:"facebook,instagram,faculty,chula-student,friend,parent,school,other" json:"news_sources"`
 }
 
 type FacultyInfoId struct {
@@ -43,23 +35,22 @@ type GetProfileResponse struct {
 }
 
 type User struct {
-	Gender              string         `example:"male"                               json:"gender"`
-	FirstName           string         `example:"John"                               json:"first_name"`
-	LastName            string         `example:"Doe"                                json:"last_name"`
-	School              string         `example:"CU"                                 json:"school"`
-	BirthDate           string         `example:"1990-01-01"                         json:"birth_date"`
-	Address             string         `example:"Bangkok"                            json:"address"`
-	FromAbroad          string         `example:"no"                                 json:"from_abroad"`
-	Allergy             string         `example:"None"                               json:"allergy"`
-	MedicalCondition    string         `example:"None"                               json:"medical_condition"`
-	JoinCUReason        string         `example:"Interested in the programs offered" json:"join_cu_reason"`
-	NewsSource          string         `example:"Facebook"                           json:"news_source"`
-	Status              string         `example:"student"                            json:"status"`
-	Grade               string         `example:"undergraduate"                      json:"grade"`
-	DesiredRounds       []DesiredRound `json:"desired_rounds"`
-	InterestedFaculties []FacultyInfo  `json:"interested_faculties"`
-	RegisteredEvents    []Schedule     `json:"registered_events"`
+	FirstName           string        `example:"John"                               json:"first_name"`
+	LastName            string        `example:"Doe"                                json:"last_name"`
+	BirthDate           string        `example:"1990-01-01"                         json:"birth_date"`
+	JoinCUReason        string        `example:"Interested in the programs offered" json:"join_cu_reason"`
+	Status              string        `example:"student"                            json:"status"`
+	Country             string        `example:"Japan"                              json:"country"`
+	Province            string        `example:"Austin"                             json:"province"`
+	DesiredRound        string        `json:"desired_round"`
+	EducationalLevel    string        `example:"Ph.D."                              json:"educational_level"`
+	NewsSources         []NewsSource  `example:"facebook,instagram"                 json:"news_sources"`
+	InterestedFaculties []FacultyInfo `json:"interested_faculties"`
+	RegisteredEvents    []Schedule    `json:"registered_events"`
+	VisitingFaculties   []FacultyInfo `json:"visiting_faculties"`
 }
+
+type NewsSource string
 
 type FacultyInfo struct {
 	Faculty struct {

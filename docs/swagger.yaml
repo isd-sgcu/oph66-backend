@@ -38,15 +38,6 @@ definitions:
       name:
         $ref: '#/definitions/dto.BilingualField'
     type: object
-  dto.DesiredRound:
-    properties:
-      order:
-        example: 1
-        type: integer
-      round:
-        example: "1"
-        type: string
-    type: object
   dto.Event:
     properties:
       department:
@@ -250,30 +241,20 @@ definitions:
     type: object
   dto.RegisterRequestDTO:
     properties:
-      address:
-        example: Bangkok
-        type: string
-      allergy:
-        example: None
-        type: string
       birth_date:
         example: "1990-01-01"
         type: string
-      desired_rounds:
-        items:
-          $ref: '#/definitions/dto.DesiredRound'
-        type: array
+      country:
+        example: Japan
+        type: string
+      desired_round:
+        example: "3"
+        type: string
+      educational_level:
+        example: Ph.D.
+        type: string
       first_name:
         example: John
-        type: string
-      from_abroad:
-        example: "no"
-        type: string
-      gender:
-        example: male
-        type: string
-      grade:
-        example: undergraduate
         type: string
       interested_faculties:
         items:
@@ -285,18 +266,29 @@ definitions:
       last_name:
         example: Doe
         type: string
-      medical_condition:
-        example: None
-        type: string
-      news_source:
-        example: Facebook
-        type: string
-      school:
-        example: CU
+      news_sources:
+        example:
+        - facebook
+        - instagram
+        - faculty
+        - chula-student
+        - friend
+        - parent
+        - school
+        - other
+        items:
+          type: string
+        type: array
+      province:
+        example: Tokyo
         type: string
       status:
         example: student
         type: string
+      visiting_faculties:
+        items:
+          $ref: '#/definitions/dto.FacultyInfoId'
+        type: array
     type: object
   dto.RegisterResponse:
     properties:
@@ -332,30 +324,19 @@ definitions:
     type: object
   dto.User:
     properties:
-      address:
-        example: Bangkok
-        type: string
-      allergy:
-        example: None
-        type: string
       birth_date:
         example: "1990-01-01"
         type: string
-      desired_rounds:
-        items:
-          $ref: '#/definitions/dto.DesiredRound'
-        type: array
+      country:
+        example: Japan
+        type: string
+      desired_round:
+        type: string
+      educational_level:
+        example: Ph.D.
+        type: string
       first_name:
         example: John
-        type: string
-      from_abroad:
-        example: "no"
-        type: string
-      gender:
-        example: male
-        type: string
-      grade:
-        example: undergraduate
         type: string
       interested_faculties:
         items:
@@ -367,22 +348,27 @@ definitions:
       last_name:
         example: Doe
         type: string
-      medical_condition:
-        example: None
-        type: string
-      news_source:
-        example: Facebook
+      news_sources:
+        example:
+        - facebook
+        - instagram
+        items:
+          type: string
+        type: array
+      province:
+        example: Austin
         type: string
       registered_events:
         items:
           $ref: '#/definitions/dto.Schedule'
         type: array
-      school:
-        example: CU
-        type: string
       status:
         example: student
         type: string
+      visiting_faculties:
+        items:
+          $ref: '#/definitions/dto.FacultyInfo'
+        type: array
     type: object
 info:
   contact: {}
