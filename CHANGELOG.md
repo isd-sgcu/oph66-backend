@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc6] - 2024-01-08
+
+### 🐛 Bug Fixes
+
+- New user model (#27) - ([7d4c145](https://github.com/isd-sgcu/oph66-backend/commit/7d4c1458f230f8f3614c5768d4f5c665a2538589))
+
 ## [1.0.0-rc5] - 2024-01-07
 
 ### 🐛 Bug Fixes
