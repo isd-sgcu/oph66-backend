@@ -10,6 +10,8 @@ type RegisterRequestDTO struct {
 	Country             string          `example:"Japan"                                                               json:"country"`
 	Province            string          `example:"Tokyo"                                                               json:"province"`
 	EducationalLevel    string          `example:"Ph.D."                                                               json:"educational_level"`
+	Allergies           string          `example:"Dog"                                                                 json:"allergies"`
+	MedicalCondition    string          `example:"Dog"                                                                 json:"medical_condition"`
 	InterestedFaculties []FacultyInfoId `json:"interested_faculties"`
 	VisitingFaculties   []FacultyInfoId `json:"visiting_faculties"`
 	NewsSource          []NewsSource    `example:"facebook,instagram,faculty,chula-student,friend,parent,school,other" json:"news_sources"`
@@ -44,6 +46,8 @@ type User struct {
 	Province            string        `example:"Austin"                             json:"province"`
 	DesiredRound        string        `json:"desired_round"`
 	EducationalLevel    string        `example:"Ph.D."                              json:"educational_level"`
+	Allergies           string        `example:"Dog"                                json:"allergies"`
+	MedicalCondition    string        `example:"Dog"                                json:"medical_condition"`
 	NewsSources         []NewsSource  `example:"facebook,instagram"                 json:"news_sources"`
 	InterestedFaculties []FacultyInfo `json:"interested_faculties"`
 	RegisteredEvents    []Schedule    `json:"registered_events"`

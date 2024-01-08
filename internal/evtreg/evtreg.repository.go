@@ -10,7 +10,7 @@ import (
 type Repository interface {
 	GetUserWithEventRegistrationByEmail(user *model.User, email string) error
 	GetScheduleById(schedule *model.Schedule, scheduleId int) error
-	RegisterEvent(userId int, scheduleId int) error
+	RegisterEvent(evtreg *model.EventRegistration) error
 }
 
 func NewRepository(db *gorm.DB) Repository {
@@ -31,13 +31,13 @@ func (r *repositoryImpl) GetScheduleById(schedule *model.Schedule, scheduleId in
 	return r.db.Model(schedule).Where("id = ?", scheduleId).First(schedule).Error
 }
 
-func (r *repositoryImpl) RegisterEvent(userId int, scheduleId int) error {
+func (r *repositoryImpl) RegisterEvent(evtreg *model.EventRegistration) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		var schedule model.Schedule
 
 		if err := tx.Clauses(clause.Locking{
 			Strength: "UPDATE",
-		}).Model(&schedule).Preload("Event").Where("id = ?", scheduleId).Find(&schedule).Error; err != nil {
+		}).Model(&schedule).Preload("Event").Where("id = ?", evtreg.ScheduleId).Find(&schedule).Error; err != nil {
 			return err
 		}
 
@@ -48,11 +48,7 @@ func (r *repositoryImpl) RegisterEvent(userId int, scheduleId int) error {
 		schedule.CurrentAttendee++
 		tx.Save(&schedule)
 
-		var reg model.EventRegistration
-		reg.ScheduleId = scheduleId
-		reg.UserId = userId
-
-		if err := tx.Create(&reg).Error; err != nil {
+		if err := tx.Create(&evtreg).Error; err != nil {
 			return err
 		}
 

@@ -91,6 +91,22 @@ definitions:
         example: invalid-event-id
         type: string
     type: object
+  dto.EventRegistrationDTO:
+    properties:
+      news_sources:
+        example:
+        - facebook
+        - instagram
+        - faculty
+        - chula-student
+        - friend
+        - parent
+        - school
+        - other
+        items:
+          type: string
+        type: array
+    type: object
   dto.Faculty:
     properties:
       code:
@@ -241,6 +257,9 @@ definitions:
     type: object
   dto.RegisterRequestDTO:
     properties:
+      allergies:
+        example: Dog
+        type: string
       birth_date:
         example: "1990-01-01"
         type: string
@@ -265,6 +284,9 @@ definitions:
         type: string
       last_name:
         example: Doe
+        type: string
+      medical_condition:
+        example: Dog
         type: string
       news_sources:
         example:
@@ -324,6 +346,9 @@ definitions:
     type: object
   dto.User:
     properties:
+      allergies:
+        example: Dog
+        type: string
       birth_date:
         example: "1990-01-01"
         type: string
@@ -347,6 +372,9 @@ definitions:
         type: string
       last_name:
         example: Doe
+        type: string
+      medical_condition:
+        example: Dog
         type: string
       news_sources:
         example:
@@ -582,6 +610,12 @@ paths:
         name: scheduleId
         required: true
         type: integer
+      - description: Event register body
+        in: body
+        name: registerEventDto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.EventRegistrationDTO'
       produces:
       - application/json
       responses: {}

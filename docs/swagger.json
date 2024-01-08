@@ -329,6 +329,15 @@
                         "name": "scheduleId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Event register body",
+                        "name": "registerEventDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EventRegistrationDTO"
+                        }
                     }
                 ],
                 "responses": {}
@@ -468,6 +477,27 @@
                 "title": {
                     "type": "string",
                     "example": "invalid-event-id"
+                }
+            }
+        },
+        "dto.EventRegistrationDTO": {
+            "type": "object",
+            "properties": {
+                "news_sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "facebook",
+                        "instagram",
+                        "faculty",
+                        "chula-student",
+                        "friend",
+                        "parent",
+                        "school",
+                        "other"
+                    ]
                 }
             }
         },
@@ -693,6 +723,10 @@
         "dto.RegisterRequestDTO": {
             "type": "object",
             "properties": {
+                "allergies": {
+                    "type": "string",
+                    "example": "Dog"
+                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
@@ -726,6 +760,10 @@
                 "last_name": {
                     "type": "string",
                     "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "Dog"
                 },
                 "news_sources": {
                     "type": "array",
@@ -808,6 +846,10 @@
         "dto.User": {
             "type": "object",
             "properties": {
+                "allergies": {
+                    "type": "string",
+                    "example": "Dog"
+                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
@@ -840,6 +882,10 @@
                 "last_name": {
                     "type": "string",
                     "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "Dog"
                 },
                 "news_sources": {
                     "type": "array",

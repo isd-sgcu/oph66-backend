@@ -16,6 +16,8 @@ type User struct {
 	Province            string              `gorm:""`
 	Country             string              `gorm:""`
 	EducationalLevel    string              `gorm:""`
+	Allergies           string              `gorm:""`
+	MedicalCondition    string              `gorm:""`
 	InterestedFaculties []InterestedFaculty `gorm:"foreignKey:UserId"`
 	RegisteredEvents    []EventRegistration `gorm:"foreignKey:UserId"`
 	VisitingFaculties   []VisitingFaculty   `gorm:"foreignKey:UserId"`
