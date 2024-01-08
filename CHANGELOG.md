@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc7] - 2024-01-08
+
+### 🐛 Bug Fixes
+
+- User id (#28) - ([c5f2a38](https://github.com/isd-sgcu/oph66-backend/commit/c5f2a38223e324f48637cc7cc9ef633d15a27f75))
+
 ## [1.0.0-rc6] - 2024-01-08
 
 ### 🐛 Bug Fixes
