@@ -37,6 +37,7 @@ type GetProfileResponse struct {
 }
 
 type User struct {
+	Id                  int           `example:"10000"                              json:"id"`
 	FirstName           string        `example:"John"                               json:"first_name"`
 	LastName            string        `example:"Doe"                                json:"last_name"`
 	BirthDate           string        `example:"1990-01-01"                         json:"birth_date"`

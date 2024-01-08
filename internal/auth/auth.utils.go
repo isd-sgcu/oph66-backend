@@ -70,6 +70,7 @@ func FacultyInfoIdToVisitingFaculty(dto *dto.FacultyInfoId) model.VisitingFacult
 
 func UserModelToDTO(mUser *model.User) dto.User {
 	var user dto.User
+	user.Id = mUser.Id
 	user.FirstName = mUser.FirstName
 	user.LastName = mUser.LastName
 	user.BirthDate = mUser.BirthDate
