@@ -363,6 +363,9 @@ definitions:
       first_name:
         example: John
         type: string
+      id:
+        example: 10000
+        type: integer
       interested_faculties:
         items:
           $ref: '#/definitions/dto.FacultyInfo'

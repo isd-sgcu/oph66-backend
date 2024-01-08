@@ -869,6 +869,10 @@
                     "type": "string",
                     "example": "John"
                 },
+                "id": {
+                    "type": "integer",
+                    "example": 10000
+                },
                 "interested_faculties": {
                     "type": "array",
                     "items": {
