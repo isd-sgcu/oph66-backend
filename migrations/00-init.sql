@@ -47,6 +47,8 @@ CREATE TABLE "users" (
     "country" VARCHAR(80) NULL,
     "province" VARCHAR(80) NULL,
     "educational_level" VARCHAR(80) NULL,
+    "medical_condition" VARCHAR(120) NULL,
+    "allergies" VARCHAR(120) NULL,
     "desired_round" VARCHAR(40) NULL,
     PRIMARY KEY ("id")
 );
@@ -81,7 +83,7 @@ CREATE TABLE "news_sources_users" (
     "created_at" TIMESTAMPTZ NOT NULL,
     "updated_at" TIMESTAMPTZ NOT NULL,
     "news_source" news_source NOT NULL,
-    PRIMARY KEY ("user_id", "news_sources"),
+    PRIMARY KEY ("user_id", "news_source"),
     CONSTRAINT "fk_news_sources_users" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 

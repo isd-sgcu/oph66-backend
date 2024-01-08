@@ -693,6 +693,10 @@
         "dto.RegisterRequestDTO": {
             "type": "object",
             "properties": {
+                "allergies": {
+                    "type": "string",
+                    "example": "Dog"
+                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
@@ -726,6 +730,10 @@
                 "last_name": {
                     "type": "string",
                     "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "Dog"
                 },
                 "news_sources": {
                     "type": "array",
@@ -808,6 +816,10 @@
         "dto.User": {
             "type": "object",
             "properties": {
+                "allergies": {
+                    "type": "string",
+                    "example": "Dog"
+                },
                 "birth_date": {
                     "type": "string",
                     "example": "1990-01-01"
@@ -840,6 +852,10 @@
                 "last_name": {
                     "type": "string",
                     "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "Dog"
                 },
                 "news_sources": {
                     "type": "array",

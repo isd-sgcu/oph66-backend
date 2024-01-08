@@ -17,6 +17,8 @@ func ConvertRegisterRequestDTOToUser(dto *dto.RegisterRequestDTO, email string) 
 	user.Province = dto.Province
 	user.Country = dto.Country
 	user.EducationalLevel = dto.EducationalLevel
+	user.Allergies = dto.Allergies
+	user.MedicalCondition = dto.MedicalCondition
 	user.InterestedFaculties = make([]model.InterestedFaculty, 0, len(dto.InterestedFaculties))
 	user.VisitingFaculties = make([]model.VisitingFaculty, 0, len(dto.VisitingFaculties))
 	user.RegisteredEvents = make([]model.EventRegistration, 0)
@@ -77,6 +79,8 @@ func UserModelToDTO(mUser *model.User) dto.User {
 	user.Province = mUser.Province
 	user.Country = mUser.Country
 	user.EducationalLevel = mUser.EducationalLevel
+	user.Allergies = mUser.Allergies
+	user.MedicalCondition = mUser.MedicalCondition
 	user.InterestedFaculties = make([]dto.FacultyInfo, 0, len(mUser.InterestedFaculties))
 	user.RegisteredEvents = make([]dto.Schedule, 0, len(mUser.RegisteredEvents))
 	user.NewsSources = make([]dto.NewsSource, 0, len(mUser.NewsSourceUsers))

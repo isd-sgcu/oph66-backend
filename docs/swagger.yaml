@@ -241,6 +241,9 @@ definitions:
     type: object
   dto.RegisterRequestDTO:
     properties:
+      allergies:
+        example: Dog
+        type: string
       birth_date:
         example: "1990-01-01"
         type: string
@@ -265,6 +268,9 @@ definitions:
         type: string
       last_name:
         example: Doe
+        type: string
+      medical_condition:
+        example: Dog
         type: string
       news_sources:
         example:
@@ -324,6 +330,9 @@ definitions:
     type: object
   dto.User:
     properties:
+      allergies:
+        example: Dog
+        type: string
       birth_date:
         example: "1990-01-01"
         type: string
@@ -347,6 +356,9 @@ definitions:
         type: string
       last_name:
         example: Doe
+        type: string
+      medical_condition:
+        example: Dog
         type: string
       news_sources:
         example:
