@@ -20,7 +20,7 @@ func NewRepository(db *gorm.DB) Repository {
 }
 
 type repositoryImpl struct {
-	db  *gorm.DB
+	db *gorm.DB
 }
 
 func (r *repositoryImpl) GetUserWithEventRegistrationByEmail(user *model.User, email string) error {
