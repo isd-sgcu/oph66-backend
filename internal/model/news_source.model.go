@@ -16,12 +16,24 @@ const (
 )
 
 type NewsSourceUser struct {
-	NewsSource NewsSource `gorm:"primaryKey"`
 	UserId     string     `gorm:"primaryKey"`
+	NewsSource NewsSource `gorm:"primaryKey"`
+	CreatedAt  time.Time  `gorm:"autoCreateTime"`
+	UpdatedAt  time.Time  `gorm:"autoUpdateTime:milli"`
+}
+
+type NewsSourceEventRegistration struct {
+	UserId     int        `gorm:"primaryKey"`
+	ScheduleId int        `gorm:"primaryKey"`
+	NewsSource NewsSource `gorm:"primaryKey"`
 	CreatedAt  time.Time  `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time  `gorm:"autoUpdateTime:milli"`
 }
 
 func (NewsSourceUser) TableName() string {
 	return "news_sources_users"
+}
+
+func (NewsSourceEventRegistration) TableName() string {
+	return "news_sources_event_registrations"
 }

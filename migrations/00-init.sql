@@ -77,7 +77,6 @@ CREATE TYPE news_source AS ENUM (
     'other'
 );
 
--- Create "news_sources" table
 CREATE TABLE "news_sources_users" (
     "user_id" INT NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL,
@@ -168,6 +167,16 @@ CREATE TABLE event_registrations (
 );
 
 CREATE INDEX "idx_event_registrations_user_id" ON "event_registrations" ("user_id"); 
+
+CREATE TABLE "news_sources_event_registrations" (
+    "user_id" INT NOT NULL,
+    "schedule_id" INT NOT NULL,
+    "created_at" TIMESTAMPTZ NOT NULL,
+    "updated_at" TIMESTAMPTZ NOT NULL,
+    "news_source" news_source NOT NULL,
+    PRIMARY KEY ("user_id", "schedule_id", "news_source"),
+    CONSTRAINT "fk_news_sources_event_registrations" FOREIGN KEY ("user_id", "schedule_id") REFERENCES "event_registrations" ("user_id", "schedule_id") ON UPDATE NO ACTION ON DELETE NO ACTION
+);
 
 INSERT INTO feature_flags(key, enabled, cache_duration, extra_info) VALUES ('livestream', FALSE, 10, '{"url": "https://www.youtube.com/watch?v=0tOXxuLcaog"}');
 

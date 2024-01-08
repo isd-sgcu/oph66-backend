@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/model"
 	"go.uber.org/zap"
@@ -13,7 +14,7 @@ import (
 )
 
 type Service interface {
-	RegisterEvent(ctx context.Context, userEmail string, scheduleId int) *apperror.AppError
+	RegisterEvent(ctx context.Context, userEmail string, scheduleId int, registerBody *dto.EventRegistrationDTO) *apperror.AppError
 }
 
 func NewService(logger *zap.Logger, repo Repository, cache event.Cache) Service {
@@ -32,7 +33,7 @@ type serviceImpl struct {
 	cache  event.Cache
 }
 
-func (h *serviceImpl) RegisterEvent(ctx context.Context, userEmail string, scheduleId int) *apperror.AppError {
+func (h *serviceImpl) RegisterEvent(ctx context.Context, userEmail string, scheduleId int, registerBody *dto.EventRegistrationDTO) *apperror.AppError {
 	var user model.User
 	if err := h.repo.GetUserWithEventRegistrationByEmail(&user, userEmail); errors.Is(err, gorm.ErrRecordNotFound) {
 		return apperror.UserNotFound
@@ -55,7 +56,9 @@ func (h *serviceImpl) RegisterEvent(ctx context.Context, userEmail string, sched
 		}
 	}
 
-	if err := h.repo.RegisterEvent(user.Id, scheduleId); errors.Is(err, apperror.ScheduleFull) {
+	evtreg := CombineSchedultToEventRegistration(scheduleId, user.Id, registerBody.NewsSource)
+
+	if err := h.repo.RegisterEvent(&evtreg); errors.Is(err, apperror.ScheduleFull) {
 		return apperror.ScheduleFull
 	} else if err != nil {
 		h.logger.Error("unable to register event", zap.Int("userId", user.Id), zap.Int("scheduleId", scheduleId))

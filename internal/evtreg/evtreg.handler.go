@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
+	"github.com/isd-sgcu/oph66-backend/internal/dto"
 	"github.com/isd-sgcu/oph66-backend/utils"
 )
 
@@ -33,11 +34,18 @@ type handlerImpl struct {
 // @tags event
 // @Security Bearer
 // @param scheduleId path int true "schedule id"
+// @param registerEventDto body dto.EventRegistrationDTO true "Event register body"
 // @router /schedules/{scheduleId}/register [post]
 func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 	email := c.GetString("email")
 	if email == "" {
 		utils.ReturnError(c, apperror.Unauthorized)
+		return
+	}
+
+	var body dto.EventRegistrationDTO
+	if err := c.ShouldBindJSON(&body); err != nil {
+		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
 
@@ -48,7 +56,7 @@ func (h *handlerImpl) RegisterEvent(c *gin.Context) {
 		return
 	}
 
-	if apperr := h.svc.RegisterEvent(c, email, scheduleId); apperr != nil {
+	if apperr := h.svc.RegisterEvent(c, email, scheduleId, &body); apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
 	}

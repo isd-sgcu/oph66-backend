@@ -333,6 +333,15 @@ const docTemplate = `{
                         "name": "scheduleId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Event register body",
+                        "name": "registerEventDto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.EventRegistrationDTO"
+                        }
                     }
                 ],
                 "responses": {}
@@ -472,6 +481,27 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "invalid-event-id"
+                }
+            }
+        },
+        "dto.EventRegistrationDTO": {
+            "type": "object",
+            "properties": {
+                "news_sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "facebook",
+                        "instagram",
+                        "faculty",
+                        "chula-student",
+                        "friend",
+                        "parent",
+                        "school",
+                        "other"
+                    ]
                 }
             }
         },
