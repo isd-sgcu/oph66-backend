@@ -71,6 +71,7 @@ func (s *serviceImpl) Register(email string, data *dto.RegisterRequestDTO) (*dto
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
 		return nil, apperror.DuplicateEmail
 	} else if errors.Is(err, gorm.ErrForeignKeyViolated) {
+		s.logger.Debug("Invalid foreign key", zap.Error(err))
 		return nil, apperror.BadRequest
 	} else if err != nil {
 		s.logger.Error("Failed to create user", zap.Error(err), zap.Any("register", data))

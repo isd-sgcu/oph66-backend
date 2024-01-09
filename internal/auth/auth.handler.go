@@ -89,6 +89,7 @@ func (h *handlerImpl) Register(c *gin.Context) {
 	var data dto.RegisterRequestDTO
 
 	if err := c.ShouldBindJSON(&data); err != nil {
+		h.logger.Debug("Bad request", zap.Error(err))
 		utils.ReturnError(c, apperror.BadRequest)
 		return
 	}
