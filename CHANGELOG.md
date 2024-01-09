@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc9] - 2024-01-09
+
+### 🐛 Bug Fixes
+
+- Time mapping (#30) - ([d4dc2fe](https://github.com/isd-sgcu/oph66-backend/commit/d4dc2fe733de560785a8af683b88defe0489e3cc))
+
 ## [1.0.0-rc8] - 2024-01-09
 
 ### 🐛 Bug Fixes
