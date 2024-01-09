@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc8] - 2024-01-09
+
+### 🐛 Bug Fixes
+
+- Incorrect mapping (#29) - ([86e7d11](https://github.com/isd-sgcu/oph66-backend/commit/86e7d1158db845eb0a882aa0ffe86879ca766b7e))
+
 ## [1.0.0-rc7] - 2024-01-08
 
 ### 🐛 Bug Fixes
