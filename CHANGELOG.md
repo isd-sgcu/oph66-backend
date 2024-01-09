@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0-rc10] - 2024-01-09
+
+### ⚙️ Miscellaneous Tasks
+
+- Debug bad request (#31) - ([3d3d1bc](https://github.com/isd-sgcu/oph66-backend/commit/3d3d1bc117cf06ad2baaa081f7edd55af34fe86e))
+
 ## [1.0.0-rc9] - 2024-01-09
 
 ### 🐛 Bug Fixes
