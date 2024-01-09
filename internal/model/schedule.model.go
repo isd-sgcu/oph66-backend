@@ -16,8 +16,8 @@ type Schedule struct {
 	Event           Event          `gorm:"foreignKey:EventId"`
 	EventId         string         `json:"-"`
 	CurrentAttendee int            `gorm:""`
-	StartsAt        time.Time      `json:"ends_at"`
-	EndsAt          time.Time      `json:"starts_at"`
+	StartsAt        time.Time      `json:"starts_at"`
+	EndsAt          time.Time      `json:"ends_at"`
 	Period          SchedulePeriod `json:"-"`
 }
 
