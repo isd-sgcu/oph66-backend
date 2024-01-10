@@ -33,7 +33,7 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 
 		if err != nil {
 			SecretKey := cfg.JWTConfig.SecretKey
-			tokenStaff, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			staffToken, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 				return []byte(SecretKey), nil
 			})
 			if err != nil {
@@ -41,8 +41,8 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 				c.Abort()
 				return
 			}
-			if tokenStaff.Valid && tokenStaff.Claims.(jwt.MapClaims)["role"] == "staff" {
-				c.Set("department", tokenStaff.Claims.(jwt.MapClaims)["department"])
+			if staffToken.Valid && staffToken.Claims.(jwt.MapClaims)["role"] == "staff" {
+				c.Set("department", staffToken.Claims.(jwt.MapClaims)["department"])
 				c.Next()
 				return
 			} else {
