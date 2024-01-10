@@ -50,6 +50,10 @@ func (h *serviceImpl) RegisterEvent(ctx context.Context, userEmail string, sched
 		return apperror.InternalError
 	}
 
+	if !schedule.Event.RequireRegistration {
+		return apperror.NonRegisterableEvent
+	}
+
 	for _, regEvt := range user.RegisteredEvents {
 		if regEvt.Schedule.Period == schedule.Period {
 			return apperror.DuplicatePeriod
