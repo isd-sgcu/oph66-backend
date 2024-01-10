@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2024-01-10
+
+### 🐛 Bug Fixes
+
+- Non-registerable event (#33) - ([a6456c4](https://github.com/isd-sgcu/oph66-backend/commit/a6456c4461bec81a3c1c91dfad512cf71a15301b))
+
 ## [1.0.0-rc10] - 2024-01-09
 
 ### ⚙️ Miscellaneous Tasks
