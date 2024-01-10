@@ -28,7 +28,7 @@ func (r *repositoryImpl) GetUserWithEventRegistrationByEmail(user *model.User, e
 }
 
 func (r *repositoryImpl) GetScheduleById(schedule *model.Schedule, scheduleId int) error {
-	return r.db.Model(schedule).Where("id = ?", scheduleId).First(schedule).Error
+	return r.db.Model(schedule).Preload("Event").Where("id = ?", scheduleId).First(schedule).Error
 }
 
 func (r *repositoryImpl) RegisterEvent(evtreg *model.EventRegistration) error {

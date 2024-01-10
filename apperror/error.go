@@ -27,4 +27,5 @@ var (
 	ScheduleNotFound      = &AppError{"schedule-not-found", http.StatusNotFound}
 	DuplicatePeriod       = &AppError{"duplicate-period", http.StatusConflict}
 	ScheduleFull          = &AppError{"schedule-full", http.StatusBadRequest}
+	NonRegisterableEvent  = &AppError{"non-registerable-event", http.StatusBadRequest}
 )
