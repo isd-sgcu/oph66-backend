@@ -627,6 +627,38 @@ paths:
       summary: Register event
       tags:
       - event
+  /staff/checkin/{userId}:
+    post:
+      description: Checkin attendee which perform by staff
+      operationId: AttendeeStaffCheckin
+      parameters:
+      - description: User id
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.EventInvalidResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.EventInvalidResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.EventAllErrorResponse'
+      security:
+      - Bearer: []
+      summary: checkin attendee
+      tags:
+      - staff
 schemes:
 - http
 - https
