@@ -3,6 +3,7 @@ package middleware
 import (
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/isd-sgcu/oph66-backend/apperror"
 	"github.com/isd-sgcu/oph66-backend/cfgldr"
@@ -31,9 +32,26 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 		token, err := idtoken.Validate(c, tokenString, cfg.OAuth2Config.ClientId)
 
 		if err != nil {
-			utils.ReturnError(c, apperror.InvalidToken)
-			c.Abort()
-			return
+			SecretKey := cfg.JWTConfig.SecretKey
+			staffToken, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+				return []byte(SecretKey), nil
+			})
+			if err != nil {
+				utils.ReturnError(c, apperror.InvalidToken)
+				c.Abort()
+				return
+			}
+			if staffToken.Valid && staffToken.Claims.(jwt.MapClaims)["role"] == "staff" {
+				c.Set("faculty", staffToken.Claims.(jwt.MapClaims)["faculty"])
+				c.Set("department", staffToken.Claims.(jwt.MapClaims)["department"])
+				c.Set("faculty-wide", staffToken.Claims.(jwt.MapClaims)["faculty-wide"])
+				c.Next()
+				return
+			} else {
+				utils.ReturnError(c, apperror.InvalidToken)
+				c.Abort()
+				return
+			}
 		}
 
 		if email, ok := token.Claims["email"].(string); ok {

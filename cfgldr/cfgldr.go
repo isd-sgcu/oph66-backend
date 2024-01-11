@@ -9,6 +9,7 @@ type Config struct {
 	AppConfig      AppConfig
 	RedisConfig    RedisConfig
 	OAuth2Config   OAuth2Config
+	JWTConfig      JWTConfig
 	CorsConfig     CorsConfig
 }
 
@@ -33,6 +34,9 @@ type OAuth2Config struct {
 	ClientId     string   `mapstructure:"CLIENT_ID"`
 	ClientSecret string   `mapstructure:"CLIENT_SECRET"`
 	Scopes       []string `mapstructure:"SCOPES"`
+}
+type JWTConfig struct {
+	SecretKey string `mapstructure:"SECRET_KEY"`
 }
 
 type CorsConfig struct {
@@ -76,6 +80,15 @@ func LoadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	jwtCfgLdr := viper.New()
+	jwtCfgLdr.SetEnvPrefix("JWT")
+	jwtCfgLdr.AutomaticEnv()
+	jwtCfgLdr.AllowEmptyEnv(false)
+	jwtConfig := JWTConfig{}
+	if err := jwtCfgLdr.Unmarshal(&jwtConfig); err != nil {
+		return nil, err
+	}
+
 	corsConfigLdr := viper.New()
 	corsConfigLdr.SetEnvPrefix("CORS")
 	corsConfigLdr.AutomaticEnv()
@@ -90,6 +103,7 @@ func LoadConfig() (*Config, error) {
 		AppConfig:      appConfig,
 		RedisConfig:    redisConfig,
 		OAuth2Config:   oauth2Config,
+		JWTConfig:      jwtConfig,
 		CorsConfig:     corsConfig,
 	}, nil
 }
