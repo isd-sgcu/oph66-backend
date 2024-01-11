@@ -10,6 +10,6 @@ type AttendeeCheckin struct {
 	User           User       `gorm:"foreignKey:UserId;references:Id"`
 	FacultyCode    string     `gorm:"not null"`
 	Faculty        Faculty    `gorm:"foreignKey:FacultyCode;references:Code"`
-	DepartmentCode string     `gorm:""`
+	DepartmentCode string     `gorm:"not null"`
 	Department     Department `gorm:"foreignKey:DepartmentCode,FacultyCode;references:Code,FacultyCode"`
 }
