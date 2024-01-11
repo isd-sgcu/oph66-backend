@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2024-01-11
+
+### ⛰️  Features
+
+- Gen staff token (#32) - ([ec4199e](https://github.com/isd-sgcu/oph66-backend/commit/ec4199e53f98daa9cabca35794863a8f1a0a4495))
+- Staff-checkin (#34) - ([7f53548](https://github.com/isd-sgcu/oph66-backend/commit/7f535486ef542a4c3a24165787636c521b709c06))
+
 ## [1.0.0] - 2024-01-10
 
 ### 🐛 Bug Fixes
