@@ -42,7 +42,9 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 				return
 			}
 			if staffToken.Valid && staffToken.Claims.(jwt.MapClaims)["role"] == "staff" {
+				c.Set("faculty", staffToken.Claims.(jwt.MapClaims)["faculty"])
 				c.Set("department", staffToken.Claims.(jwt.MapClaims)["department"])
+				c.Set("faculty-wide", staffToken.Claims.(jwt.MapClaims)["faculty-wide"])
 				c.Next()
 				return
 			} else {
