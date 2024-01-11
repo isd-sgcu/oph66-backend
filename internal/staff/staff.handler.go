@@ -55,8 +55,6 @@ func (h *handlerImpl) AttendeeStaffCheckin(c *gin.Context) {
 
 	faculty := c.GetString("faculty")
 	department := c.GetString("department")
-	f, e := c.Get("faculty")
-	h.logger.Debug("efads", zap.Bool("e", e), zap.Any("f", f))
 	apperr := h.service.AttendeeStaffCheckin(userId, department, faculty)
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
