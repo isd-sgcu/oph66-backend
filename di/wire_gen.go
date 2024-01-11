@@ -17,6 +17,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
 	"github.com/isd-sgcu/oph66-backend/internal/router"
+	"github.com/isd-sgcu/oph66-backend/internal/staff"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -52,10 +53,13 @@ func Init() (Container, error) {
 	evtregRepository := evtreg.NewRepository(db)
 	evtregService := evtreg.NewService(zapLogger, evtregRepository, eventCache)
 	evtregHandler := evtreg.NewHandler(evtregService)
+	staffRepository := staff.NewRepository(db)
+	staffService := staff.NewService(staffRepository, zapLogger)
+	staffHandler := staff.NewHandler(staffService, zapLogger)
 	corsHandler := cfgldr.MakeCorsConfig(config)
 	authMiddleware := middleware.NewAuthMiddleware(authRepository, config)
 	routerRouter := router.NewRouter(config, corsHandler, authMiddleware)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, evtregHandler, config, zapLogger, corsHandler, routerRouter)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, evtregHandler, staffHandler, config, zapLogger, corsHandler, routerRouter)
 	return container, nil
 }
 
@@ -67,6 +71,7 @@ type Container struct {
 	FeatureflagHandler featureflag.Handler
 	AuthHandler        auth.Handler
 	EvtregHandler      evtreg.Handler
+	StaffHandler       staff.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -79,6 +84,7 @@ func newContainer(
 	featureflagHandler featureflag.Handler,
 	authHandler auth.Handler,
 	evtregHandler evtreg.Handler,
+	staffHandler staff.Handler,
 	config *cfgldr.Config, logger2 *zap.Logger,
 	corsHandler cfgldr.CorsHandler, router2 *router.Router,
 ) Container {
@@ -88,6 +94,7 @@ func newContainer(
 		featureflagHandler,
 		authHandler,
 		evtregHandler,
+		staffHandler,
 		config, logger2, corsHandler, router2,
 	}
 }

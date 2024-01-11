@@ -10,11 +10,12 @@ import (
 	"github.com/isd-sgcu/oph66-backend/database"
 	auth "github.com/isd-sgcu/oph66-backend/internal/auth"
 	event "github.com/isd-sgcu/oph66-backend/internal/event"
+	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
 	featureflag "github.com/isd-sgcu/oph66-backend/internal/feature_flag"
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
 	"github.com/isd-sgcu/oph66-backend/internal/router"
-	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
+	"github.com/isd-sgcu/oph66-backend/internal/staff"
 	"github.com/isd-sgcu/oph66-backend/logger"
 	"go.uber.org/zap"
 )
@@ -25,6 +26,7 @@ type Container struct {
 	FeatureflagHandler featureflag.Handler
 	AuthHandler        auth.Handler
 	EvtregHandler      evtreg.Handler
+	StaffHandler       staff.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -37,6 +39,7 @@ func newContainer(
 	featureflagHandler featureflag.Handler,
 	authHandler auth.Handler,
 	evtregHandler evtreg.Handler,
+	staffHandler staff.Handler,
 	config *cfgldr.Config,
 	logger *zap.Logger,
 	corsHandler cfgldr.CorsHandler,
@@ -48,6 +51,7 @@ func newContainer(
 		featureflagHandler,
 		authHandler,
 		evtregHandler,
+		staffHandler,
 		config,
 		logger,
 		corsHandler,
@@ -74,6 +78,9 @@ func Init() (Container, error) {
 		evtreg.NewRepository,
 		evtreg.NewService,
 		evtreg.NewHandler,
+		staff.NewRepository,
+		staff.NewService,
+		staff.NewHandler,
 		auth.NewHandler,
 		auth.NewService,
 		auth.NewRepository,

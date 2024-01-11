@@ -34,7 +34,7 @@ SECRET_KEY="$JWT_SECRET_KEY"
 
 HEADER="{\"alg\":\"HS256\",\"typ\":\"JWT\"}"
 
-PAYLOAD="{\"role\":\"staff\",\"faculty\":$faculty,\"department\":$department}"
+PAYLOAD="{\"role\":\"staff\",\"faculty\":\"$faculty\",\"department\":\"$department\"}"
 
 HEADER_ENCODED=$(echo -n "$HEADER" | base64 -w 0 | tr -d '=' | tr '/+' '_-')
 PAYLOAD_ENCODED=$(echo -n "$PAYLOAD" | base64 -w 0 | tr -d '=' | tr '/+' '_-')

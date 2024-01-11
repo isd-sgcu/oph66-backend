@@ -42,7 +42,7 @@ CREATE TABLE "users" (
     "last_name" VARCHAR(80) NULL,
     "email" VARCHAR(80) NOT NULL,
     "birth_date" VARCHAR(80) NULL,
-    "join_cu_reason" VARCHAR(300) NULL,
+    "join_cu_reason" VARCHAR(600) NULL,
     "status" VARCHAR(80) NULL,
     "country" VARCHAR(80) NULL,
     "province" VARCHAR(80) NULL,

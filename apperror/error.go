@@ -28,4 +28,7 @@ var (
 	DuplicatePeriod       = &AppError{"duplicate-period", http.StatusConflict}
 	ScheduleFull          = &AppError{"schedule-full", http.StatusBadRequest}
 	NonRegisterableEvent  = &AppError{"non-registerable-event", http.StatusBadRequest}
+	Forbidden             = &AppError{"forbidden", http.StatusForbidden}
+	AlreadyCheckin        = &AppError{"already-checkin", http.StatusConflict}
+	NotFound              = &AppError{"not-found", http.StatusNotFound}
 )
