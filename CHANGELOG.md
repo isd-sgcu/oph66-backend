@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2024-01-12
+
+### ⛰️  Features
+
+- Return user & central staff - ([5aeff0b](https://github.com/isd-sgcu/oph66-backend/commit/5aeff0bb0a844e5f124f07ee64b7b932f6d61628))
+
 ## [1.1.0] - 2024-01-11
 
 ### ⛰️  Features
