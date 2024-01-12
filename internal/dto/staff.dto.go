@@ -6,8 +6,8 @@ type AttendeeStaffCheckinResponse struct {
 }
 
 type AttendeeStaffCheckinUser struct {
-	FirstName        string `json:"first_name"        example:"John"`
-	LastName         string `json:"last_name"         example:"Doe"`
-	Allergies        string `json:"allergies"         example:"Romantic"`
-	MedicalCondition string `json:"medical_condition" example:"Unlovable"`
+	FirstName        string `example:"John"      json:"first_name"`
+	LastName         string `example:"Doe"       json:"last_name"`
+	Allergies        string `example:"Romantic"  json:"allergies"`
+	MedicalCondition string `example:"Unlovable" json:"medical_condition"`
 }
