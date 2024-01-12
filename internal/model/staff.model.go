@@ -15,7 +15,7 @@ type AttendeeFacultyCheckin struct {
 }
 
 func (AttendeeFacultyCheckin) TableName() string {
-	return "attendee_faculty_chekcins"
+	return "attendee_faculty_checkins"
 }
 
 type AttendeeCentralCheckin struct {

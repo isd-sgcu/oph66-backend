@@ -54,7 +54,7 @@ func Init() (Container, error) {
 	evtregService := evtreg.NewService(zapLogger, evtregRepository, eventCache)
 	evtregHandler := evtreg.NewHandler(evtregService)
 	staffRepository := staff.NewRepository(db)
-	staffService := staff.NewService(staffRepository, zapLogger)
+	staffService := staff.NewService(staffRepository, authRepository, zapLogger)
 	staffHandler := staff.NewHandler(staffService, zapLogger)
 	corsHandler := cfgldr.MakeCorsConfig(config)
 	authMiddleware := middleware.NewAuthMiddleware(authRepository, config)

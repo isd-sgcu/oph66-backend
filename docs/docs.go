@@ -374,8 +374,11 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content"
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.AttendeeStaffCheckinResponse"
+                        }
                     },
                     "403": {
                         "description": "Forbidden",
@@ -400,6 +403,38 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.AttendeeStaffCheckinResponse": {
+            "type": "object",
+            "properties": {
+                "already_checkin": {
+                    "type": "boolean"
+                },
+                "user": {
+                    "$ref": "#/definitions/dto.AttendeeStaffCheckinUser"
+                }
+            }
+        },
+        "dto.AttendeeStaffCheckinUser": {
+            "type": "object",
+            "properties": {
+                "allergies": {
+                    "type": "string",
+                    "example": "Romantic"
+                },
+                "first_name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "last_name": {
+                    "type": "string",
+                    "example": "Doe"
+                },
+                "medical_condition": {
+                    "type": "string",
+                    "example": "Unlovable"
+                }
+            }
+        },
         "dto.BilingualField": {
             "type": "object",
             "properties": {
