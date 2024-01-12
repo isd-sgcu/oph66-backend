@@ -41,7 +41,7 @@ type handlerImpl struct {
 // @Failure	409	{object} dto.EventInvalidResponse
 // @Failure	500	{object} dto.EventAllErrorResponse
 func (h *handlerImpl) AttendeeStaffCheckin(c *gin.Context) {
-	if c.GetString("role") != "staff" {
+	if c.GetString("role") != "central-staff" && c.GetString("role") != "faculty-staff" {
 		utils.ReturnError(c, apperror.Forbidden)
 		return
 	}
@@ -53,9 +53,19 @@ func (h *handlerImpl) AttendeeStaffCheckin(c *gin.Context) {
 		return
 	}
 
-	faculty := c.GetString("faculty")
-	department := c.GetString("department")
-	apperr := h.service.AttendeeStaffCheckin(userId, department, faculty)
+	var (
+		apperr *apperror.AppError
+	)
+
+	switch c.GetString("role") {
+	case "faculty-staff":
+		faculty := c.GetString("faculty")
+		department := c.GetString("department")
+		apperr = h.service.AttendeeFacultyStaffCheckin(userId, department, faculty)
+	case "central-staff":
+		apperr = h.service.AttendeeCentralStaffCheckin(userId)
+	}
+
 	if apperr != nil {
 		utils.ReturnError(c, apperr)
 		return
