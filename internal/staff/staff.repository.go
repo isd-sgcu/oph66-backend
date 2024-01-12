@@ -6,7 +6,8 @@ import (
 )
 
 type Repository interface {
-	CreateCheckin(checkin *model.AttendeeCheckin) error
+	CreateFacultyCheckin(checkin *model.AttendeeFacultyCheckin) error
+	CreateCentralCheckin(checkin *model.AttendeeCentralCheckin) error
 }
 
 type repositoryImpl struct {
@@ -19,6 +20,10 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (r *repositoryImpl) CreateCheckin(checkin *model.AttendeeCheckin) error {
+func (r *repositoryImpl) CreateFacultyCheckin(checkin *model.AttendeeFacultyCheckin) error {
+	return r.db.Model(checkin).Create(checkin).Error
+}
+
+func (r *repositoryImpl) CreateCentralCheckin(checkin *model.AttendeeCentralCheckin) error {
 	return r.db.Model(checkin).Create(checkin).Error
 }

@@ -1,26 +1,13 @@
 #!/bin/bash
 
 ## Usage:
-##   ./tools/gen-staff-token.sh <faculty> <department>
-##   ./tools/gen-staff-token.sh 23 0
+##   ./tools/gen-central-staff-token.sh
+##   ./tools/gen-central-staff-token.sh
 
 if [ -f .env ]; then
     source .env
 else
     echo "Error: .env file not found!"
-    exit 1
-fi
-
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <faculty> <department>"
-    exit 1
-fi
-
-faculty=$1
-department=$2
-
-if [ -z "$faculty" ] || [ -z "$department" ]; then
-    echo "Invalid input. Faculty and Department cannot be empty."
     exit 1
 fi
 
@@ -33,7 +20,7 @@ SECRET_KEY="$JWT_SECRET_KEY"
 
 HEADER="{\"alg\":\"HS256\",\"typ\":\"JWT\"}"
 
-PAYLOAD="{\"role\":\"faculty-staff\",\"faculty\":\"$faculty\",\"department\":\"$department\"}"
+PAYLOAD="{\"role\":\"central-staff\"}"
 
 HEADER_ENCODED=$(echo -n "$HEADER" | base64 -w 0 | tr -d '=' | tr '/+' '_-')
 PAYLOAD_ENCODED=$(echo -n "$PAYLOAD" | base64 -w 0 | tr -d '=' | tr '/+' '_-')

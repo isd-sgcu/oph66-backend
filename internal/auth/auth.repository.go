@@ -8,6 +8,7 @@ import (
 type Repository interface {
 	CreateUser(user *model.User) error
 	GetUserByEmail(user *model.User, email string) error
+	GetUserById(model *model.User, id int) error
 }
 
 type repositoryImpl struct {
@@ -40,4 +41,8 @@ func (r *repositoryImpl) GetUserByEmail(user *model.User, email string) error {
 		Preload("RegisteredEvents.Schedule").
 		Where("email = ?", email).
 		First(&user).Error
+}
+
+func (r *repositoryImpl) GetUserById(user *model.User, id int) error {
+	return r.db.Model(user).First(&user, "id = ?", id).Error
 }

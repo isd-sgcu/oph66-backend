@@ -1,4 +1,26 @@
 definitions:
+  dto.AttendeeStaffCheckinResponse:
+    properties:
+      already_checkin:
+        type: boolean
+      user:
+        $ref: '#/definitions/dto.AttendeeStaffCheckinUser'
+    type: object
+  dto.AttendeeStaffCheckinUser:
+    properties:
+      allergies:
+        example: Romantic
+        type: string
+      first_name:
+        example: John
+        type: string
+      last_name:
+        example: Doe
+        type: string
+      medical_condition:
+        example: Unlovable
+        type: string
+    type: object
   dto.BilingualField:
     properties:
       en:
@@ -640,8 +662,10 @@ paths:
       produces:
       - application/json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AttendeeStaffCheckinResponse'
         "403":
           description: Forbidden
           schema:

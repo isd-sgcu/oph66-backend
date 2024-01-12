@@ -41,12 +41,23 @@ func NewAuthMiddleware(userRepo auth.Repository, cfg *cfgldr.Config) AuthMiddlew
 				c.Abort()
 				return
 			}
-			if staffToken.Valid && staffToken.Claims.(jwt.MapClaims)["role"] == "staff" {
-				c.Set("role", "staff")
-				c.Set("faculty", staffToken.Claims.(jwt.MapClaims)["faculty"])
-				c.Set("department", staffToken.Claims.(jwt.MapClaims)["department"])
-				c.Next()
-				return
+			if staffToken.Valid {
+				switch staffToken.Claims.(jwt.MapClaims)["role"] {
+				case "faculty-staff":
+					c.Set("role", "faculty-staff")
+					c.Set("faculty", staffToken.Claims.(jwt.MapClaims)["faculty"])
+					c.Set("department", staffToken.Claims.(jwt.MapClaims)["department"])
+					c.Next()
+					return
+				case "central-staff":
+					c.Set("role", "central-staff")
+					c.Next()
+					return
+				default:
+					utils.ReturnError(c, apperror.InvalidToken)
+					c.Abort()
+					return
+				}
 			} else {
 				utils.ReturnError(c, apperror.InvalidToken)
 				c.Abort()
