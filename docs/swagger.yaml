@@ -366,6 +366,69 @@ definitions:
         example: "2021-08-01T00:00:00+07:00"
         type: string
     type: object
+  dto.SubmitFeedbackDTO:
+    properties:
+      comment:
+        example: very good
+        type: string
+      q1:
+        example: "1"
+        type: string
+      q2:
+        example: "1"
+        type: string
+      q3:
+        example: "1"
+        type: string
+      q4:
+        example: "1"
+        type: string
+      q5:
+        example: "1"
+        type: string
+      q6:
+        example: "1"
+        type: string
+      q7:
+        example: "1"
+        type: string
+      q8:
+        example: "1"
+        type: string
+      q9:
+        example: "1"
+        type: string
+      q10:
+        example: "1"
+        type: string
+      q11:
+        example: "1"
+        type: string
+      q12:
+        example: "1"
+        type: string
+      q13:
+        example: "1"
+        type: string
+      q14:
+        example: "1"
+        type: string
+      q15:
+        example: "1"
+        type: string
+      q16:
+        example: "1"
+        type: string
+      q17:
+        example: "1"
+        type: string
+      q18:
+        example: "1"
+        type: string
+      q19:
+        example: "1"
+        type: string
+    type: object
   dto.User:
     properties:
       allergies:
@@ -382,6 +445,9 @@ definitions:
       educational_level:
         example: Ph.D.
         type: string
+      feedback_submitted:
+        example: true
+        type: boolean
       first_name:
         example: John
         type: string
@@ -603,6 +669,27 @@ paths:
       summary: get event by id
       tags:
       - event
+  /feedback:
+    post:
+      description: Submit feedback form
+      operationId: SubmitFeedback
+      parameters:
+      - description: Feedback dto
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SubmitFeedbackDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - Bearer: []
+      summary: Submit feedback form
+      tags:
+      - feedback
   /live:
     get:
       description: Get livestream flag

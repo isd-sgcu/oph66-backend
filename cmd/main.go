@@ -34,6 +34,7 @@ func main() {
 	r.GET("/events/:eventId", container.EventHandler.GetEventById)
 	r.POST("/schedules/:scheduleId/register", container.EvtregHandler.RegisterEvent)
 	r.POST("/staff/checkin/:userId", container.StaffHandler.AttendeeStaffCheckin)
+	r.POST("/feedback", container.FeedbackHandler.SubmitFeedback)
 	r.POST("/auth/register", container.AuthHandler.Register)
 	r.GET("/auth/me", container.AuthHandler.GetProfile)
 	r.GET("/auth/login", container.AuthHandler.GoogleLogin)

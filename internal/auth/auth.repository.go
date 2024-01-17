@@ -9,6 +9,7 @@ type Repository interface {
 	CreateUser(user *model.User) error
 	GetUserByEmail(user *model.User, email string) error
 	GetUserById(model *model.User, id int) error
+	GetFeedbackByUserId(feedback *model.Feedback, userId int) error
 }
 
 type repositoryImpl struct {
@@ -45,4 +46,8 @@ func (r *repositoryImpl) GetUserByEmail(user *model.User, email string) error {
 
 func (r *repositoryImpl) GetUserById(user *model.User, id int) error {
 	return r.db.Model(user).First(&user, "id = ?", id).Error
+}
+
+func (r *repositoryImpl) GetFeedbackByUserId(feedback *model.Feedback, userId int) error {
+	return r.db.Model(feedback).Omit("comment").First(feedback, "user_id = ?", userId).Error
 }

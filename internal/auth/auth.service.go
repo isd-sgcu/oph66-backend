@@ -95,5 +95,16 @@ func (s *serviceImpl) GetUserFromJWTToken(email string) (*dto.User, *apperror.Ap
 
 	user := UserModelToDTO(&mUser)
 
+	formSubbmited := true
+
+	if err = s.repo.GetFeedbackByUserId(&model.Feedback{}, user.Id); errors.Is(err, gorm.ErrRecordNotFound) {
+		formSubbmited = false
+	} else if err != nil {
+		s.logger.Error("failed to find user feedback", zap.Error(err), zap.String("email", email))
+		return nil, apperror.InternalError
+	}
+
+	user.FeedbackSubmitted = formSubbmited
+
 	return &user, nil
 }

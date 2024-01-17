@@ -12,6 +12,7 @@ import (
 	event "github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
 	featureflag "github.com/isd-sgcu/oph66-backend/internal/feature_flag"
+	"github.com/isd-sgcu/oph66-backend/internal/feedback"
 	healthcheck "github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
 	"github.com/isd-sgcu/oph66-backend/internal/router"
@@ -27,6 +28,7 @@ type Container struct {
 	AuthHandler        auth.Handler
 	EvtregHandler      evtreg.Handler
 	StaffHandler       staff.Handler
+	FeedbackHandler    feedback.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -40,6 +42,7 @@ func newContainer(
 	authHandler auth.Handler,
 	evtregHandler evtreg.Handler,
 	staffHandler staff.Handler,
+	feedbackHandler feedback.Handler,
 	config *cfgldr.Config,
 	logger *zap.Logger,
 	corsHandler cfgldr.CorsHandler,
@@ -52,6 +55,7 @@ func newContainer(
 		authHandler,
 		evtregHandler,
 		staffHandler,
+		feedbackHandler,
 		config,
 		logger,
 		corsHandler,
@@ -81,6 +85,9 @@ func Init() (Container, error) {
 		staff.NewRepository,
 		staff.NewService,
 		staff.NewHandler,
+		feedback.NewRepository,
+		feedback.NewService,
+		feedback.NewHandler,
 		auth.NewHandler,
 		auth.NewService,
 		auth.NewRepository,

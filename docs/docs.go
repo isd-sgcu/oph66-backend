@@ -278,6 +278,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/feedback": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Submit feedback form",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "feedback"
+                ],
+                "summary": "Submit feedback form",
+                "operationId": "SubmitFeedback",
+                "parameters": [
+                    {
+                        "description": "Feedback dto",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SubmitFeedbackDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
         "/live": {
             "get": {
                 "description": "Get livestream flag",
@@ -933,6 +967,91 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SubmitFeedbackDTO": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "example": "very good"
+                },
+                "q1": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q10": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q11": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q12": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q13": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q14": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q15": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q16": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q17": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q18": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q19": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q2": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q3": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q4": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q5": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q6": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q7": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q8": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "q9": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
         "dto.User": {
             "type": "object",
             "properties": {
@@ -954,6 +1073,10 @@ const docTemplate = `{
                 "educational_level": {
                     "type": "string",
                     "example": "Ph.D."
+                },
+                "feedback_submitted": {
+                    "type": "boolean",
+                    "example": true
                 },
                 "first_name": {
                     "type": "string",

@@ -30,5 +30,6 @@ var (
 	NonRegisterableEvent  = &AppError{"non-registerable-event", http.StatusBadRequest}
 	Forbidden             = &AppError{"forbidden", http.StatusForbidden}
 	AlreadyCheckin        = &AppError{"already-checkin", http.StatusConflict}
+	AlreadySubmitted      = &AppError{"already-submitted", http.StatusConflict}
 	NotFound              = &AppError{"not-found", http.StatusNotFound}
 )
