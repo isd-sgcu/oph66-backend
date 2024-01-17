@@ -14,6 +14,7 @@ import (
 	"github.com/isd-sgcu/oph66-backend/internal/event"
 	"github.com/isd-sgcu/oph66-backend/internal/evtreg"
 	"github.com/isd-sgcu/oph66-backend/internal/feature_flag"
+	"github.com/isd-sgcu/oph66-backend/internal/feedback"
 	"github.com/isd-sgcu/oph66-backend/internal/health_check"
 	"github.com/isd-sgcu/oph66-backend/internal/middleware"
 	"github.com/isd-sgcu/oph66-backend/internal/router"
@@ -56,10 +57,13 @@ func Init() (Container, error) {
 	staffRepository := staff.NewRepository(db)
 	staffService := staff.NewService(staffRepository, authRepository, zapLogger)
 	staffHandler := staff.NewHandler(staffService, zapLogger)
+	feedbackRepository := feedback.NewRepository(db)
+	feedbackService := feedback.NewService(feedbackRepository, authRepository, zapLogger)
+	feedbackHandler := feedback.NewHandler(feedbackService, zapLogger)
 	corsHandler := cfgldr.MakeCorsConfig(config)
 	authMiddleware := middleware.NewAuthMiddleware(authRepository, config)
 	routerRouter := router.NewRouter(config, corsHandler, authMiddleware)
-	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, evtregHandler, staffHandler, config, zapLogger, corsHandler, routerRouter)
+	container := newContainer(handler, healthcheckHandler, featureflagHandler, authHandler, evtregHandler, staffHandler, feedbackHandler, config, zapLogger, corsHandler, routerRouter)
 	return container, nil
 }
 
@@ -72,6 +76,7 @@ type Container struct {
 	AuthHandler        auth.Handler
 	EvtregHandler      evtreg.Handler
 	StaffHandler       staff.Handler
+	FeedbackHandler    feedback.Handler
 	Config             *cfgldr.Config
 	Logger             *zap.Logger
 	CorsHandler        cfgldr.CorsHandler
@@ -85,6 +90,7 @@ func newContainer(
 	authHandler auth.Handler,
 	evtregHandler evtreg.Handler,
 	staffHandler staff.Handler,
+	feedbackHandler feedback.Handler,
 	config *cfgldr.Config, logger2 *zap.Logger,
 	corsHandler cfgldr.CorsHandler, router2 *router.Router,
 ) Container {
@@ -95,6 +101,7 @@ func newContainer(
 		authHandler,
 		evtregHandler,
 		staffHandler,
+		feedbackHandler,
 		config, logger2, corsHandler, router2,
 	}
 }

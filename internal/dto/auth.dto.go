@@ -53,6 +53,7 @@ type User struct {
 	InterestedFaculties []FacultyInfo `json:"interested_faculties"`
 	RegisteredEvents    []Schedule    `json:"registered_events"`
 	VisitingFaculties   []FacultyInfo `json:"visiting_faculties"`
+	FeedbackSubmitted   bool          `example:"true"                               json:"feedback_submitted"`
 }
 
 type NewsSource string
