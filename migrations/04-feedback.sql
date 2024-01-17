@@ -17,6 +17,8 @@ CREATE TYPE feedback_second_part_answer AS ENUM (
 
 CREATE TABLE feedbacks (
     "user_id" INT NOT NULL,
+    "created_at" timestamptz NOT NULL,
+    "updated_at" timestamptz NOT NULL,
     "q1" feedback_first_part_answer NOT NULL,
     "q2" feedback_first_part_answer NOT NULL,
     "q3" feedback_first_part_answer NOT NULL,
