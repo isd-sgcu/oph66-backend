@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2024-01-17
+
+### 🐛 Bug Fixes
+
+- Feedback timestamp (#37) - ([1c57793](https://github.com/isd-sgcu/oph66-backend/commit/1c5779353d008149eec0d9f2c580353534f7a0a0))
+
 ## [1.2.0] - 2024-01-17
 
 ### ⛰️  Features
